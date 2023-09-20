@@ -1,0 +1,9 @@
+
+
+# Src
+
+g++ -c src/main.cpp
+g++ -c src/Window.cpp src/Window.h
+g++ -c src/DisplayObject.cpp src/DisplayObject.h
+g++ -c src/WindowManager.cpp src/WindowManager.h
+g++ -o pgrm main.o Window.o DisplayObject.o WindowManager.o

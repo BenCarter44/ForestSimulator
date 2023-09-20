@@ -1,19 +1,39 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "WindowManager.h"
+#include <GL/glut.h>
+#include "DisplayObject.h"
+#include <vector>
+using std::vector;
+using namespace std;
 
 class Window
 {
-    friend class WindowManager;
+    
 private:
     int sizeX;
     int sizeY;
-    const char[] title;
+    int startX;
+    int startY;
+    const char* title;
+    vector<DisplayObject*> allObjects;
 
 public:
-   Window(const char[] title);  
+    Window();  
+    Window(const char* titl);  
+    Window(const char* title, int inX, int inY);
+    Window(int inX, int inY);
+    void setStartX(int x);
+    void setStartY(int y);
+    void addObject(DisplayObject* disp);
+    void display();
+    
+    int getSizeX();
+    int getSizeY();
+    int getStartX();
+    int getStartY();
 
+    const char* getTitle();
 };
 
 

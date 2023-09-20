@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      
+   {
+     "name": "(gdb) Launch",
+     "preLaunchTask": "build on WSL",
+     "type": "cppdbg",
+     "request": "launch",
+     "program": "/home/orange/Documents/College/CST-310/GraphicsDevelopment/build/pgrm",
+     "args": [],
+     "stopAtEntry": true,
+     "cwd": "/home/orange/Documents/College/CST-310/GraphicsDevelopment/build/",
+     "environment": [],
+     "externalConsole": true,
+     "windows": {
+       "MIMode": "gdb",
+       "miDebuggerPath": "/usr/bin/gdb",
+       "setupCommands": [
+         {
+           "description": "Enable pretty-printing for gdb",
+           "text": "-enable-pretty-printing",
+           "ignoreFailures": true
+         }
+       ]
+     },
+     "pipeTransport": {
+       "debuggerPath": "/usr/bin/gdb",
+       "pipeCwd": "",
+       "pipeProgram": "bash.exe",
+       "pipeArgs": ["-c"],
+       
+     },
+     "sourceFileMap": {
+       "/mnt/c": "${env:systemdrive}/",
+       "/home": "Z:\\home\\"
+     }
+   }
+    ]
+  }
