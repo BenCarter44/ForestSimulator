@@ -1,16 +1,34 @@
-# CMakeList.txt : CMake project for PrettyConsole, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
 
-project ("GraphicsOpenGL")
+cmake_minimum_required(VERSION 3.12)
 
-# Add source to this project's executable.
-add_executable (GraphicsOpenGL "src/main.cpp" "src/DisplayObject.cpp" "src/Window.cpp" "src/WindowManager.cpp")
-target_include_directories(GraphicsOpenGL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-# target_sources(GraphicsOpenGL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_compile_options(GraphicsOpenGL PUBLIC -lglut -lGLU -lGL)
+# set the project name and version
+project(OpenGLTest VERSION 1.0)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-# TODO: Add tests and install targets if needed.
+# Find Package
+
+find_package(GLUT REQUIRED)
+include_directories(${GLUT_INCLUDE_DIR})
+find_package(GLU REQUIRED)
+include_directories(${GLU_LIBRARY_DIR})
+find_package(OpenGL REQUIRED)
+include_directories(${OpenGL_INCLUDE_DIRS})
+
+#find_package(OpenGL REQUIRED)
+#find_package(GLUT REQUIRED)
+#find_package(GLU REQUIRED)
+#include_directories(${OPENGL_INCLUDE_DIRS})
+#include_directories(${GLUT_INCLUDE_DIRS})
+#include_directories(${GLU_INCLUDE_DIRS})
+
+file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+
+file(GLOB HEADERS "${CMAKE_SOURCE_DIR}/src/*.cpp")
+
+add_executable(OpenGLTest ${SOURCES} ${HEADERS})
+#target_compile_options(OpenGLTest PUBLIC -lglut -lGLU -lGL)
+# https://stackoverflow.com/questions/13703647/how-to-properly-add-include-directories-with-cmake
+
+
+target_link_libraries(OpenGLTest ${GLUT_LIBRARIES} ${GLU_LIBRARIES} ${OPENGL_LIBRARIES})
+
+target_include_directories(OpenGLTest PRIVATE "${CMAKE_SOURCE_DIR}/include")

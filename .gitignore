@@ -1,1 +1,5 @@
-CMakeFiles/
+build/
+.vs/
+.vscode/
+*.code-workspace
+ 
