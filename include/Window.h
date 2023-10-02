@@ -44,6 +44,8 @@ private:
     static int sizeY;
     static int startX;
     static int startY;
+    static int worldX;
+    static int worldY;
     static const char* title;
 
     /**
@@ -93,6 +95,14 @@ public:
     void setStartPos(int x, int y);
 
     /**
+     * @brief Set the World Dimensions. The scale of the virtual coordinate system.
+     * 
+     * @param x 
+     * @param y 
+     */
+    void setWorldDimensions(int x, int y);
+
+    /**
      * @brief The object to add to the window.
      * 
      * @param disp - A DisplayObject member... all objects are children of DisplayObject
@@ -106,6 +116,20 @@ public:
      * @param argv - the char** of the arguments passed into the program
      */
     static void initGL(int &argc, char** argv);
+
+    /**
+     * @brief Does a linear conversion from a number from a given range to another number in the output range
+     * 
+     * It can go past the output bounds too. It is not clamped
+     * 
+     * @param x the number
+     * @param inMin in min
+     * @param inMax in max
+     * @param outMin output min
+     * @param outMax output max.
+     * @return float 
+     */
+    static float mapValue(float x, float inMin, float inMax, float outMin, float outMax);
 
     /**
      * @brief The Main Display Function. Calls each object's display function in the order added.

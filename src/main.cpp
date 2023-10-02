@@ -10,17 +10,18 @@
  */
 #include <GL/glut.h>
 #include "Window.h"
-#include "DisplayObject.h"
+#include "Table.h"
  
  
 int main(int argc, char** argv)
 {
     Window::initGL(argc, argv);
 
-    Window myWindow = Window("Hello World - Large", 400, 300);
-    myWindow.setStartPos(100,200);
-    DisplayObject dummyObject = DisplayObject();
-    myWindow.addObject(&dummyObject);
+    Window myWindow = Window("Hello World - Large", 800, 600);
+    myWindow.setStartPos(0,0);
+    myWindow.setWorldDimensions(1000,750);
+    Table tableObject = Table();
+    myWindow.addObject(&tableObject);
 
     myWindow.launch();
 
