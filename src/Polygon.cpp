@@ -76,7 +76,7 @@ Polygon::Polygon(Point* pointsList, int pointsLength)
     // sort faces by area.
     struct
     {
-        bool operator()(Face* face1, Face* face2) const { return getArea(face1) < getArea(face2);}
+        bool operator()(Face* face1, Face* face2) const { return getArea(face1) > getArea(face2);}
     } areaCompare;
 
     std::sort(faceList, faceList + getNumberFaces(), areaCompare);
