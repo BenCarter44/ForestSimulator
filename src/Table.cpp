@@ -1,5 +1,8 @@
 #include "Table.h"
 
+
+#define CC(ARG) (##arg / 255.0f)
+
 float cc(float x)
 {
     return x / 255.0f;
@@ -137,9 +140,44 @@ void Table::draw()
       r += 40;
     }
 
-    p.draw();
+    //p.draw();
 
+    Point pointsListA[5] = {
+        {49, 307},
+        {494, 394},
+        {979, 207},
+        {583, 108},
+        {110, 124}
 
+    };
+
+    Point pointsListB[5] = {
+        {49, 255},
+        {494, 300},
+        {979, 155},
+        {583, 56},
+        {110, 72}
+    };
+
+    AnchorFace top = AnchorFace(pointsListB, 5);
+    top.setColor(255,255,255);
+    AnchorFace bottom = AnchorFace(pointsListA, 5);
+    bottom.setColor(128,12,99);
+    MultiPolygon mp = MultiPolygon(&top, &bottom);
+
+    Face** walls = mp.getColorFaces();
+    r = 0;
+    g = 0;
+    b = 0;
+    for(int i = 0; i < mp.getColorFacesNum(); i++)
+    {
+        walls[i]->setColor(r, g, b);
+        r += 50;
+        g += 50;
+        b += 50;
+    }
+
+    mp.draw();
 
     cout << "glFlush();\n";
     glFlush();
