@@ -36,6 +36,10 @@ struct AnchorFace {
     }
 };
 
+/**
+ * @brief Draw a many dimensional polygon. Note: ONLY SUPPORTS CONVEX shapes!!!!
+ * 
+ */
 class MultiPolygon
 {
 private:

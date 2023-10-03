@@ -20,9 +20,7 @@ void MultiPolygon::draw()
     glBegin(GL_TRIANGLE_FAN);
     for(int i = 0; i < numVert; i++)
     {
-        std::cout << "EG: " << top->points[i].x << ' ' << top->points[i].y << '\n';
         glVertex2f(top->points[i].x, top->points[i].y);
-
     }
     glEnd();
     
