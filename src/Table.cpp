@@ -7,15 +7,7 @@ float cc(float x)
 
 Table::Table()
 {
-    out_maxX = 1.0f;
-    out_minX = -1.0f;
-    in_minX = 0.0f;
-    in_maxX = 1000.0f;
 
-    out_maxY = 1.0f;
-    out_minY = -1.0f;
-    in_minY = 0.0f;
-    in_maxY = 1000.0f;
 }
 
 void Table::draw()
@@ -117,6 +109,21 @@ void Table::draw()
             glVertex2f(bottomBarX[i],bottomBarY[i]);
         }
     glEnd();
+
+
+    Point pointsList[8] = {
+    {50, 0},
+    {100, 0},
+    {100, 50},
+    {50, 50},
+    {75, 25},
+    {125, 25},
+    {125, 75},
+    {75, 75}
+    };
+
+    Polygon p = Polygon(pointsList,8);
+    p.draw();
 
     cout << "glFlush();\n";
     glFlush();
