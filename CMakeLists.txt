@@ -22,9 +22,10 @@ include_directories(${OpenGL_INCLUDE_DIRS})
 
 file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-file(GLOB HEADERS "${CMAKE_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE HEADERS "${CMAKE_SOURCE_DIR}/include/*.h")
+file(GLOB_RECURSE HEADERS2 "${CMAKE_SOURCE_DIR}/include/*.hpp")
 
-add_executable(OpenGLTest ${SOURCES} ${HEADERS})
+add_executable(OpenGLTest ${SOURCES} ${HEADERS} ${HEADERS2})
 #target_compile_options(OpenGLTest PUBLIC -lglut -lGLU -lGL)
 # https://stackoverflow.com/questions/13703647/how-to-properly-add-include-directories-with-cmake
 

@@ -10,19 +10,35 @@
  */
 #include <GL/glut.h>
 #include "Window.h"
-#include "DisplayObject.h"
- 
+#include "Table.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+#include <iostream>
  
 int main(int argc, char** argv)
 {
     Window::initGL(argc, argv);
 
-    Window myWindow = Window("Hello World - Large", 400, 300);
-    myWindow.setStartPos(100,200);
-    DisplayObject dummyObject = DisplayObject();
-    myWindow.addObject(&dummyObject);
+    Window myWindow = Window("Hello World - Large", 800, 600);
+    myWindow.setStartPos(0,0);
+    myWindow.setWorldDimensions(1000,750);
+    Table tableObject = Table();
+    myWindow.addObject(&tableObject);
 
     myWindow.launch();
+
+    /* GLM TEST */
+    glm::vec4 vecA = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    glm::vec4 vecB = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    
+    // glm::mat4 trans;
+    // trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+    vecA = vecA + vecB;
+    std::cout << vecA.x << ' ' << vecA.y << ' ' << vecA.z << std::endl;
+
 
     myWindow.mainLoop();
     return 0;

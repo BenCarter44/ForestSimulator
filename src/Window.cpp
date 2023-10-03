@@ -14,6 +14,9 @@ int Window::sizeX = 0;
 int Window::sizeY = 0;
 int Window::startX = 0;
 int Window::startY = 0;
+int Window::worldX = 0;
+int Window::worldY = 0;
+
 const char* Window::title = "";
 vector<DisplayObject*> Window::allObjects = vector<DisplayObject*>();
 
@@ -24,6 +27,12 @@ void Window::initGL(int &argc, char** argv)
     glutInit(&argc, argv);
     DEBUG_WIN(glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH););
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+}
+
+// this is a static function
+float Window::mapValue(float x, float inMin, float inMax, float outMin, float outMax) 
+{
+  return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
 Window::Window()
@@ -74,6 +83,12 @@ void Window::launch()
     DEBUG_WIN(glutCreateWindow(title));
     glutCreateWindow(Window::title);
 
+    // set up projection.
+    DEBUG_WIN(glMatrixMode(GL_PROJECTION));
+    glMatrixMode(GL_PROJECTION);
+    DEBUG_WIN(gluOrtho2D(0,1000, 750, 0));
+    gluOrtho2D(0,1000, 750, 0);
+
     DEBUG_WIN(glutDisplayFunc(Window::mainDisplay));
     glutDisplayFunc(Window::mainDisplay);
 
@@ -116,6 +131,11 @@ void Window::setStartPos(int x, int y)
 {
     Window::startX = x;
     Window::startY = y;
+}
+void Window::setWorldDimensions(int x, int y)
+{
+    Window::worldX = x;
+    Window::worldY = y;
 }
 
 const char* Window::getTitle()
