@@ -112,18 +112,34 @@ void Table::draw()
 
 
     Point pointsList[8] = {
-    {50, 0},
-    {100, 0},
-    {100, 50},
-    {50, 50},
-    {75, 25},
-    {125, 25},
-    {125, 75},
-    {75, 75}
+    {110, 224},
+    {49, 407},
+    {979, 307},
+    {583, 208},
+    {110, 172},
+    {49, 355},
+    {979, 255},
+    {583, 156}
     };
 
     Polygon p = Polygon(pointsList,8);
+    
+    Face** colorFaces = p.getColorFaces();
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    for(int f = 0; f < p.getNumberFaces(); f++)
+    {
+      cout << "AREA: " << Polygon::getArea(colorFaces[f]) << endl;
+      colorFaces[f]->r = r;
+      colorFaces[f]->g = g;
+      colorFaces[f]->b = b;
+      r += 40;
+    }
+
     p.draw();
+
+
 
     cout << "glFlush();\n";
     glFlush();

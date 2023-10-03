@@ -25,6 +25,8 @@ bool Polygon::comparePoints(Point reference, Point p1, Point p2) {
 // Function to sort points in counterclockwise order
 void Polygon::sortPointsCounterclockwise(Point arr[8]) {
 
+    
+    // get average of all points.
     Point centroid = {0.0, 0.0};
     for (int i = 0; i < 8; i++) {
         centroid.x += arr[i].x;
@@ -33,58 +35,116 @@ void Polygon::sortPointsCounterclockwise(Point arr[8]) {
     centroid.x /= 8.0;
     centroid.y /= 8.0;
 
+    // sort them out going counterclockwise.
     std::sort(arr, arr + 8, [centroid](const Point &p1, const Point &p2) {
         return Polygon::comparePoints(centroid, p1, p2);
     });
 }
 
 
-void Polygon::drawShape(Point arr[4], int color)
+
+void Polygon::drawShape(Face* arr)
 {
-    for (int i = 0; i < 4; i++) {
-        arr[i] = arr[i];
-    }
-
-    if (color == 1){
-        glColor3f(0.0, 1.0, 1.0);
-    } else if (color == 2){
-        glColor3f(1.0, 0.0, 1.0);
-    } else {
-        glColor3f(1.0, 1.0, 0.0);
-    }
-
+    cout << "DRAW " << endl;
+    glColor3f(arr->r / 255.0f, arr->g / 255.0f, arr->b / 255.0f);
     glBegin(GL_POLYGON);
-    glVertex2f(arr[0].x, arr[0].y);
-    glVertex2f(arr[1].x, arr[1].y);
-    glVertex2f(arr[2].x, arr[2].y);
-    glVertex2f(arr[3].x, arr[3].y);
+    glVertex2f(arr->points[0].x, arr->points[0].y);
+    glVertex2f(arr->points[1].x, arr->points[1].y);
+    glVertex2f(arr->points[2].x, arr->points[2].y);
+    glVertex2f(arr->points[3].x, arr->points[3].y);
     glEnd();
+}
+void Polygon::draw()
+{
+    for(int i = 0; i < getNumberFaces(); i++)
+    {
+        drawShape(faceListOriginal[i]);
+    }
     glFlush(); 
 }
-
 Polygon::Polygon(Point* pointsList, int pointsLength)
 {
     this->pointsList = pointsList;
     this->pointsLength = pointsLength;
 
+    this->faceList = new Face*[getNumberFaces()];
+    this->faceListOriginal = new Face*[getNumberFaces()];
     // pointsLength must == 8 right now!!!!
 
     sortPointsCounterclockwise(pointsList);
+    getFaces();
+    // sort faces by area.
+    struct
+    {
+        bool operator()(Face* face1, Face* face2) const { return getArea(face1) < getArea(face2);}
+    } areaCompare;
+
+    std::sort(faceList, faceList + getNumberFaces(), areaCompare);
+    
 }   
 
-void Polygon::draw()
+Polygon::~Polygon()
 {
-    Point bottomFace[4] = {pointsList[0], pointsList[1], pointsList[2], pointsList[3]};
-    Point topFace[4] = {pointsList[4], pointsList[5], pointsList[6], pointsList[7]};
-    Point leftFace[4] = {pointsList[0], pointsList[1], pointsList[7], pointsList[6]};
-    Point rightFace[4] = {pointsList[2], pointsList[3], pointsList[5], pointsList[4]};  
-    Point backFace[4] = {pointsList[0], pointsList[3], pointsList[5], pointsList[6]}; 
-    Point frontFace[4] = {pointsList[1], pointsList[2], pointsList[4], pointsList[7]};
+    delete[] faceList;
+    delete[] faceListOriginal;
+}
 
-    drawShape(bottomFace,1);
-    drawShape(leftFace,2);
-    drawShape(backFace,3);
-    drawShape(topFace,1);
-    drawShape(frontFace,3);
-    drawShape(rightFace,2);
+Face** Polygon::getColorFaces()
+{
+    return this->faceList;
+}
+
+int Polygon::getNumberFaces()
+{
+    return pointsLength / 2 + 2;
+}
+
+double Polygon::getArea(Face* arr)
+{
+    // uses the bretschneider's formula
+    Point pointA = arr->points[0];
+    Point pointB = arr->points[1];
+    Point pointC = arr->points[2];
+    Point pointD = arr->points[3];
+
+    // all distances are squared
+
+    double distAB = (pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y);
+    double distBC = (pointB.x - pointC.x) * (pointB.x - pointC.x) + (pointB.y - pointC.y) * (pointB.y - pointC.y);
+    double distCD = (pointC.x - pointD.x) * (pointC.x - pointD.x) + (pointC.y - pointD.y) * (pointC.y - pointD.y);
+    double distDA = (pointD.x - pointA.x) * (pointD.x - pointA.x) + (pointD.y - pointA.y) * (pointD.y - pointA.y);
+
+    double diagAC = (pointA.x - pointC.x) * (pointA.x - pointC.x) + (pointA.y - pointC.y) * (pointA.y - pointC.y);
+    double diagBD = (pointB.x - pointD.x) * (pointB.x - pointD.x) + (pointB.y - pointD.y) * (pointB.y - pointD.y);
+
+
+    // answer is 0.25 * sqrt(area)
+    double temp = distBC + distDA - distAB - distCD;
+    double ans =  4.0 * diagAC * diagBD - (temp * temp);
+    return ans;
+}
+
+void Polygon::getFaces()
+{
+    Face* bottomFace = new Face(pointsList[0], pointsList[1], pointsList[2], pointsList[3]);
+    Face* topFace = new Face(pointsList[4], pointsList[5], pointsList[6], pointsList[7]);
+    Face* leftFace = new Face(pointsList[0], pointsList[1], pointsList[7], pointsList[6]);
+    Face* rightFace = new Face(pointsList[2], pointsList[3], pointsList[5], pointsList[4]);  
+    Face* backFace = new Face(pointsList[0], pointsList[3], pointsList[5], pointsList[6]); 
+    Face* frontFace = new Face(pointsList[1], pointsList[2], pointsList[4], pointsList[7]);
+
+
+    // whatever is rendered first "covers" up other stuff
+    faceList[5] = bottomFace;
+    faceList[0] = topFace;
+    faceList[1] = leftFace;
+    faceList[2] = rightFace;
+    faceList[3] = backFace;
+    faceList[4] = frontFace;
+    faceListOriginal[5] = bottomFace;
+    faceListOriginal[1] = topFace;
+    faceListOriginal[4] = leftFace;
+    faceListOriginal[3] = rightFace;
+    faceListOriginal[2] = backFace;
+    faceListOriginal[0] = frontFace;
 }
