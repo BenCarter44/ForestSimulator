@@ -41,7 +41,15 @@ struct Face {
 class Polygon
 {
 private:
-    int pointsLength;
+    /**
+     * @brief 
+     * 
+     * @param reference 
+     * @param p1 
+     * @param p2 
+     * @return true 
+     * @return false 
+     */
     static bool closerToReference(Point reference, Point p1, Point p2);
     static bool comparePoints(Point reference, Point p1, Point p2);
     void sortPointsCounterclockwise(Point arr[8]);
@@ -57,8 +65,28 @@ public:
     static double getArea(Face* arr);
 
 private:
+    /**
+     * @brief Number of points passed in.
+     * 
+     */
+    int pointsLength;
+
+    /**
+     * @brief Point array.
+     * 
+     */
     Point* pointsList;
+    
+    /**
+     * @brief Array of faces. The array is sorted by face area. For coloring.
+     * 
+     */
     Face** faceList;
+
+    /**
+     * @brief The array of faces. Sorted by rendering.
+     * 
+     */
     Face** faceListOriginal;
 };
 
