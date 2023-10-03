@@ -11,7 +11,12 @@
 #include <GL/glut.h>
 #include "Window.h"
 #include "Table.h"
- 
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+#include <iostream>
  
 int main(int argc, char** argv)
 {
@@ -24,6 +29,16 @@ int main(int argc, char** argv)
     myWindow.addObject(&tableObject);
 
     myWindow.launch();
+
+    /* GLM TEST */
+    glm::vec4 vecA = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    glm::vec4 vecB = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    
+    // glm::mat4 trans;
+    // trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+    vecA = vecA + vecB;
+    std::cout << vecA.x << ' ' << vecA.y << ' ' << vecA.z << std::endl;
+
 
     myWindow.mainLoop();
     return 0;
