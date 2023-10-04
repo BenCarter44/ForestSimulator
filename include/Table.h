@@ -12,9 +12,6 @@ class Table: public DisplayObject
 public:
     Table();
     void draw();
-    float mapX(float x);
-    float mapY(float x);
-
 };
 
 #endif
