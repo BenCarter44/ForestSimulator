@@ -1,8 +1,6 @@
 #include "Table.h"
 
 
-#define CC(ARG) (ARG/255.0f)
-
 Table::Table()
 {
 
@@ -10,11 +8,6 @@ Table::Table()
 
 void Table::draw()
 {
-    glClearColor(CC(202),CC(192),CC(182),0.0f);
-    cout << "glClear(GL_COLOR_BUFFER_BIT);\n";
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cout << "glBegin(GL_POLYGON);\n";
-
     // black border
     Point blackTop[4] = {
         {48, 610},
