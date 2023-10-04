@@ -1,12 +1,7 @@
 #include "Table.h"
 
 
-#define CC(ARG) (##arg / 255.0f)
-
-float cc(float x)
-{
-    return x / 255.0f;
-}
+#define CC(ARG) (ARG/255.0f)
 
 Table::Table()
 {
@@ -15,7 +10,7 @@ Table::Table()
 
 void Table::draw()
 {
-    glClearColor(cc(202),cc(192),cc(182),0.0f);
+    glClearColor(CC(202),CC(192),CC(182),0.0f);
     cout << "glClear(GL_COLOR_BUFFER_BIT);\n";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cout << "glBegin(GL_POLYGON);\n";
@@ -338,10 +333,6 @@ void Table::draw()
     leg2.draw();
     support4.draw();
     bar2.draw();
-
-
-
-
     
     leg3.draw();
     cout << "glFlush();\n";
