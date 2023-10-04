@@ -11,6 +11,7 @@
 #include <GL/glut.h>
 #include "Window.h"
 #include "Table.h"
+#include "BlackPen.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -25,8 +26,13 @@ int main(int argc, char** argv)
     Window myWindow = Window("Hello World - Large", 800, 600);
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);
+    
+    BlackPen penB = BlackPen();
+    myWindow.addObject(&penB);
+    
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
+
 
     myWindow.launch();
 

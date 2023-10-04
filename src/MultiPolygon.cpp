@@ -3,7 +3,7 @@
 
 void MultiPolygon::drawShape(Face* arr)
 {
-    cout << "DRAW " << endl;
+    //cout << "DRAW " << endl;
     glColor3f(arr->r / 255.0f, arr->g / 255.0f, arr->b / 255.0f);
     glBegin(GL_POLYGON);
     glVertex2f(arr->points[0].x, arr->points[0].y);

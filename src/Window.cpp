@@ -35,6 +35,13 @@ float Window::mapValue(float x, float inMin, float inMax, float outMin, float ou
   return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
+void Window::mixColor(float change[3], float x, int r, int g, int b, int r2, int g2, int b2)
+{
+    change[0] = Window::mapValue(x, 0.0f, 1.0f,r, r2);
+    change[1] = Window::mapValue(x, 0.0f, 1.0f,g, g2);
+    change[2] = Window::mapValue(x, 0.0f, 1.0f,b, b2);
+}
+
 Window::Window()
 {
     Window::sizeX = 100;
@@ -88,6 +95,7 @@ void Window::launch()
     glMatrixMode(GL_PROJECTION);
     DEBUG_WIN(gluOrtho2D(0,1000, 750, 0));
     gluOrtho2D(0,1000, 750, 0);
+   // gluOrtho2D(595,660, 258, 159);
 
     DEBUG_WIN(glutDisplayFunc(Window::mainDisplay));
     glutDisplayFunc(Window::mainDisplay);
@@ -101,6 +109,11 @@ void Window::launch()
 // this is a static function.
 void Window::mainDisplay()
 {
+    glClearColor(CC(202),CC(192),CC(182),0.0f);
+    cout << "glClear(GL_COLOR_BUFFER_BIT);\n";
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    cout << "glBegin(GL_POLYGON);\n";
+    
     for(int x = 0; x < allObjects.size(); x++)
     {
         allObjects[x]->draw();
