@@ -41,7 +41,8 @@ void Orange::draw()
         {518,263},
         {511,257},
         {502,252},
-        {492,250}
+        {492,250},
+        {484,262}
     };
     glBegin(GL_TRIANGLE_FAN);
     for(int i = 0; i < 27; i++)
