@@ -18,7 +18,6 @@
 #include <GL/glut.h>
 #include "DisplayObject.h"
 
-
 #ifndef CC_DEC
 #define CC(ARG) (ARG/255.0f)
 #define CC_DEC
@@ -136,6 +135,25 @@ public:
      * @return float 
      */
     static float mapValue(float x, float inMin, float inMax, float outMin, float outMax);
+
+    /**
+     * @brief Does a linear mix between two colors. 0 is first color. 1 is second color
+     * 
+     * It can go past the output bounds too. It is not clamped
+     * 
+     * @param change the float array to change (changes in-place)
+     * @param x the ratio
+     * @param r the red of color 1
+     * @param g the green of color 1
+     * @param b the blue of color 1
+     * @param r the red of color 2
+     * @param g the green of color 2
+     * @param b the blue of color 2
+     * @return float 
+     */
+    static void mixColor(float change[3], float x, int r, int g, int b, int r2, int g2, int b2);
+
+
 
     /**
      * @brief The Main Display Function. Calls each object's display function in the order added.
