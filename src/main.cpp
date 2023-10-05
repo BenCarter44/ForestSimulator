@@ -12,6 +12,7 @@
 #include "Window.h"
 #include "Table.h"
 #include "BlackPen.h"
+#include "Orange.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -33,6 +34,8 @@ int main(int argc, char** argv)
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
 
+    Orange orange = Orange();
+    myWindow.addObject(&orange);
 
     myWindow.launch();
 
