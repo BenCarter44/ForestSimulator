@@ -28,6 +28,11 @@
 /* DEFINE DEBUG_GLUT_CMD to get cout's of the glut commands to console. */
 // #define DEBUG_DISP_CMD
 
+#ifndef CC_DEC
+#define CC(ARG) (ARG/255.0f)
+#define CC_DEC
+#endif
+
 #ifdef DEBUG_DISP_CMD
 #define DEBUG_DISP(ARG) (cout << #ARG";\n")
 #include <iostream>

@@ -1,8 +1,6 @@
 #include "Table.h"
 
 
-#define CC(ARG) (ARG/255.0f)
-
 Table::Table()
 {
 
