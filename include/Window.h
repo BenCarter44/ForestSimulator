@@ -18,6 +18,12 @@
 #include <GL/glut.h>
 #include "DisplayObject.h"
 
+
+#ifndef CC_DEC
+#define CC(ARG) (ARG/255.0f)
+#define CC_DEC
+#endif
+
 // https://stackoverflow.com/questions/4576282/preprocessor-macros-how-to-insert-arguments
 
 /* DEFINE DEBUG_WIN_CMD to get cout's of the glut commands to console. */

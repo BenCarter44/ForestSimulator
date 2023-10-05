@@ -101,6 +101,11 @@ void Window::launch()
 // this is a static function.
 void Window::mainDisplay()
 {
+    glClearColor(CC(202),CC(192),CC(182),0.0f);
+    cout << "glClear(GL_COLOR_BUFFER_BIT);\n";
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    cout << "glBegin(GL_POLYGON);\n";
+
     for(int x = 0; x < allObjects.size(); x++)
     {
         allObjects[x]->draw();

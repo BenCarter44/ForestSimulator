@@ -23,17 +23,17 @@ bool Polygon::comparePoints(Point reference, Point p1, Point p2) {
 }
 
 // Function to sort points in counterclockwise order
-void Polygon::sortPointsCounterclockwise(Point arr[8]) {
+void Polygon::sortPointsCounterclockwise(Point* arr, int len) {
 
     
     // get average of all points.
     Point centroid = {0.0, 0.0};
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < len; i++) {
         centroid.x += arr[i].x;
         centroid.y += arr[i].y;
     }
-    centroid.x /= 8.0;
-    centroid.y /= 8.0;
+    centroid.x /= (float)len;
+    centroid.y /= (float)len;
 
     // sort them out going counterclockwise.
     std::sort(arr, arr + 8, [centroid](const Point &p1, const Point &p2) {
@@ -71,7 +71,7 @@ Polygon::Polygon(Point* pointsList, int pointsLength)
     this->faceListOriginal = new Face*[getNumberFaces()];
     // pointsLength must == 8 right now!!!!
 
-    sortPointsCounterclockwise(pointsList);
+    sortPointsCounterclockwise(pointsList, pointsLength);
     getFaces();
     // sort faces by area.
     struct
@@ -126,6 +126,8 @@ double Polygon::getArea(Face* arr)
 
 void Polygon::getFaces()
 {
+    int topVertNum = pointsLength / 2;
+
     Face* bottomFace = new Face(pointsList[0], pointsList[1], pointsList[2], pointsList[3]);
     Face* topFace = new Face(pointsList[4], pointsList[5], pointsList[6], pointsList[7]);
     Face* leftFace = new Face(pointsList[0], pointsList[1], pointsList[7], pointsList[6]);

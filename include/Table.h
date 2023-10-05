@@ -2,18 +2,16 @@
 #define TABLE_H
 
 #include "DisplayObject.h"
-#include "Window.h" // for the map function
+#include "Window.h"
 #include <iostream>
 #include "Polygon.h"
+#include "MultiPolygon.h"
 
 class Table: public DisplayObject
 {
 public:
     Table();
     void draw();
-    float mapX(float x);
-    float mapY(float x);
-
 };
 
 #endif

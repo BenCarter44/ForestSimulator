@@ -4,10 +4,7 @@
 #include "DisplayObject.h"
 #include <algorithm>
 #include <cmath>
-
 #include <iostream>
-
-using namespace std;
 
 struct Point {
         double x;
@@ -19,6 +16,7 @@ struct Face {
     uint8_t r;
     uint8_t g;
     uint8_t b;
+    int zindex;
 
     Face(Point aP, Point bP, Point cP, Point dP)
     {
@@ -29,6 +27,7 @@ struct Face {
         r = 255;
         g = 255;
         b = 255;
+        zindex = 0; // render order.
     }
     void setColor(uint8_t rIn, uint8_t gIn, uint8_t bIn)
     {
@@ -52,7 +51,7 @@ private:
      */
     static bool closerToReference(Point reference, Point p1, Point p2);
     static bool comparePoints(Point reference, Point p1, Point p2);
-    void sortPointsCounterclockwise(Point arr[8]);
+    void sortPointsCounterclockwise(Point* arr, int len);
     void drawShape(Face* arr);
     void getFaces();
 public:
