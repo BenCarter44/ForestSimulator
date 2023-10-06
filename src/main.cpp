@@ -13,6 +13,8 @@
 #include "Table.h"
 #include "BlackPen.h"
 #include "Orange.h"
+#include "CatchPhrase.h"
+#include "Test.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -28,9 +30,16 @@ int main(int argc, char** argv)
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);
     
+    Test tester = Test();
+    myWindow.addObject(&tester);
+
     BlackPen penB = BlackPen();
     myWindow.addObject(&penB);
     
+
+    CatchPhrase cp = CatchPhrase();
+    myWindow.addObject(&cp);
+
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
 
