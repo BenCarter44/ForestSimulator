@@ -29,9 +29,6 @@ int main(int argc, char** argv)
     Window myWindow = Window("Hello World - Large", 800, 600);
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);
-    
-    Test tester = Test();
-    myWindow.addObject(&tester);
 
     BlackPen penB = BlackPen();
     myWindow.addObject(&penB);
