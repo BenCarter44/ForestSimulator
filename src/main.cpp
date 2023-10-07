@@ -12,7 +12,12 @@
 #include "Window.h"
 #include "Table.h"
 #include "BlackPen.h"
-
+#include "Cup1.h"
+#include "Cup2.h"
+#include "Cup3.h"
+#include "Cup4.h"
+#include "stickyNotes.h"
+#include "GreenPen.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -27,13 +32,34 @@ int main(int argc, char** argv)
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);
     
+
+    stickyNotes stickyNotesObeject = stickyNotes();
+    myWindow.addObject(&stickyNotesObeject);
+
+    GreenPen penG = GreenPen();
+    myWindow.addObject(&penG);
+
+    Cup2 cup2 = Cup2();
+    myWindow.addObject(&cup2);
+
+    Cup3 cup3 = Cup3();
+    myWindow.addObject(&cup3);
+
+
+    Cup1 cup1 = Cup1();
+    myWindow.addObject(&cup1);
+
+    Cup4 cup4 = Cup4();
+    myWindow.addObject(&cup4);
+    
     BlackPen penB = BlackPen();
     myWindow.addObject(&penB);
-    
+
+
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
 
-
+    
     myWindow.launch();
 
     /* GLM TEST */
