@@ -1,8 +1,6 @@
 #include "Table.h"
 
 
-#define CC(ARG) (ARG/255.0f)
-
 Table::Table()
 {
 
@@ -10,6 +8,7 @@ Table::Table()
 
 void Table::draw()
 {
+    
     // black border
     Point blackTop[4] = {
         {48, 610},

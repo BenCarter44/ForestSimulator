@@ -1,5 +1,5 @@
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef CUP3_H
+#define CUP3_H
 
 #include "DisplayObject.h"
 #include "Window.h"
@@ -7,10 +7,10 @@
 #include "Polygon.h"
 #include "MultiPolygon.h"
 
-class Table: public DisplayObject
+class Cup3: public DisplayObject
 {
 public:
-    Table();
+    Cup3();
     void draw();
 };
 

@@ -1,5 +1,5 @@
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef GREENPEN_H
+#define GREENPEN_H
 
 #include "DisplayObject.h"
 #include "Window.h"
@@ -7,10 +7,10 @@
 #include "Polygon.h"
 #include "MultiPolygon.h"
 
-class Table: public DisplayObject
+class GreenPen: public DisplayObject
 {
 public:
-    Table();
+    GreenPen();
     void draw();
 };
 

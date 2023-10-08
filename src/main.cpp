@@ -14,7 +14,13 @@
 #include "BlackPen.h"
 #include "Orange.h"
 #include "CatchPhrase.h"
-#include "Test.h"
+
+#include "Cup1.h"
+#include "Cup2.h"
+#include "Cup3.h"
+#include "Cup4.h"
+#include "stickyNotes.h"
+#include "GreenPen.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -28,20 +34,37 @@ int main(int argc, char** argv)
 
     Window myWindow = Window("Hello World - Large", 800, 600);
     myWindow.setStartPos(0,0);
-    myWindow.setWorldDimensions(1000,750);
+    myWindow.setWorldDimensions(1000,750);   
 
-    BlackPen penB = BlackPen();
-    myWindow.addObject(&penB);
-    
+    stickyNotes stickyNotesObeject = stickyNotes();
+    myWindow.addObject(&stickyNotesObeject);
 
     CatchPhrase cp = CatchPhrase();
     myWindow.addObject(&cp);
 
-    Table tableObject = Table();
-    myWindow.addObject(&tableObject);
-
     Orange orange = Orange();
     myWindow.addObject(&orange);
+
+    Cup1 cup1 = Cup1();
+    myWindow.addObject(&cup1);
+    
+    GreenPen penG = GreenPen();
+    myWindow.addObject(&penG);
+
+    Cup2 cup2 = Cup2();
+    myWindow.addObject(&cup2);
+
+    Cup3 cup3 = Cup3();
+    myWindow.addObject(&cup3);
+
+    Cup4 cup4 = Cup4();
+    myWindow.addObject(&cup4);
+    
+    BlackPen penB = BlackPen();
+    myWindow.addObject(&penB);
+
+    Table tableObject = Table();
+    myWindow.addObject(&tableObject);
 
     myWindow.launch();
 

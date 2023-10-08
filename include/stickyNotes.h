@@ -1,5 +1,5 @@
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef stickyNotes_H
+#define stickyNotes_H
 
 #include "DisplayObject.h"
 #include "Window.h"
@@ -7,11 +7,11 @@
 #include "Polygon.h"
 #include "MultiPolygon.h"
 
-class Table: public DisplayObject
+class stickyNotes: public DisplayObject
 {
 public:
-    Table();
+    stickyNotes();
     void draw();
-};
+};  
 
 #endif

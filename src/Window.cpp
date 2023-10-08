@@ -113,7 +113,6 @@ void Window::mainDisplay()
     cout << "glClear(GL_COLOR_BUFFER_BIT);\n";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cout << "glBegin(GL_POLYGON);\n";
-    
     for(int x = 0; x < allObjects.size(); x++)
     {
         allObjects[x]->draw();
