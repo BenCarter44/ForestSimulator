@@ -98,28 +98,7 @@ void GreenPen::draw()
 
     //__________
 
-    Point PenPointsTop[1] = {
-        //{651, 327},
-        {652, 327}
-    };
-    AnchorFace PenPointsTopFace = AnchorFace(PenPointsTop, 4);
-    PenPointsTopFace.setColor(65, 102, 83);
-
-    Point PenPointsTopLower[1] = {
-        //{651, 329},
-        {652, 329}
-    };
-
-    AnchorFace PenPointsTopLowFace = AnchorFace(PenPointsTopLower, 4);
-    PenPointsTopLowFace.setColor(65, 102, 83);
-
-    MultiPolygon PenPoints = MultiPolygon(&PenPointsTopFace, &PenPointsTopLowFace);
-    
-    walls = PenPoints.getColorFaces();
-    for(int i = 0; i < PenPoints.getColorFacesNum(); i++)
-    {
-       walls[i]->setColor(65, 102, 83);
-    }   
+      
 
 
     
