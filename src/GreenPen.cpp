@@ -1,3 +1,14 @@
+/**
+ * @file GreenPen.cpp
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates the green pen object using the multiPolygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "GreenPen.h"
 
 #ifndef PI

@@ -1,3 +1,14 @@
+/**
+ * @file multiPolygon.cpp
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates a pologon with multiple faces.
+ * See notes in the header file and readme.md
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "MultiPolygon.h"
 
 

@@ -2,7 +2,7 @@
  * @file Polygon.cpp
  * @author Benjamin Carter, Josh Canode.
  * @brief Creates a sqaure polygon based on points
- * This is outof date, the multiPlogyon class is used instead.
+ * This is out of date, the multiPlogyon class is used instead.
  * @version 0.1
  * @date 2023-10-07
  * 

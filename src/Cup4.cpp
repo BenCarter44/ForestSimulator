@@ -1,5 +1,5 @@
 /**
- * @file Cup4.h
+ * @file Cup4.cpp
  * @author Benjamin Carter, Josh Canode.
  * @brief Creates a cup 4 object using the multiPolygon class.
  * @version 0.1

@@ -1,5 +1,5 @@
 /**
- * @file Cup3.h
+ * @file Cup3.cpp
  * @author Benjamin Carter, Josh Canode.
  * @brief Creates a cup 3 object using the multiPolygon class.
  * @version 0.1

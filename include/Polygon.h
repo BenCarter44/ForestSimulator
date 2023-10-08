@@ -1,3 +1,16 @@
+/**
+ * @file multiPolygon.h
+ * @author Benjamin Carter, Josh Canode.
+ * @brief HeaderFile for the Polygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+
+//Original version of the Polygon class, This was replaced by multiPolygon
 #ifndef POLYGON_H
 #define POLYGON_H
 

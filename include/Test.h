@@ -1,3 +1,13 @@
+/**
+ * @file Test.h
+ * @author Benjamin Carter, Josh Canode.
+ * @brief HeaderFile for the Test class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef TEST_H
 #define TEST_H
 

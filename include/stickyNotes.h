@@ -6,8 +6,8 @@
  * @date 2023-10-07
  * 
  * @copyright Copyright (c) 2023
-*/
-
+ * 
+ */
 
 #ifndef stickyNotes_H
 #define stickyNotes_H

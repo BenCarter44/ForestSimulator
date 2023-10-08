@@ -1,7 +1,8 @@
 /**
- * @file main.cpp
+ * @file Cup1.h
  * @author Benjamin Carter, Josh Canode.
  * @brief HeaderFile for the Cup1 class.
+ * Creates the fisrt cup object using the multiPolygon class.
  * @version 0.1
  * @date 2023-09-22
  * 

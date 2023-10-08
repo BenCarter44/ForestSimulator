@@ -1,5 +1,14 @@
+/**
+ * @file Cup1.cpp
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates a cup object using the multiPolygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "Cup1.h"
-
 #ifndef PI
 #define PI           3.14159265358979323846  /* pi */
 #endif
