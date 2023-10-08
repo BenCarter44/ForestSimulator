@@ -8,6 +8,7 @@ Table::Table()
 
 void Table::draw()
 {
+    
     // black border
     Point blackTop[4] = {
         {48, 610},
