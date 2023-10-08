@@ -1,3 +1,13 @@
+/**
+ * @file MultiPolygon.h
+ * @author Benjamin Carter, Josh Canode.
+ * @brief HeaderFile for the MultiPolygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef MULTPOLYGON_H
 #define MULTPOLYGON_H
 

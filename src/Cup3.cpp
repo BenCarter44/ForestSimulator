@@ -1,3 +1,15 @@
+/**
+ * @file Cup3.h
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates a cup 3 object using the multiPolygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+
 #include "Cup3.h"
 
 #ifndef PI
@@ -13,7 +25,7 @@ void Cup3::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
 
-    Point center = {660, 332};
+    Point center = {669, 331};
     double radiusX = 34;
     double radiusY = 1;
 
@@ -34,7 +46,7 @@ void Cup3::draw()
     }
     radiusX = 51;
     radiusY = 14;
-    center = {660, 472};
+    center = {669, 452};
     Point circle2[360 / precision];
     // double
     counter = 0;

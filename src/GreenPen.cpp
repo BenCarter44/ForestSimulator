@@ -81,9 +81,7 @@ void GreenPen::draw()
         {632, 332},
         {632, 332},
 
-//        {642, 331},
-       // {647, 328},
-        //{650, 328}
+
     };
     AnchorFace redTopLowFace = AnchorFace(redTopLower, 4);
     redTopLowFace.setColor(65, 102, 83);
@@ -96,24 +94,9 @@ void GreenPen::draw()
        walls[i]->setColor(65, 102, 83);
     }   
 
-    //__________
-
-      
-
-
-    
-
-
-
     red.draw();
     pen.draw();
-
-
-    
-
-
-
-
+  
     glFlush();
 }
 

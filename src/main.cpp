@@ -48,23 +48,39 @@ int main(int argc, char** argv)
     Cup1 cup1 = Cup1();
     myWindow.addObject(&cup1);
     
+    // GreenPen penG = GreenPen();
+    // myWindow.addObject(&penG);
+
     GreenPen penG = GreenPen();
     myWindow.addObject(&penG);
+
 
     Cup2 cup2 = Cup2();
     myWindow.addObject(&cup2);
 
+    //Cup4 cup4 = Cup4();
+    //myWindow.addObject(&cup4);
+
     Cup3 cup3 = Cup3();
     myWindow.addObject(&cup3);
 
+    // Orange orange = Orange();
+    // myWindow.addObject(&orange);
+
+    // GreenPen penG = GreenPen();
+    // myWindow.addObject(&penG);
+
+
     Cup4 cup4 = Cup4();
     myWindow.addObject(&cup4);
+
     
     BlackPen penB = BlackPen();
     myWindow.addObject(&penB);
 
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
+
 
     myWindow.launch();
 

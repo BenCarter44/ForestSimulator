@@ -13,7 +13,7 @@ void Cup1::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
 
-    Point center = {482, 326};
+    Point center = {482, 333};
     double radiusX = 34;
     double radiusY = 2;
 
@@ -50,7 +50,8 @@ void Cup1::draw()
     }
 
     AnchorFace top = AnchorFace(circle, 360 / precision);
-    top.setColor(76, 69, 61);
+    //top.setColor(76, 69, 61);
+    top.setColor(96, 109, 101);
     AnchorFace bottom = AnchorFace(circle2, 360 / precision);
     bottom.setColor(145,135,125);
     MultiPolygon pen = MultiPolygon(&top, &bottom);

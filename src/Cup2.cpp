@@ -1,5 +1,15 @@
-#include "Cup2.h"
+/**
+ * @file Cup2.h
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates a cup 2 object using the multiPolygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
+#include "Cup2.h"
 #ifndef PI
 #define PI           3.14159265358979323846  /* pi */
 #endif
@@ -13,7 +23,7 @@ void Cup2::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
 
-    Point center = {581, 332};
+    Point center = {581, 330};
     double radiusX = 34;
     double radiusY = 1;
 
@@ -34,7 +44,7 @@ void Cup2::draw()
     }
     radiusX = 51;
     radiusY = 14;
-    center = {581, 472};
+    center = {581, 468};
     Point circle2[360 / precision];
     // double
     counter = 0;

@@ -1,3 +1,14 @@
+/**
+ * @file Cup4.h
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates a cup 4 object using the multiPolygon class.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "Cup4.h"
 
 #ifndef PI
@@ -13,7 +24,7 @@ void Cup4::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
 
-    Point center = {630, 199};
+    Point center = {628, 199};
     double radiusX = 34;
     double radiusY = 1;
 
@@ -33,8 +44,8 @@ void Cup4::draw()
         counter++;
     }
     radiusX = 51;
-    radiusY = 14;
-    center = {630, 333};
+    radiusY = 3;
+    center = {628, 333};
     Point circle2[360 / precision];
     // double
     counter = 0;

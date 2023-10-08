@@ -1,3 +1,14 @@
+/**
+ * @file Polygon.cpp
+ * @author Benjamin Carter, Josh Canode.
+ * @brief Creates a sqaure polygon based on points
+ * This is outof date, the multiPlogyon class is used instead.
+ * @version 0.1
+ * @date 2023-10-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "Polygon.h"
 
 
