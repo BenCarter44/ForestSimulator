@@ -6,9 +6,21 @@
 #include <cmath>
 #include <iostream>
 
+
+#ifndef PI
+#define PI           3.14159265358979323846  /* pi */
+#endif
+
 struct Point {
         double x;
         double y;
+
+        void rotate(float deg, Point center)
+        {
+            float dist = sqrt((x - center.x) * (x - center.x) + (y - center.y) * (y - center.y));
+            x = center.x + dist * cos((PI / 180.0) * -1 * deg);
+            y = center.y + dist * sin((PI / 180.0) * -1 * deg);
+        }
     };
 
 struct Face {
