@@ -59,12 +59,77 @@ void GreenPen::draw()
     {
         float grad = Window::mapValue((float)x, 0.0f, (float)pen.getColorFacesNum(), 1.0f, 0.0f);
         float color[3];
-        Window::mixColor(color, grad, 103, 163, 132,103, 163, 132);
+        Window::mixColor(color, grad, 103, 163, 132,105, 165, 135);
         walls[x]->setColor((uint8_t)color[0],(uint8_t)color[1], (uint8_t)color[2]);
     }
     
     
+    Point redTop[4] = {
+        {615, 323},
+        {623, 323},
+        {632, 324},
+        //{642, 325},
+        //{647, 328},
+        {652, 328}
+    };
+    AnchorFace redTopFace = AnchorFace(redTop, 4);
+    redTopFace.setColor(65, 102, 83);
+
+    Point redTopLower[4] = {
+        {615, 333},
+        {623, 332},
+        {632, 332},
+        {632, 332},
+
+//        {642, 331},
+       // {647, 328},
+        //{650, 328}
+    };
+    AnchorFace redTopLowFace = AnchorFace(redTopLower, 4);
+    redTopLowFace.setColor(65, 102, 83);
+
+    MultiPolygon red = MultiPolygon(&redTopFace, &redTopLowFace);
+    
+    walls = red.getColorFaces();
+    for(int i = 0; i < red.getColorFacesNum(); i++)
+    {
+       walls[i]->setColor(65, 102, 83);
+    }   
+
+    //__________
+
+    Point PenPointsTop[1] = {
+        //{651, 327},
+        {652, 327}
+    };
+    AnchorFace PenPointsTopFace = AnchorFace(PenPointsTop, 4);
+    PenPointsTopFace.setColor(65, 102, 83);
+
+    Point PenPointsTopLower[1] = {
+        //{651, 329},
+        {652, 329}
+    };
+
+    AnchorFace PenPointsTopLowFace = AnchorFace(PenPointsTopLower, 4);
+    PenPointsTopLowFace.setColor(65, 102, 83);
+
+    MultiPolygon PenPoints = MultiPolygon(&PenPointsTopFace, &PenPointsTopLowFace);
+    
+    walls = PenPoints.getColorFaces();
+    for(int i = 0; i < PenPoints.getColorFacesNum(); i++)
+    {
+       walls[i]->setColor(65, 102, 83);
+    }   
+
+
+    
+
+
+
+    red.draw();
     pen.draw();
+
+
     
 
 

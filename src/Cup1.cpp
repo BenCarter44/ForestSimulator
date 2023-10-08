@@ -63,7 +63,10 @@ void Cup1::draw()
         walls[x]->setColor((uint8_t)color[0],(uint8_t)color[1], (uint8_t)color[2]);
     }
 
+    
+
     pen.draw();
+
 
 
 
