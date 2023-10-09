@@ -1,3 +1,13 @@
+/**
+ * @file BlackPen.cpp
+ * @author Ben Carter, Josh Caonde
+ * @brief This file creates the black pen in the image.
+ * @version 0.1
+ * @date 2023-10-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "BlackPen.h"
 
 #ifndef PI

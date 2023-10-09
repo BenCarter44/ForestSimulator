@@ -1,6 +1,6 @@
 /**
  * @file Window.h
- * @author your name (you@domain.com)
+ * @author Ben Carter, Josh Caonde.
  * @brief This file defines the Window class. \
  * This class acts as a "static class" in a way, as it changes static values \
  * (as only one window supported at a time.)

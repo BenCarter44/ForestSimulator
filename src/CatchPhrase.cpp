@@ -1,3 +1,13 @@
+/**
+ * @file CatchPhrase.cpp
+ * @author Ben Carter, Josh Canode
+ * @brief This creates the CatchPhrase object
+ * @version 0.1
+ * @date 2023-10-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "CatchPhrase.h"
 
 #ifndef PI
