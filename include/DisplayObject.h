@@ -22,8 +22,11 @@
 #ifndef DISPLAY_OBJECT_H
 #define DISPLAY_OBJECT_H
 
+
 /* the glut library */
-#include <GL/glut.h>
+#include "glIncludes.h"
+
+
 
 /* DEFINE DEBUG_GLUT_CMD to get cout's of the glut commands to console. */
 // #define DEBUG_DISP_CMD
