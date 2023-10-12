@@ -13,11 +13,12 @@
 class TestTexture: public DisplayObject
 {
 private:
-    GLuint texture;
+    GLuint textureID;
 public:
     TestTexture();
-    void drawTexturedRect(int x, int y, int w, int h, GLuint texture);
     void draw();
+    void postWindowCreate();
+    
 };
 
 

@@ -33,3 +33,8 @@ void DisplayObject::draw()
     glFlush();
     return;
 }
+
+void DisplayObject::postWindowCreate()
+{
+    // nothing. Put textures and what not here.
+}

@@ -37,8 +37,8 @@ int main(int argc, char** argv)
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);   
 
-  //  TestTexture tt = TestTexture();
-  //  myWindow.addObject(&tt);
+    TestTexture tt = TestTexture();
+    myWindow.addObject(&tt);
 
     stickyNotes stickyNotesObeject = stickyNotes();
     myWindow.addObject(&stickyNotesObeject);

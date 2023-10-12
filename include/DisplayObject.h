@@ -53,6 +53,11 @@ public:
      * @brief draw the object onto the screen.
     */
     virtual void draw();
+    /**
+     * @brief Runs right after window is created. Put things here that require window context.
+     * 
+     */
+    virtual void postWindowCreate(); // runs right after window is initalized.
 };
 
 #endif
