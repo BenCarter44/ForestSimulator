@@ -7,4 +7,4 @@ cd build
 cmake ../
 cp -r ../textures/ ./textures/
 make -j 4
-echo -e "\e[38;5;10m\e[1mDONE!\e[m Your executable is '\e[38;5;14m\e[1mOpenGLTest\e[m' inside the build directory. You can run it by entering 'build/\e[38;5;14m\e[1mOpenGLTest\e[m'"
+echo -e "\e[38;5;10m\e[1mDONE!\e[m Your executable is '\e[38;5;14m\e[1mProject5\e[m' inside the build directory. You can run it by entering 'build/\e[38;5;14m\e[1mProject5\e[m'"

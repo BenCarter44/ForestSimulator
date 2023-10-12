@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 # set the project name and version
-project(OpenGLTest VERSION 1.0)
+project(Project5 VERSION 1.0)
 
 # Find Package
 #set(CMAKE_CXX_FLAGS "-lSOIL")
@@ -32,16 +32,16 @@ file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE HEADERS "${CMAKE_SOURCE_DIR}/include/*.h")
 file(GLOB_RECURSE HEADERS2 "${CMAKE_SOURCE_DIR}/include/*.hpp")
 
-add_executable(OpenGLTest ${SOURCES} ${HEADERS} ${HEADERS2})
+add_executable(Project5 ${SOURCES} ${HEADERS} ${HEADERS2})
 #target_compile_options(OpenGLTest PUBLIC -lglut -lGLU -lGL)
 # https://stackoverflow.com/questions/13703647/how-to-properly-add-include-directories-with-cmake
 
 #add_library(soilLib SHARED IMPORTED)
 #set_property(TARGET soilLib PROPERTY IMPORTED_LOCATION "/usr/lib/libSOIL.so")
 
-target_link_libraries(OpenGLTest ${GLUT_LIBRARIES} ${GLU_LIBRARIES} ${OPENGL_LIBRARIES} "/usr/lib/libSOIL.so" ${GLEW_LIBRARIES}) 
+target_link_libraries(Project5 ${GLUT_LIBRARIES} ${GLU_LIBRARIES} ${OPENGL_LIBRARIES} "/usr/lib/libSOIL.so" ${GLEW_LIBRARIES}) 
 # ${SOIL})
 
 
 
-target_include_directories(OpenGLTest PRIVATE "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(Project5 PRIVATE "${CMAKE_SOURCE_DIR}/include")
