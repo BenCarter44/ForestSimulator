@@ -7,13 +7,13 @@
 #include "Polygon.h"
 #include "MultiPolygon.h"
 #include <SOIL/SOIL.h>
-
+#include "TextureHandler.h"
 
 
 class TestTexture: public DisplayObject
 {
 private:
-    GLuint textureID;
+    Texture myTexture;
 public:
     TestTexture();
     void draw();
