@@ -14,6 +14,7 @@
 #include "DisplayObject.h"
 #include <algorithm>
 #include "Polygon.h"
+#include "TextureHandler.h"
 #include <cmath>
 
 #include <iostream>
@@ -69,6 +70,9 @@ struct AnchorFace {
     /* The colors 0 - 255 */
     uint8_t r, g, b, a;
 
+    Texture* texture;
+    Point* texturePoints;
+
     AnchorFace(Point* points, int numberPoints)
     {
         this->points = points;
@@ -76,6 +80,8 @@ struct AnchorFace {
         r = 255;
         g = 255;
         b = 255;
+        texture = nullptr;
+        texturePoints = nullptr;
     }
     /**
      * @brief Set the Color of the face. 0-255 values.
@@ -89,6 +95,12 @@ struct AnchorFace {
         r = rIn;
         g = gIn;
         b = bIn;
+    }
+    void setTexture(Texture* tex, Point* texPts)
+    {
+        std::cout << "SET TEXTURE! " << std::endl;
+        texture = tex;
+        texturePoints = texPts;
     }
 };
 

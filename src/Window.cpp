@@ -103,6 +103,11 @@ void Window::launch()
      // basically. do 3D.  https://registry.khronos.org/OpenGL-Refpages/gl4/html/glEnable.xhtml
     DEBUG_WIN(glEnable(GL_DEPTH_TEST));
     glEnable(GL_DEPTH_TEST);
+
+     for(int x = 0; x < allObjects.size(); x++)
+    {
+        allObjects[x]->postWindowCreate();
+    }
     
 }
 
@@ -112,11 +117,12 @@ void Window::mainDisplay()
     glClearColor(CC(202),CC(192),CC(182),0.0f);
     cout << "glClear(GL_COLOR_BUFFER_BIT);\n";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cout << "glBegin(GL_POLYGON);\n";
+    cout << "Display Object!\n";
     for(int x = 0; x < allObjects.size(); x++)
     {
         allObjects[x]->draw();
     }
+    glFlush();
 }
 
 void Window::addObject(DisplayObject* disp)

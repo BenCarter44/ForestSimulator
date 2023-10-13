@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
-#include <GL/glut.h>
+#include "glIncludes.h"
 #include "Window.h"
 #include "Table.h"
 #include "BlackPen.h"
@@ -21,6 +21,8 @@
 #include "Cup4.h"
 #include "stickyNotes.h"
 #include "GreenPen.h"
+#include "TestTexture.h"
+#include "Wall.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -35,6 +37,9 @@ int main(int argc, char** argv)
     Window myWindow = Window("Hello World - Large", 800, 600);
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);   
+
+ //   TestTexture tt = TestTexture();
+ //   myWindow.addObject(&tt);
 
     stickyNotes stickyNotesObeject = stickyNotes();
     myWindow.addObject(&stickyNotesObeject);
@@ -65,6 +70,9 @@ int main(int argc, char** argv)
 
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
+
+    Wall wall = Wall();
+    myWindow.addObject(&wall);
 
     myWindow.launch();
 
