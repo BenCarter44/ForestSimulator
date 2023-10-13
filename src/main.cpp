@@ -22,6 +22,7 @@
 #include "stickyNotes.h"
 #include "GreenPen.h"
 #include "TestTexture.h"
+#include "Wall.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -69,6 +70,9 @@ int main(int argc, char** argv)
 
     Table tableObject = Table();
     myWindow.addObject(&tableObject);
+
+    Wall wall = Wall();
+    myWindow.addObject(&wall);
 
     myWindow.launch();
 
