@@ -15,12 +15,63 @@
 
 Cup1::Cup1()
 {
+    cupTexture = Texture("cup.png", 512);
+}
 
+void Cup1::postWindowCreate()
+{
+    cupTexture.setupTexture();
 }
 
 void Cup1::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
+
+
+     glColor3f(CC(223), CC(217), CC(217));
+
+    // then is verticies
+
+    cupTexture.start();    
+    glBegin(GL_POLYGON);
+
+        Point center = {482, 333};
+        double radiusX = 34;
+        double radiusY = 2;
+
+        int precision = 5;
+        // double
+
+        for(int r = 0; r > -180; r -= precision) // Half a circle, the top (y is flipped.)
+        {
+            double rad = (PI * r) / 180.0;
+            float x = center.x + radiusX * cos(rad);
+            float y = center.y + radiusY * sin(rad);
+
+            cupTexture.markCoord(Window::mapValue(x,428,534,22,383),Window::mapValue(y,479.8,333,1,500));
+            glVertex2f(x,y);
+        }
+
+        radiusX = 53;
+        radiusY = 14;
+        center = {480, 465};
+        
+        for(int r = 180; r > 0; r -= precision) // Half the circle, the bottom.
+        {
+            double rad = (PI * r) / 180.0;
+            float x = center.x + radiusX * cos(rad);
+            float y = center.y + radiusY * sin(rad);
+
+            //cupTexture.markCoord()
+            cupTexture.markCoord(Window::mapValue(x,428,534,22,383),Window::mapValue(y,479.8,333,1,500));
+            glVertex2f(x,y);
+        }
+    
+    glEnd();
+    cupTexture.stop();
+
+    
+    /*
 
     Point center = {482, 333};
     double radiusX = 34;
@@ -77,6 +128,7 @@ void Cup1::draw()
 
     pen.draw();
 
+    */
 
 
 
