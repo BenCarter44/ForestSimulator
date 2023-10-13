@@ -28,12 +28,26 @@ void MultiPolygon::draw()
 {
     
     glColor3f(top->r / 255.0f, top->g / 255.0f, top->b / 255.0f);
+    if(top->texture != nullptr)
+    {
+        top->texture->start();
+    }
     glBegin(GL_TRIANGLE_FAN);
     for(int i = 0; i < numVert; i++)
     {
+        if(top->texture != nullptr)
+        {
+            Texture* tex = top->texture;
+            tex->markCoord(top->texturePoints[i].x, top->texturePoints[i].y);
+        }
         glVertex2f(top->points[i].x, top->points[i].y);
     }
     glEnd();
+    
+    if(top->texture != nullptr)
+    {
+        top->texture->stop();
+    }
     
     for(int i = 0; i < numVert; i++)
     {
@@ -41,12 +55,25 @@ void MultiPolygon::draw()
     }
     
     glColor3f(bottom->r / 255.0f, bottom->g / 255.0f, bottom->b / 255.0f);
+    if(bottom->texture != nullptr)
+    {
+        bottom->texture->start();
+    }
     glBegin(GL_TRIANGLE_FAN);
     for(int i = 0; i < numVert; i++)
     {
+        if(bottom->texture != nullptr)
+        {
+            Texture* tex = bottom->texture;
+            tex->markCoord(bottom->texturePoints[i].x, bottom->texturePoints[i].y);
+        }
         glVertex2f(bottom->points[i].x, bottom->points[i].y);
     }
     glEnd();
+    if(bottom->texture != nullptr)
+    {
+        bottom->texture->stop();
+    }
     
     glFlush(); 
 }

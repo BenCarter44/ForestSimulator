@@ -37,38 +37,38 @@ int main(int argc, char** argv)
     myWindow.setStartPos(0,0);
     myWindow.setWorldDimensions(1000,750);   
 
-    TestTexture tt = TestTexture();
-    myWindow.addObject(&tt);
+ //   TestTexture tt = TestTexture();
+ //   myWindow.addObject(&tt);
 
-    // stickyNotes stickyNotesObeject = stickyNotes();
-    // myWindow.addObject(&stickyNotesObeject);
+    stickyNotes stickyNotesObeject = stickyNotes();
+    myWindow.addObject(&stickyNotesObeject);
 
-    // CatchPhrase cp = CatchPhrase();
-    // myWindow.addObject(&cp);
+    CatchPhrase cp = CatchPhrase();
+    myWindow.addObject(&cp);
 
-    // Orange orange = Orange();
-    // myWindow.addObject(&orange);
+    Orange orange = Orange();
+    myWindow.addObject(&orange);
 
-    // Cup1 cup1 = Cup1();
-    // myWindow.addObject(&cup1);
+    Cup1 cup1 = Cup1();
+    myWindow.addObject(&cup1);
     
-    // GreenPen penG = GreenPen();
-    // myWindow.addObject(&penG);
+    GreenPen penG = GreenPen();
+    myWindow.addObject(&penG);
 
-    // Cup2 cup2 = Cup2();
-    // myWindow.addObject(&cup2);
+    Cup2 cup2 = Cup2();
+    myWindow.addObject(&cup2);
 
-    // Cup3 cup3 = Cup3();
-    // myWindow.addObject(&cup3);
+    Cup3 cup3 = Cup3();
+    myWindow.addObject(&cup3);
 
-    // Cup4 cup4 = Cup4();
-    // myWindow.addObject(&cup4);
+    Cup4 cup4 = Cup4();
+    myWindow.addObject(&cup4);
     
-    // BlackPen penB = BlackPen();
-    // myWindow.addObject(&penB);
+    BlackPen penB = BlackPen();
+    myWindow.addObject(&penB);
 
-    // Table tableObject = Table();
-    // myWindow.addObject(&tableObject);
+    Table tableObject = Table();
+    myWindow.addObject(&tableObject);
 
     myWindow.launch();
 

@@ -13,7 +13,12 @@
 
 Table::Table()
 {
+    woodTopTex = Texture("wood.png",1024);
+}
 
+void Table::postWindowCreate()
+{
+    woodTopTex.setupTexture();
 }
 
 void Table::draw()
@@ -26,6 +31,7 @@ void Table::draw()
         {583, 409},
         {979, 507}
     };
+    
     AnchorFace top = AnchorFace(blackTop, 4);
     top.setColor(76,71,68);
 
@@ -53,7 +59,14 @@ void Table::draw()
         {600, 411},
         {949, 504}
     };
+    Point texTop[4] = {
+        {0, 0},
+        {0, 1024},
+        {1024, 1024},
+        {1024, 0}
+    };
     AnchorFace woodTopFace = AnchorFace(woodTop, 4);
+    woodTopFace.setTexture(&woodTopTex, texTop);
     woodTopFace.setColor(200,164,132);
 
     Point woodTopLower[4] = {

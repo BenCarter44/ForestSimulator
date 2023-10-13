@@ -17,12 +17,16 @@
 #include <iostream>
 #include "Polygon.h"
 #include "MultiPolygon.h"
+#include "TextureHandler.h"
 
 class Table: public DisplayObject
 {
+private:
+    Texture woodTopTex;
 public:
     Table();
     void draw();
+    void postWindowCreate();
 };
 
 #endif

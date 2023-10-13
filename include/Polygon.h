@@ -15,6 +15,7 @@
 #define POLYGON_H
 
 #include "DisplayObject.h"
+#include "TextureHandler.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -42,6 +43,7 @@ struct Face {
     uint8_t g;
     uint8_t b;
     int zindex;
+    Texture* texture;
 
     Face(Point aP, Point bP, Point cP, Point dP)
     {
@@ -53,6 +55,7 @@ struct Face {
         g = 255;
         b = 255;
         zindex = 0; // render order.
+        texture = nullptr;
     }
     void setColor(uint8_t rIn, uint8_t gIn, uint8_t bIn)
     {

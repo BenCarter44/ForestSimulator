@@ -51,5 +51,6 @@ void Texture::stop()
 
 void Texture::markCoord(float x, float y)
 {
+    std::cout << "glTexCoord2f(" << x / (float)size << ", " << y / (float)size << "); " << std::endl;
     glTexCoord2f(x / (float)size, y / (float)size);
 }
