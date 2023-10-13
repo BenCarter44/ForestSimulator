@@ -95,7 +95,7 @@ void Window::launch()
     glMatrixMode(GL_PROJECTION);
     DEBUG_WIN(gluOrtho2D(0,1000, 750, 0));
     gluOrtho2D(0,1000, 750, 0);
-    //gluOrtho2D(302,700, 416, 207);
+    //gluOrtho2D(45,955, 750, 408);
 
     DEBUG_WIN(glutDisplayFunc(Window::mainDisplay));
     glutDisplayFunc(Window::mainDisplay);
