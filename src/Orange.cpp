@@ -16,12 +16,18 @@
 
 Orange::Orange()
 {
-
+    orangeTexture = Texture("orange.png", 256);
 }
+
+void Orange::postWindowCreate()
+{
+    orangeTexture.setupTexture();
+}
+
 
 void Orange::draw()
 {
-    glColor3f(209 / 255.0f, 121 / 255.0f, 49 / 255.0f);
+    glColor3f(CC(248),CC(208),CC(173));
 
     // then is verticies
 
@@ -54,12 +60,16 @@ void Orange::draw()
         {492,250},
         {484,262}
     };
+
+    orangeTexture.start();
     glBegin(GL_TRIANGLE_FAN);
     for(int i = 0; i < 27; i++)
     {
+        orangeTexture.markCoord(Window::mapValue(orangePoints[i].x,443,528, 28, 224), Window::mapValue(orangePoints[i].y,417, 248.3, 13, 228));
         glVertex2f(orangePoints[i].x,orangePoints[i].y);
     }
     glEnd();
+    orangeTexture.stop();
 
 
 

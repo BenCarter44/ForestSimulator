@@ -19,8 +19,11 @@
 
 class Orange: public DisplayObject
 {
+private:
+    Texture orangeTexture;
 public:
     Orange();
+    void postWindowCreate();
     void draw();
 };
 
