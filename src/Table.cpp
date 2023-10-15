@@ -60,10 +60,10 @@ void Table::draw()
         {949, 504}
     };
     Point texTop[4] = {
-        {0, 0},
-        {0, 1024},
+        {300, 300},
+        {300, 1024},
         {1024, 1024},
-        {1024, 0}
+        {1024, 300}
     };
     AnchorFace woodTopFace = AnchorFace(woodTop, 4);
     woodTopFace.setTexture(&woodTopTex, texTop);

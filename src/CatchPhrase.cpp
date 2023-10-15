@@ -16,9 +16,12 @@
 
 CatchPhrase::CatchPhrase()
 {
-
+    topTexture = Texture("catchPhraseSide.png",1024);
 }
-
+void CatchPhrase::postWindowCreate()
+{
+    topTexture.setupTexture();
+}
 void CatchPhrase::draw()
 {
 
@@ -38,6 +41,7 @@ void CatchPhrase::draw()
 
     int precision = 5;
     Point circle[360 / precision];
+    Point circleTx[360 / precision];
     // double
     int counter = 0;
     for(int r = 0; r < 360; r += precision) // 15deg precision.
@@ -50,6 +54,8 @@ void CatchPhrase::draw()
 
         circle[counter].y = circle[counter].y - 4.75f * Window::mapValue(circle[counter].x,180.0f,410.0f,-1.0f,1.0f);
 
+        circleTx[counter].x = Window::mapValue(circle[counter].x,180.0f,410.0f,40.0f,960.0f);
+        circleTx[counter].y = Window::mapValue(circle[counter].y,450.0f,495.0f,581.0f,400.0f);
 
         std::cout << "CIRCLE" << circle[counter].x << ' '  << circle[counter].y << '\n';
         counter++;
@@ -73,14 +79,17 @@ void CatchPhrase::draw()
     }
 
     AnchorFace top = AnchorFace(circle, 360 / precision);
-    top.setColor(84, 87, 120);
+  //  top.setColor(84, 87, 120);
+    top.setColor(255, 255, 255);
+    top.setTexture(&topTexture, circleTx);
+    
     AnchorFace bottom = AnchorFace(circle2, 360 / precision);
     bottom.setColor(11,11,9);
     MultiPolygon pen = MultiPolygon(&top, &bottom);
     Face** walls = pen.getColorFaces();
     for(int x = 0; x < pen.getColorFacesNum(); x++)
     {
-        float grad = Window::mapValue((float)x, 0.0f, (float)pen.getColorFacesNum(), 0.0f, 2.0f);
+        float grad = Window::mapValue((float)((x - 1) % pen.getColorFacesNum()) , 0.0f, (float)pen.getColorFacesNum(), 0.0f, 2.0f);
         float color[3];
         if(grad < 0.5f)
         {
@@ -90,9 +99,9 @@ void CatchPhrase::draw()
         {
             Window::mixColor(color, 1.0 - grad, 41,33,22, 82,83,85);
         }
-        if(x < 40 / precision )
+        if(x < 17 / precision )
         {
-            Window::mixColor(color, (float)((float)x / (40 / precision)),70.0f,116.0f,113.0f, 90.0f, 136.0f, 133.0f);
+            Window::mixColor(color, (float)((float)x / (17 / precision)),70.0f,116.0f,113.0f, 90.0f, 136.0f, 133.0f);
         }
         walls[x]->setColor((uint8_t)color[0],(uint8_t)color[1], (uint8_t)color[2]);
     }

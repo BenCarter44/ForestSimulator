@@ -3,6 +3,7 @@
 
 #include "TextureHandler.h"
 #include "DisplayObject.h"
+#include "Window.h"
 
 class Wall: public DisplayObject
 {

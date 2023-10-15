@@ -16,11 +16,15 @@
 #include <iostream>
 #include "Polygon.h"
 #include "MultiPolygon.h"
+#include "TextureHandler.h"
 
 class CatchPhrase: public DisplayObject
 {
+private:
+    Texture topTexture;
 public:
     CatchPhrase();
+    void postWindowCreate();
     void draw();
 };
 
