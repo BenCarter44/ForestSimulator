@@ -1,4 +1,15 @@
-#ifdef IGNOREFILESOIL
+/**
+ * @file testSOILs.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief Used to test Texture loading. It is a "separate" program.
+ * @version 0.1
+ * @date 2023-10-14
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#ifdef TESTTESTLIBQASLKDBALJBFLJBADF // NOT DEFINED! (IGNORE CODE)
 
 #include "glIncludes.h"
 #include <SOIL/SOIL.h>
@@ -6,6 +17,7 @@
 #include <stdlib.h>
 #include "Window.h"
 #include "DisplayObject.h"
+
 
 
 class TestObject : public DisplayObject

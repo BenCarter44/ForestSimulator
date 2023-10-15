@@ -1,3 +1,13 @@
+/**
+ * @file TextureHandler.h
+ * @author Benjamin Carter and Josh Canode
+ * @brief Holds the Texture class. Used for texturing objects.
+ * @version 0.1
+ * @date 2023-10-14
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef TEXTUREHANDLER_HANDLER_H
 #define TEXTUREHANDLER_HANDLER_H
 

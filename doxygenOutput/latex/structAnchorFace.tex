@@ -1,0 +1,88 @@
+\hypertarget{structAnchorFace}{}\doxysection{Anchor\+Face Struct Reference}
+\label{structAnchorFace}\index{AnchorFace@{AnchorFace}}
+
+
+An \mbox{\hyperlink{structAnchorFace}{Anchor\+Face}} is the polygon that all the sides attach to.  
+
+
+
+
+{\ttfamily \#include $<$Multi\+Polygon.\+h$>$}
+
+
+
+Collaboration diagram for Anchor\+Face\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{structAnchorFace__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structAnchorFace_af6fbd5e184fbdabac43c834688953586}\label{structAnchorFace_af6fbd5e184fbdabac43c834688953586}} 
+{\bfseries Anchor\+Face} (\mbox{\hyperlink{structPoint}{Point}} $\ast$\mbox{\hyperlink{structAnchorFace_af236b885f2704a03323c271050d549f9}{points}}, int \mbox{\hyperlink{structAnchorFace_ad0cee5b97ce3548fa75cc0710a794b5b}{number\+Points}})
+\item 
+void \mbox{\hyperlink{structAnchorFace_a175f1f215ce382e0708061aeae732bec}{set\+Color}} (uint8\+\_\+t r\+In, uint8\+\_\+t g\+In, uint8\+\_\+t b\+In)
+\begin{DoxyCompactList}\small\item\em Set the Color of the face. 0-\/255 values. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAnchorFace_a2fc95be79d606c5b112d8d418d32fa79}\label{structAnchorFace_a2fc95be79d606c5b112d8d418d32fa79}} 
+void {\bfseries set\+Texture} (\mbox{\hyperlink{classTexture}{Texture}} $\ast$tex, \mbox{\hyperlink{structPoint}{Point}} $\ast$tex\+Pts)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structAnchorFace_af236b885f2704a03323c271050d549f9}\label{structAnchorFace_af236b885f2704a03323c271050d549f9}} 
+\mbox{\hyperlink{structPoint}{Point}} $\ast$ \mbox{\hyperlink{structAnchorFace_af236b885f2704a03323c271050d549f9}{points}}
+\begin{DoxyCompactList}\small\item\em The points of the face. An array of points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAnchorFace_ad0cee5b97ce3548fa75cc0710a794b5b}\label{structAnchorFace_ad0cee5b97ce3548fa75cc0710a794b5b}} 
+int \mbox{\hyperlink{structAnchorFace_ad0cee5b97ce3548fa75cc0710a794b5b}{number\+Points}}
+\begin{DoxyCompactList}\small\item\em Number of points in the anchor face. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAnchorFace_af2defd8e2e1939da7aa9c050709d47a8}\label{structAnchorFace_af2defd8e2e1939da7aa9c050709d47a8}} 
+uint8\+\_\+t {\bfseries r}
+\item 
+\mbox{\Hypertarget{structAnchorFace_a067780fb34ab93e7daf7f140b70e8a31}\label{structAnchorFace_a067780fb34ab93e7daf7f140b70e8a31}} 
+uint8\+\_\+t {\bfseries g}
+\item 
+\mbox{\Hypertarget{structAnchorFace_afaa052d43921143f4f396ce2fd920a5c}\label{structAnchorFace_afaa052d43921143f4f396ce2fd920a5c}} 
+uint8\+\_\+t {\bfseries b}
+\item 
+\mbox{\Hypertarget{structAnchorFace_a6df0f74b7cf34de99e6b81929a920139}\label{structAnchorFace_a6df0f74b7cf34de99e6b81929a920139}} 
+uint8\+\_\+t {\bfseries a}
+\item 
+\mbox{\Hypertarget{structAnchorFace_a8ba2a717913bd6abda500d8af471a42a}\label{structAnchorFace_a8ba2a717913bd6abda500d8af471a42a}} 
+\mbox{\hyperlink{classTexture}{Texture}} $\ast$ {\bfseries texture}
+\item 
+\mbox{\Hypertarget{structAnchorFace_a17ec25bd1be7e66f54b5e2bb6bc21bf8}\label{structAnchorFace_a17ec25bd1be7e66f54b5e2bb6bc21bf8}} 
+\mbox{\hyperlink{structPoint}{Point}} $\ast$ {\bfseries texture\+Points}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An \mbox{\hyperlink{structAnchorFace}{Anchor\+Face}} is the polygon that all the sides attach to. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structAnchorFace_a175f1f215ce382e0708061aeae732bec}\label{structAnchorFace_a175f1f215ce382e0708061aeae732bec}} 
+\index{AnchorFace@{AnchorFace}!setColor@{setColor}}
+\index{setColor@{setColor}!AnchorFace@{AnchorFace}}
+\doxysubsubsection{\texorpdfstring{setColor()}{setColor()}}
+{\footnotesize\ttfamily void Anchor\+Face\+::set\+Color (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{r\+In,  }\item[{uint8\+\_\+t}]{g\+In,  }\item[{uint8\+\_\+t}]{b\+In }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the Color of the face. 0-\/255 values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+In} & \\
+\hline
+{\em g\+In} & \\
+\hline
+{\em b\+In} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{MultiPolygon_8h}{Multi\+Polygon.\+h}}\end{DoxyCompactItemize}

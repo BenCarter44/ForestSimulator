@@ -1,3 +1,13 @@
+/**
+ * @file TestTexture.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief The source file for the texture test class.
+ * @version 0.1
+ * @date 2023-10-14
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "TestTexture.h"
 
 TestTexture::TestTexture()

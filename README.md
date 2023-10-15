@@ -3,6 +3,12 @@ For course work for a class at Grand Canyon University
 
 By Benjamin Carter and Josh Canode.
 
+--- 
+
+You can also see documentation available in the `doxygenOutput` folder as `index.html`. Click on `classes` link at the top to browse.
+
+---
+
 Requirements:
 1. Requires OpenGL
 2. GLU
@@ -11,7 +17,7 @@ Requirements:
 5. GLEW
 6. SOIL
 
-## To build, use `make`
+## To build, use make
 1. First Clone the git repository
     - this can be found at https://github.com/BenRobotics101/ComputerGraphics
     - or in linux can be cloned by running
@@ -21,7 +27,7 @@ Requirements:
 3. Run `make`. 
 4. The program will be `Project5` under the root of the repository. Run it with `./Project5` 
 
-## Old Building instructions with `cmake`
+## Old Building instructions with cmake
 
 The above need to be installed on the system, and their packages discoverable by cmake.
 

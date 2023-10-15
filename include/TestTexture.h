@@ -1,3 +1,13 @@
+/**
+ * @file TestTexture.h
+ * @author Benjamin Carter and Josh Canode
+ * @brief Test Texture display object that tests the Texture class.
+ * @version 0.1
+ * @date 2023-10-14
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef TEST_TEXTURE_H
 #define TEST_TEXTURE_H
 

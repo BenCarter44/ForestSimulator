@@ -1,3 +1,13 @@
+/**
+ * @file TextureHandler.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief The TextureHandler class source file.
+ * @version 0.1
+ * @date 2023-10-14
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "TextureHandler.h"
 
 Texture::Texture()

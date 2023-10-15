@@ -1,0 +1,274 @@
+\hypertarget{classWindow}{}\doxysection{Window Class Reference}
+\label{classWindow}\index{Window@{Window}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classWindow_a74e6087da23d3c24e9fac0245e5ec92c}\label{classWindow_a74e6087da23d3c24e9fac0245e5ec92c}} 
+\mbox{\hyperlink{classWindow_a74e6087da23d3c24e9fac0245e5ec92c}{Window}} ()
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classWindow}{Window}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classWindow_af2e27c5c924df64686143b29f132852c}{Window}} (const char $\ast$titl)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classWindow}{Window}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classWindow_a25b6c9427245d027ca5ce74f1512e7f4}{Window}} (const char $\ast$title, int inX, int inY)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classWindow}{Window}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classWindow_abbc14b39fa91f6b4d67a773203c3c52f}{Window}} (int inX, int inY)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classWindow}{Window}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classWindow_a7e944fd729158f047305d37f0a798871}{set\+Start\+Pos}} (int x, int y)
+\begin{DoxyCompactList}\small\item\em Set the x position that the window will start at. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classWindow_a1cfca2649e41dba1a286776dcbb9bb4c}{set\+World\+Dimensions}} (int x, int y)
+\begin{DoxyCompactList}\small\item\em Set the World Dimensions. The scale of the virtual coordinate system. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classWindow_ae5b893b463a7b9e1700958cfefbdd850}{add\+Object}} (\mbox{\hyperlink{classDisplayObject}{Display\+Object}} $\ast$disp)
+\begin{DoxyCompactList}\small\item\em The object to add to the window. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classWindow_a6415f69d6ec97924df775006fe7b1b23}{get\+SizeX}} ()
+\begin{DoxyCompactList}\small\item\em Get the Size X object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classWindow_a925f331e892ccdfe5cf9e5bf7f5b6c07}{get\+SizeY}} ()
+\begin{DoxyCompactList}\small\item\em Get the Size Y object. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{classWindow_a8d899287ef4f5e7c60f72d80a1ebdfa5}{get\+Title}} ()
+\begin{DoxyCompactList}\small\item\em Get the Title string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classWindow_a4e50cfd8622784e15409db62d5e11097}\label{classWindow_a4e50cfd8622784e15409db62d5e11097}} 
+void \mbox{\hyperlink{classWindow_a4e50cfd8622784e15409db62d5e11097}{main\+Loop}} ()
+\begin{DoxyCompactList}\small\item\em Run the main\+Loop of Open\+GL. A blocking call. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classWindow_ab6e694a0c9c5b12866aeb996e7bd655f}\label{classWindow_ab6e694a0c9c5b12866aeb996e7bd655f}} 
+void \mbox{\hyperlink{classWindow_ab6e694a0c9c5b12866aeb996e7bd655f}{launch}} ()
+\begin{DoxyCompactList}\small\item\em Launch the window. (This actually opens the window... call \mbox{\hyperlink{classWindow_a4e50cfd8622784e15409db62d5e11097}{main\+Loop()}} \char`\"{}activate\char`\"{} the functionality of the window) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classWindow_a7e0f70208371c68bc8a0fe340f1e00a4}{init\+GL}} (int \&argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em A static function. Initalizes Open\+GL. \end{DoxyCompactList}\item 
+static float \mbox{\hyperlink{classWindow_a054d5fa1bafdbd4a99b8d40a443cd38e}{map\+Value}} (float x, float in\+Min, float in\+Max, float out\+Min, float out\+Max)
+\begin{DoxyCompactList}\small\item\em Does a linear conversion from a number from a given range to another number in the output range. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classWindow_a7cb89f464a6b5347e7a6ad1a850e77a5}{mix\+Color}} (float change\mbox{[}3\mbox{]}, float x, int r, int g, int b, int r2, int g2, int b2)
+\begin{DoxyCompactList}\small\item\em Does a linear mix between two colors. 0 is first color. 1 is second color. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classWindow_af04ac8055f379b8eea862772e035687f}\label{classWindow_af04ac8055f379b8eea862772e035687f}} 
+static void \mbox{\hyperlink{classWindow_af04ac8055f379b8eea862772e035687f}{main\+Display}} ()
+\begin{DoxyCompactList}\small\item\em The Main Display Function. Calls each object\textquotesingle{}s display function in the order added. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classWindow_af2e27c5c924df64686143b29f132852c}\label{classWindow_af2e27c5c924df64686143b29f132852c}} 
+\index{Window@{Window}!Window@{Window}}
+\index{Window@{Window}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{Window()}{Window()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Window\+::\+Window (\begin{DoxyParamCaption}\item[{const char $\ast$}]{titl }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classWindow}{Window}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em titl} & -\/ The title of the window\\
+\hline
+\end{DoxyParams}
+Size defaults to 100x100 \mbox{\Hypertarget{classWindow_a25b6c9427245d027ca5ce74f1512e7f4}\label{classWindow_a25b6c9427245d027ca5ce74f1512e7f4}} 
+\index{Window@{Window}!Window@{Window}}
+\index{Window@{Window}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{Window()}{Window()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Window\+::\+Window (\begin{DoxyParamCaption}\item[{const char $\ast$}]{title,  }\item[{int}]{inX,  }\item[{int}]{inY }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classWindow}{Window}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & -\/ The title of the window \\
+\hline
+{\em inX} & -\/ The x size of the window \\
+\hline
+{\em inY} & -\/ The y size of the window \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classWindow_abbc14b39fa91f6b4d67a773203c3c52f}\label{classWindow_abbc14b39fa91f6b4d67a773203c3c52f}} 
+\index{Window@{Window}!Window@{Window}}
+\index{Window@{Window}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{Window()}{Window()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Window\+::\+Window (\begin{DoxyParamCaption}\item[{int}]{inX,  }\item[{int}]{inY }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classWindow}{Window}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inX} & \\
+\hline
+{\em inY} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classWindow_ae5b893b463a7b9e1700958cfefbdd850}\label{classWindow_ae5b893b463a7b9e1700958cfefbdd850}} 
+\index{Window@{Window}!addObject@{addObject}}
+\index{addObject@{addObject}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{addObject()}{addObject()}}
+{\footnotesize\ttfamily void Window\+::add\+Object (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classDisplayObject}{Display\+Object}} $\ast$}]{disp }\end{DoxyParamCaption})}
+
+
+
+The object to add to the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em disp} & -\/ A \mbox{\hyperlink{classDisplayObject}{Display\+Object}} member... all objects are children of \mbox{\hyperlink{classDisplayObject}{Display\+Object}} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classWindow_a6415f69d6ec97924df775006fe7b1b23}\label{classWindow_a6415f69d6ec97924df775006fe7b1b23}} 
+\index{Window@{Window}!getSizeX@{getSizeX}}
+\index{getSizeX@{getSizeX}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{getSizeX()}{getSizeX()}}
+{\footnotesize\ttfamily int Window\+::get\+SizeX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the Size X object. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWindow_a925f331e892ccdfe5cf9e5bf7f5b6c07}\label{classWindow_a925f331e892ccdfe5cf9e5bf7f5b6c07}} 
+\index{Window@{Window}!getSizeY@{getSizeY}}
+\index{getSizeY@{getSizeY}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{getSizeY()}{getSizeY()}}
+{\footnotesize\ttfamily int Window\+::get\+SizeY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the Size Y object. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWindow_a8d899287ef4f5e7c60f72d80a1ebdfa5}\label{classWindow_a8d899287ef4f5e7c60f72d80a1ebdfa5}} 
+\index{Window@{Window}!getTitle@{getTitle}}
+\index{getTitle@{getTitle}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{getTitle()}{getTitle()}}
+{\footnotesize\ttfamily const char $\ast$ Window\+::get\+Title (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the Title string. 
+
+\begin{DoxyReturn}{Returns}
+const char$\ast$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWindow_a7e0f70208371c68bc8a0fe340f1e00a4}\label{classWindow_a7e0f70208371c68bc8a0fe340f1e00a4}} 
+\index{Window@{Window}!initGL@{initGL}}
+\index{initGL@{initGL}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{initGL()}{initGL()}}
+{\footnotesize\ttfamily void Window\+::init\+GL (\begin{DoxyParamCaption}\item[{int \&}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+A static function. Initalizes Open\+GL. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & -\/ the number arguments passed into the program \\
+\hline
+{\em argv} & -\/ the char$\ast$$\ast$ of the arguments passed into the program \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classWindow_a054d5fa1bafdbd4a99b8d40a443cd38e}\label{classWindow_a054d5fa1bafdbd4a99b8d40a443cd38e}} 
+\index{Window@{Window}!mapValue@{mapValue}}
+\index{mapValue@{mapValue}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{mapValue()}{mapValue()}}
+{\footnotesize\ttfamily float Window\+::map\+Value (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{in\+Min,  }\item[{float}]{in\+Max,  }\item[{float}]{out\+Min,  }\item[{float}]{out\+Max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Does a linear conversion from a number from a given range to another number in the output range. 
+
+It can go past the output bounds too. It is not clamped
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the number \\
+\hline
+{\em in\+Min} & in min \\
+\hline
+{\em in\+Max} & in max \\
+\hline
+{\em out\+Min} & output min \\
+\hline
+{\em out\+Max} & output max. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWindow_a7cb89f464a6b5347e7a6ad1a850e77a5}\label{classWindow_a7cb89f464a6b5347e7a6ad1a850e77a5}} 
+\index{Window@{Window}!mixColor@{mixColor}}
+\index{mixColor@{mixColor}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{mixColor()}{mixColor()}}
+{\footnotesize\ttfamily void Window\+::mix\+Color (\begin{DoxyParamCaption}\item[{float}]{change\mbox{[}3\mbox{]},  }\item[{float}]{x,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b,  }\item[{int}]{r2,  }\item[{int}]{g2,  }\item[{int}]{b2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Does a linear mix between two colors. 0 is first color. 1 is second color. 
+
+It can go past the output bounds too. It is not clamped
+
+
+\begin{DoxyParams}{Parameters}
+{\em change} & the float array to change (changes in-\/place) \\
+\hline
+{\em x} & the ratio \\
+\hline
+{\em r} & the red of color 1 \\
+\hline
+{\em g} & the green of color 1 \\
+\hline
+{\em b} & the blue of color 1 \\
+\hline
+{\em r} & the red of color 2 \\
+\hline
+{\em g} & the green of color 2 \\
+\hline
+{\em b} & the blue of color 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWindow_a7e944fd729158f047305d37f0a798871}\label{classWindow_a7e944fd729158f047305d37f0a798871}} 
+\index{Window@{Window}!setStartPos@{setStartPos}}
+\index{setStartPos@{setStartPos}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{setStartPos()}{setStartPos()}}
+{\footnotesize\ttfamily void Window\+::set\+Start\+Pos (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Set the x position that the window will start at. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & -\/ the x length \\
+\hline
+{\em y} & -\/ the y length \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classWindow_a1cfca2649e41dba1a286776dcbb9bb4c}\label{classWindow_a1cfca2649e41dba1a286776dcbb9bb4c}} 
+\index{Window@{Window}!setWorldDimensions@{setWorldDimensions}}
+\index{setWorldDimensions@{setWorldDimensions}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{setWorldDimensions()}{setWorldDimensions()}}
+{\footnotesize\ttfamily void Window\+::set\+World\+Dimensions (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Set the World Dimensions. The scale of the virtual coordinate system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{Window_8h}{Window.\+h}}\item 
+src/\mbox{\hyperlink{Window_8cpp}{Window.\+cpp}}\end{DoxyCompactItemize}

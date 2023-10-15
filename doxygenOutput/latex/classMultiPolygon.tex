@@ -1,0 +1,107 @@
+\hypertarget{classMultiPolygon}{}\doxysection{Multi\+Polygon Class Reference}
+\label{classMultiPolygon}\index{MultiPolygon@{MultiPolygon}}
+
+
+Draw a many dimensional polygon. Note\+: ONLY SUPPORTS CONVEX shapes!!!!  
+
+
+
+
+{\ttfamily \#include $<$Multi\+Polygon.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMultiPolygon_aabc8551f97f763c1eb557dbe036d959b}{Multi\+Polygon}} (\mbox{\hyperlink{structAnchorFace}{Anchor\+Face}} $\ast$top, \mbox{\hyperlink{structAnchorFace}{Anchor\+Face}} $\ast$bottom)
+\begin{DoxyCompactList}\small\item\em Construct a new Multi-\/\+Polygon object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMultiPolygon_a57f2d7c1b325091f5411ed19078fd230}\label{classMultiPolygon_a57f2d7c1b325091f5411ed19078fd230}} 
+void \mbox{\hyperlink{classMultiPolygon_a57f2d7c1b325091f5411ed19078fd230}{draw}} ()
+\begin{DoxyCompactList}\small\item\em Draw the polygon. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMultiPolygon_a548179fda741b0bb5f19272874562e03}\label{classMultiPolygon_a548179fda741b0bb5f19272874562e03}} 
+\mbox{\hyperlink{classMultiPolygon_a548179fda741b0bb5f19272874562e03}{$\sim$\+Multi\+Polygon}} ()
+\begin{DoxyCompactList}\small\item\em Destroy the Multi \mbox{\hyperlink{classPolygon}{Polygon}} object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classMultiPolygon_ab828072346ef171ad347aecc8d469b97}{get\+Color\+Faces\+Num}} ()
+\begin{DoxyCompactList}\small\item\em Get the number of walls. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structFace}{Face}} $\ast$$\ast$ \mbox{\hyperlink{classMultiPolygon_a1196a19ccfdf64866537dd576751ff5b}{get\+Color\+Faces}} ()
+\begin{DoxyCompactList}\small\item\em Get the walls (the faces that can be colored) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classMultiPolygon_a56ac0c22ead84996b12b7e353d801d5b}{get\+Area}} (\mbox{\hyperlink{structFace}{Face}} $\ast$arr)
+\begin{DoxyCompactList}\small\item\em Get the area of a face. Static. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Draw a many dimensional polygon. Note\+: ONLY SUPPORTS CONVEX shapes!!!! 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMultiPolygon_aabc8551f97f763c1eb557dbe036d959b}\label{classMultiPolygon_aabc8551f97f763c1eb557dbe036d959b}} 
+\index{MultiPolygon@{MultiPolygon}!MultiPolygon@{MultiPolygon}}
+\index{MultiPolygon@{MultiPolygon}!MultiPolygon@{MultiPolygon}}
+\doxysubsubsection{\texorpdfstring{MultiPolygon()}{MultiPolygon()}}
+{\footnotesize\ttfamily Multi\+Polygon\+::\+Multi\+Polygon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAnchorFace}{Anchor\+Face}} $\ast$}]{top,  }\item[{\mbox{\hyperlink{structAnchorFace}{Anchor\+Face}} $\ast$}]{bottom }\end{DoxyParamCaption})}
+
+
+
+Construct a new Multi-\/\+Polygon object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em top} & The top anchor face. Passed as pointer \\
+\hline
+{\em bottom} & The bottom anchor face. Passed as pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMultiPolygon_a56ac0c22ead84996b12b7e353d801d5b}\label{classMultiPolygon_a56ac0c22ead84996b12b7e353d801d5b}} 
+\index{MultiPolygon@{MultiPolygon}!getArea@{getArea}}
+\index{getArea@{getArea}!MultiPolygon@{MultiPolygon}}
+\doxysubsubsection{\texorpdfstring{getArea()}{getArea()}}
+{\footnotesize\ttfamily static double Multi\+Polygon\+::get\+Area (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structFace}{Face}} $\ast$}]{arr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Get the area of a face. Static. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMultiPolygon_a1196a19ccfdf64866537dd576751ff5b}\label{classMultiPolygon_a1196a19ccfdf64866537dd576751ff5b}} 
+\index{MultiPolygon@{MultiPolygon}!getColorFaces@{getColorFaces}}
+\index{getColorFaces@{getColorFaces}!MultiPolygon@{MultiPolygon}}
+\doxysubsubsection{\texorpdfstring{getColorFaces()}{getColorFaces()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structFace}{Face}} $\ast$$\ast$ Multi\+Polygon\+::get\+Color\+Faces (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the walls (the faces that can be colored) 
+
+\begin{DoxyReturn}{Returns}
+Face$\ast$$\ast$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMultiPolygon_ab828072346ef171ad347aecc8d469b97}\label{classMultiPolygon_ab828072346ef171ad347aecc8d469b97}} 
+\index{MultiPolygon@{MultiPolygon}!getColorFacesNum@{getColorFacesNum}}
+\index{getColorFacesNum@{getColorFacesNum}!MultiPolygon@{MultiPolygon}}
+\doxysubsubsection{\texorpdfstring{getColorFacesNum()}{getColorFacesNum()}}
+{\footnotesize\ttfamily int Multi\+Polygon\+::get\+Color\+Faces\+Num (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the number of walls. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{MultiPolygon_8h}{Multi\+Polygon.\+h}}\item 
+src/Multi\+Polygon.\+cpp\end{DoxyCompactItemize}
