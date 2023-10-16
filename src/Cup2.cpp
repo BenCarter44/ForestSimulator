@@ -8,7 +8,6 @@
  * @copyright Copyright (c) 2023
  * 
  */
-
 #include "Cup2.h"
 #ifndef PI
 #define PI           3.14159265358979323846  /* pi */
@@ -16,13 +15,78 @@
 
 Cup2::Cup2()
 {
+    cupTexture = Texture("cup2.png", 512);
+}
 
+void Cup2::postWindowCreate()
+{
+    cupTexture.setupTexture();
 }
 
 void Cup2::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
+    
 
+    glColor3f(CC(223), CC(217), CC(217));
+
+    // then is verticies
+
+    cupTexture.start();    
+    glBegin(GL_POLYGON);
+
+        Point center = {581, 333};
+        double radiusX = 34;
+        double radiusY = 2;
+
+        int precision = 5;
+        // double
+
+        for(int r = 0; r > -180; r -= precision) // Half a circle, the top (y is flipped.)
+        {
+            double rad = (PI * r) / 180.0;
+            float x = center.x + radiusX * cos(rad);
+            float y = center.y + radiusY * sin(rad);
+
+            cupTexture.markCoord(Window::mapValue(x,531,648,76,426),Window::mapValue(y,463,315,74,474));
+            glVertex2f(x,y);
+        }
+
+        radiusX = 53;
+        radiusY = 14;
+        center = {581, 471};
+        
+        for(int r = 180; r > 0; r -= precision) // Half the circle, the bottom.
+        {
+            double rad = (PI * r) / 180.0;
+            float x = center.x + radiusX * cos(rad);
+            float y = center.y + radiusY * sin(rad);
+
+            //cupTexture.markCoord()
+            cupTexture.markCoord(Window::mapValue(x,531,648,76,426),Window::mapValue(y,463,315,74,474));
+            glVertex2f(x,y);
+        }
+    
+    glEnd();
+    cupTexture.stop();
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     Point center = {581, 330};
     double radiusX = 34;
     double radiusY = 1;
@@ -74,7 +138,7 @@ void Cup2::draw()
     }
 
     pen.draw();
-
+    */
 
 
     glFlush();

@@ -18,12 +18,17 @@
 #include <iostream>
 #include "Polygon.h"
 #include "MultiPolygon.h"
+#include "TextureHandler.h"
+
 
 class Cup2: public DisplayObject
 {
+private:
+    Texture cupTexture;
 public:
     Cup2();
     void draw();
+    void postWindowCreate();
 };
 
 #endif

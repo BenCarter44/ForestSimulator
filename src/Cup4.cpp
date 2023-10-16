@@ -17,16 +17,66 @@
 
 Cup4::Cup4()
 {
+    cupTexture = Texture("cups4.png", 512);
+}
 
+void Cup4::postWindowCreate()
+{
+    cupTexture.setupTexture();
 }
 
 void Cup4::draw()
 {
-    // Create a "circle" face. More like a 20 sided polygon.
+        // Create a "circle" face. More like a 20 sided polygon.
 
-    Point center = {628, 199};
+     glColor3f(CC(223), CC(217), CC(217));
+
+    // then is verticies
+
+    cupTexture.start();    
+    glBegin(GL_POLYGON);
+
+        Point center = {630, 200};
+        double radiusX = 34;
+        double radiusY = 2;
+
+        int precision = 5;
+        // double
+
+        for(int r = 0; r > -180; r -= precision) // Half a circle, the top (y is flipped.)
+        {
+            double rad = (PI * r) / 180.0;
+            float x = center.x + radiusX * cos(rad);
+            float y = center.y + radiusY * sin(rad);
+
+            cupTexture.markCoord(Window::mapValue(x,576,686 ,32,471),Window::mapValue(y,326,188,40,498));
+            glVertex2f(x,y);
+        }
+
+        radiusX = 53;
+        radiusY = 14;
+        center = {630, 332};
+        
+        for(int r = 180; r > 0; r -= precision) // Half the circle, the bottom.
+        {
+            double rad = (PI * r) / 180.0;
+            float x = center.x + radiusX * cos(rad);
+            float y = center.y + radiusY * sin(rad);
+
+            //cupTexture.markCoord()
+            cupTexture.markCoord(Window::mapValue(x,576,686 ,32,471),Window::mapValue(y,326,188,40,498));
+            glVertex2f(x,y);
+        }
+    
+    glEnd();
+    cupTexture.stop();
+
+    
+    /*
+
+    Point center = {482, 333};
     double radiusX = 34;
-    double radiusY = 1;
+    double radiusY = 2;
 
     int precision = 5;
     Point circle[360 / precision];
@@ -43,9 +93,9 @@ void Cup4::draw()
         std::cout << "Ellipse" << circle[counter].x << ' '  << circle[counter].y << '\n';
         counter++;
     }
-    radiusX = 51;
-    radiusY = 3;
-    center = {628, 333};
+    radiusX = 53;
+    radiusY = 14;
+    center = {480, 465};
     Point circle2[360 / precision];
     // double
     counter = 0;
@@ -61,7 +111,8 @@ void Cup4::draw()
     }
 
     AnchorFace top = AnchorFace(circle, 360 / precision);
-    top.setColor(76, 69, 61);
+    //top.setColor(76, 69, 61);
+    top.setColor(96, 109, 101);
     AnchorFace bottom = AnchorFace(circle2, 360 / precision);
     bottom.setColor(145,135,125);
     MultiPolygon pen = MultiPolygon(&top, &bottom);
@@ -74,9 +125,14 @@ void Cup4::draw()
         walls[x]->setColor((uint8_t)color[0],(uint8_t)color[1], (uint8_t)color[2]);
     }
 
+    
+
     pen.draw();
+
+    */
 
 
 
     glFlush();
+
 }
