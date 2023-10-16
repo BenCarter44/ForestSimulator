@@ -48,7 +48,7 @@ void Cup2::draw()
             float x = center.x + radiusX * cos(rad);
             float y = center.y + radiusY * sin(rad);
 
-            cupTexture.markCoord(Window::mapValue(x,531,628,76,426),Window::mapValue(y,473,315,74,474));
+            cupTexture.markCoord(Window::mapValue(x,531,645,76,426),Window::mapValue(y,463,315,74,474));
             glVertex2f(x,y);
         }
 
@@ -63,7 +63,7 @@ void Cup2::draw()
             float y = center.y + radiusY * sin(rad);
 
             //cupTexture.markCoord()
-            cupTexture.markCoord(Window::mapValue(x,531,628,76,426),Window::mapValue(y,473,315,74,474));
+            cupTexture.markCoord(Window::mapValue(x,531,645,76,426),Window::mapValue(y,463,315,74,474));
             glVertex2f(x,y);
         }
     
