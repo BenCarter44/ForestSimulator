@@ -27,7 +27,6 @@ void Cup1::draw()
 {
     // Create a "circle" face. More like a 20 sided polygon.
 
-
      glColor3f(CC(223), CC(217), CC(217));
 
     // then is verticies
