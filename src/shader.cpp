@@ -1,4 +1,6 @@
 #include "Shader.h"
+#include <fstream>
+#include <sstream>
 
 Shader::Shader()
 {
@@ -9,8 +11,42 @@ Shader::Shader()
 
 void Shader::addShaderFromFile(const char* filename)
 {
+    // Build the full path to the shader file
+    std::string shaderPath = "./shaders/";
+    shaderPath += filename;
 
+    std::string shaderSource;
+    std::ifstream shaderFile(shaderPath.c_str());
+
+    if (!shaderFile.is_open()) {
+        std::cerr << "Failed to open shader file: " << shaderPath << std::endl;
+        return;
+    }
+
+    std::stringstream shaderStream;
+    shaderStream << shaderFile.rdbuf();
+    shaderSource = shaderStream.str();
+
+    // Determine shader type based on the file extension
+    size_t dotIndex = std::string(filename).find_last_of(".");
+    if (dotIndex != std::string::npos) {
+        std::string extension = std::string(filename).substr(dotIndex + 1);
+        if (extension == "vs") {
+            addShaderFromCharVertex(shaderSource.c_str());
+        }
+        else if (extension == "frag") {
+            addShaderFromCharFrag(shaderSource.c_str());
+        }
+        else {
+            std::cerr << "Unsupported shader file extension: " << extension << std::endl;
+        }
+    }
+    else {
+        std::cerr << "Unable to determine shader type from the file extension." << std::endl;
+    }
 }
+
+
 void Shader::addShaderFromCharVertex(const char* str)
 {
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
