@@ -61,11 +61,18 @@ int main()
     glfwSetFramebufferSizeCallback(window, resizeFunc);  
 
     // Buffers. 
-    // Make a triangle
+    // Make a triangle (several)
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
+     0.5f,  0.5f, 0.0f,  // top right
+     0.5f, -0.5f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,  // bottom left
+    -0.5f,  0.5f, 0.0f   // top left 
+};
+
+    // Make a "index" list... don't repeat above, just specify the index orders.
+    unsigned int indices[] = {
+        0,1,3,  // first triangle
+        1,2,3   // second triangle
     };
 
     // Test Shader
@@ -94,6 +101,9 @@ int main()
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
 
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+
     glBindVertexArray(VAO);
     // create buffer. Holds the shader output....
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -108,6 +118,12 @@ int main()
     // Start at the first byte (byte 0)
     glEnableVertexAttribArray(0);  
 
+    // assign the index
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
+
+    
+
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
     {
@@ -119,7 +135,10 @@ int main()
 
         myShader.useShader();
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwPollEvents();
         glfwSwapBuffers(window);
