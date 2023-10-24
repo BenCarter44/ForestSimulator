@@ -117,3 +117,19 @@ void Shader::useShader()
 {
     glUseProgram(shaderProgram);
 }
+
+void Shader::setUniform4f(UniformVar* ufVar, float a, float b, float c, float d) // uniform for all shader/frag and all points.
+{
+    glUniform4f(ufVar->location,a,b,c,d);
+}
+void Shader::setUniform3f(UniformVar* ufVar, float a, float b, float c) // uniform for all shader/frag and all points.
+{
+    glUniform3f(ufVar->location,a,b,c);
+}
+
+void Shader::addUniform(UniformVar* ufVar)
+{
+    int loc = glGetUniformLocation(shaderProgram, ufVar->varname);
+    ufVar->location = loc;
+    uniformVars.push_back(ufVar);
+}

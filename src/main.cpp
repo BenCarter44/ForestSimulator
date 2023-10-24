@@ -113,7 +113,10 @@ int main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
 
-    
+    UniformVar myColor = UniformVar();
+    myColor.varname = "outColor";
+
+    myShader.addUniform(&myColor);
 
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
@@ -125,10 +128,11 @@ int main()
         render(window);
 
         myShader.useShader();
+        myShader.setUniform4f(&myColor,1.0f,0.0f,0.0f,1.0f);
+        
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwPollEvents();
