@@ -133,3 +133,8 @@ void Shader::addUniform(UniformVar* ufVar)
     ufVar->location = loc;
     uniformVars.push_back(ufVar);
 }
+
+void Shader::setUniformGLM(UniformVar* ufVar, glm::mat4 &t)
+{
+    glUniformMatrix4fv(ufVar->location, 1, GL_FALSE, glm::value_ptr(t));
+}

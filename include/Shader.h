@@ -6,6 +6,10 @@
 #include <vector>
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 struct UniformVar
 {
     const char* varname;
@@ -32,7 +36,7 @@ public:
 
     void setUniform4f(UniformVar* ufVar, float a, float b, float c, float d); // uniform for all shader/frag and all points.
     void setUniform3f(UniformVar* ufVar, float a, float b, float c); // uniform for all shader/frag and all points.
-
+    void setUniformGLM(UniformVar* ufVar, glm::mat4 &t);
 
 };
 

@@ -48,10 +48,10 @@ void render(GLFWwindow* &window)
 int main()
 {
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-    vec = trans * vec;
-    std::cout << vec.x << vec.y << vec.z << std::endl;
+    glm::mat4 transTest = glm::mat4(1.0f);
+    transTest = glm::translate(transTest, glm::vec3(1.0f, 1.0f, 0.0f));
+    vec = transTest * vec;
+    std::cout << vec.x << ' ' << vec.y << ' ' << vec.z << std::endl;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -129,7 +129,11 @@ int main()
     UniformVar myColor = UniformVar();
     myColor.varname = "mixColor";
 
+    UniformVar transformMat = UniformVar();
+    transformMat.varname = "transformMatrix";
+
     myShader.addUniform(&myColor);
+    myShader.addUniform(&transformMat);
 
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
@@ -137,11 +141,17 @@ int main()
         processInput(window);
 
         // rendering commands
-        
         render(window);
+
+        // transforms
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));  
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         myShader.useShader();
         myShader.setUniform4f(&myColor,1.0f,0.0f,0.0f,1.0f);
+        myShader.setUniformGLM(&transformMat, trans);
         
         glBindVertexArray(VAO);
 
