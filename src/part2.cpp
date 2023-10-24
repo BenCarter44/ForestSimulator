@@ -4,9 +4,11 @@
 #include <GLFW/glfw3.h>
 #include "Shader.h"
 
-#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-#ifdef IGNORE_ME_NOW_PLEASE
+#include <iostream>
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
@@ -43,8 +45,14 @@ void render(GLFWwindow* &window)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-int mainPart1()
+int main()
 {
+    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+    vec = trans * vec;
+    std::cout << vec.x << vec.y << vec.z << std::endl;
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -147,4 +155,3 @@ int mainPart1()
     glfwTerminate();
     return 0;
 }
-#endif
