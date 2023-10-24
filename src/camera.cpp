@@ -66,6 +66,20 @@ int main()
     glfwSetFramebufferSizeCallback(window, resizeFunc);
     glEnable(GL_DEPTH_TEST);  
 
+/*
+    glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); 
+    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+*/
+  //  glm::mat4 view;
+  //  view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), // position
+  //                      glm::vec3(0.0f, 0.0f, 0.0f), // target
+  //                      glm::vec3(0.0f, 1.0f, 0.0f)); // up vector.
+
     // Buffers. 
     // Make a triangle (several)
    float vertices[] = {
@@ -162,9 +176,7 @@ int main()
     modelUniform.varname = "model";
 
     // view
-    glm::mat4 view = glm::mat4(1.0f);
     // note that we're translating the scene in the reverse direction of where we want to move
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     UniformVar viewUniform = UniformVar();
     viewUniform.varname = "view";
 
@@ -193,6 +205,7 @@ int main()
     };
 
     // MAIN LOOP
+    float cRotate = 0.0f;
     while(!glfwWindowShouldClose(window))
     {
         
@@ -208,6 +221,9 @@ int main()
 
         myShader.setUniform4f(&myColor,1.0f,0.0f,0.0f,1.0f);
         myShader.setUniformGLM(&modelUniform, model2);
+        glm::mat4 view;
+        view = glm::lookAt(glm::vec3(3 * cos(cRotate), 12.0, 3 * sin(cRotate)), glm::vec3(0.0, 0.0, 0.0), glm::vec3(1.0, 0.0, 0.0)); 
+        cRotate += 0.01;
         myShader.setUniformGLM(&viewUniform, view);
         myShader.setUniformGLM(&projectionUniform, projection);
 
