@@ -2,10 +2,13 @@
 #version 330 core
 out vec4 FragColor;
 
-uniform vec4 outColor; // we set this variable in OpenGL. IT MUST BE USED.
+in vec3 vColor;
+
+uniform vec4 mixColor; // we set this variable in OpenGL. IT MUST BE USED.
+
 
 void main()
 {
-    vec4 temp = vec4(0.0f, 0.1f, 1.0f, 1.0f);
-    FragColor = normalize(temp + outColor);
+    vec4 oc = vec4(vColor, 1.0);
+    FragColor = normalize(oc + mixColor);
 } 
