@@ -171,12 +171,16 @@ int main()
     UniformVar lightPosU = lightingShader.addUniform("lightPos");
     UniformVar lightColorU = lightingShader.addUniform("lightColor");
     UniformVar objectColorU = lightingShader.addUniform("objectColor");
+    UniformVar camPosU = lightingShader.addUniform("camPos");
 
     // view
+    glm::vec3 camPos = glm::vec3(3.0f, 2.0f, 3.0f);
     // note that we're translating the scene in the reverse direction of where we want to move
-    glm::mat4 view = glm::lookAt(glm::vec3(3.0f, 2.0f, 3.0f), // position
+    glm::mat4 view = glm::lookAt(camPos, // position
                         glm::vec3(0.0f, 0.0f, 0.0f), // target
                         glm::vec3(0.0f, 1.0f, 0.0f)); // up vector.
+
+    
 
     // projection
     glm::mat4 projection;
@@ -185,10 +189,13 @@ int main()
     lightingShader.useShader();
     lightingShader.setUniformGLM(viewU, view);
     lightingShader.setUniformGLM(projectionU, projection);
+    lightingShader.setUniformV3(camPosU, camPos);
 
     lightCubeShader.useShader();
     lightCubeShader.setUniformGLM(viewLS, view);
     lightCubeShader.setUniformGLM(projectionLS, projection);
+
+
 
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))

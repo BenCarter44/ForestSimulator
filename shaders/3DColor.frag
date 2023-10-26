@@ -8,6 +8,7 @@ out vec4 FragColor;
 uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform vec3 lightPos;
+uniform vec3 camPos;
 
 void main()
 {
@@ -20,14 +21,19 @@ void main()
     vec3 lightDir = normalize(lightPos - WorldPos);  
     float diff = max(dot(norm, lightDir), 0.0);
 
-    float brightness = 2.0;
+    float brightness = 0.5;
 
     vec3 diffuse = diff * lightColor * brightness;
-    vec3 result = (ambient + diffuse) * objectColor;
+    
+    // specular
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(camPos - WorldPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
 
-    float x = max(diff, 0.0);
-    float y = max(diff, 0.0);
-    float z = max(diff, 0.0);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 256);
+    vec3 specular = specularStrength * spec * lightColor; 
+
+    vec3 result = (ambient + diffuse + specular) * objectColor;
 
     FragColor = vec4(result, 1.0);
 
