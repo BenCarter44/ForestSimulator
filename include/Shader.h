@@ -42,6 +42,7 @@ public:
     void setUniform3f(UniformVar ufVar, float a, float b, float c); // uniform for all shader/frag and all points.
     void setUniformGLM(UniformVar ufVar, glm::mat4 &t);
     void setUniformV3(UniformVar ufVar, glm::vec3 &v);
+    void setUniformV4(UniformVar ufVar, glm::vec4 &v);
 };
 
 

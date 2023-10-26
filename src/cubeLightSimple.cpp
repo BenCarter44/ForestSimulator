@@ -16,7 +16,7 @@
 #define CC(arg) (arg / 255.0f)
 #endif
 
-#ifndef IGNOREIGNORE
+#ifdef IGNOREIGNORE
 
 void makeWindow(GLFWwindow* &window)
 {
