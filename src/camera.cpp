@@ -15,6 +15,7 @@
 #define CC(arg) (arg / 255.0f)
 #endif
 
+#ifdef IGNORE_ME_CAMERA_TUTORIAL
 
 void makeWindow(GLFWwindow* &window)
 {
@@ -248,3 +249,5 @@ int main()
     glfwTerminate();
     return 0;
 }
+
+#endif

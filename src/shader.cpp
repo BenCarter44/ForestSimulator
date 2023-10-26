@@ -118,23 +118,30 @@ void Shader::useShader()
     glUseProgram(shaderProgram);
 }
 
-void Shader::setUniform4f(UniformVar* ufVar, float a, float b, float c, float d) // uniform for all shader/frag and all points.
+void Shader::setUniform4f(UniformVar ufVar, float a, float b, float c, float d) // uniform for all shader/frag and all points.
 {
-    glUniform4f(ufVar->location,a,b,c,d);
+    glUniform4f(ufVar.location,a,b,c,d);
 }
-void Shader::setUniform3f(UniformVar* ufVar, float a, float b, float c) // uniform for all shader/frag and all points.
+void Shader::setUniform3f(UniformVar ufVar, float a, float b, float c) // uniform for all shader/frag and all points.
 {
-    glUniform3f(ufVar->location,a,b,c);
-}
-
-void Shader::addUniform(UniformVar* ufVar)
-{
-    int loc = glGetUniformLocation(shaderProgram, ufVar->varname);
-    ufVar->location = loc;
-    uniformVars.push_back(ufVar);
+    glUniform3f(ufVar.location,a,b,c);
 }
 
-void Shader::setUniformGLM(UniformVar* ufVar, glm::mat4 &t)
+void Shader::setUniformV3(UniformVar ufVar, glm::vec3 &a) // uniform for all shader/frag and all points.
 {
-    glUniformMatrix4fv(ufVar->location, 1, GL_FALSE, glm::value_ptr(t));
+    glUniform3f(ufVar.location,a.x,a.y,a.z);
+}
+
+UniformVar Shader::addUniform(const char* c)
+{
+    UniformVar uf = UniformVar(c);
+    int loc = glGetUniformLocation(shaderProgram, uf.varname);
+    uf.location = loc;
+    uniformVars.push_back(uf);
+    return uf;
+}
+
+void Shader::setUniformGLM(UniformVar ufVar, glm::mat4 &t)
+{
+    glUniformMatrix4fv(ufVar.location, 1, GL_FALSE, glm::value_ptr(t));
 }
