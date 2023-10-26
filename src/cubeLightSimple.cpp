@@ -20,7 +20,7 @@
 
 void makeWindow(GLFWwindow* &window)
 {
-    window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Light Diffuse", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -120,8 +120,8 @@ int main()
     lightingShader.createProgram();
 
     Shader lightCubeShader;
-    lightCubeShader.addShaderFromFile("light_cube.vs");
-    lightCubeShader.addShaderFromFile("light_cube.frag");
+    lightCubeShader.addShaderFromFile("3DLightSource.vs");
+    lightCubeShader.addShaderFromFile("3DLightSource.frag");
     lightCubeShader.createProgram();
 
    // myShader.addShaderFromCharVertex(vertexShaderSource);
@@ -162,6 +162,7 @@ int main()
     UniformVar modelLS = lightCubeShader.addUniform("model");
     UniformVar viewLS = lightCubeShader.addUniform("view");
     UniformVar projectionLS = lightCubeShader.addUniform("projection");
+    UniformVar lightColorLS = lightCubeShader.addUniform("lightColor");
 
     UniformVar modelU = lightingShader.addUniform("model");
     UniformVar viewU = lightingShader.addUniform("view");
@@ -197,7 +198,7 @@ int main()
         // rendering commands
         render(window);
 
-        glm::vec3 lightPos(2.0f, 1.0f, 1.0f);
+        glm::vec3 lightPos(-1.0f, 1.0f, -1.0f);
 
         // transforms
         glm::mat4 model = glm::mat4(1.0f);
@@ -210,7 +211,7 @@ int main()
         lightingShader.setUniformGLM(modelU, model);
 
 
-        glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+        glm::vec3 lightColor(1.0f, 0.9f, 0.3f);
         glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
         glm::vec3 result = lightColor * toyColor; // = (1.0f, 0.5f, 0.31f);  Color equals the light x the toyColor. ToyColor: What reflected.
 
@@ -228,6 +229,7 @@ int main()
         
         lightCubeShader.useShader();
         lightCubeShader.setUniformGLM(modelLS, model);
+        lightCubeShader.setUniformV3(lightColorLS, lightColor);
 
 
         glBindVertexArray(lightCubeVAO);

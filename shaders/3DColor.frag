@@ -20,9 +20,9 @@ void main()
     vec3 lightDir = normalize(lightPos - WorldPos);  
     float diff = max(dot(norm, lightDir), 0.0);
 
-    float diffMultiplier = 1.0;
+    float brightness = 2.0;
 
-    vec3 diffuse = diff * lightColor;
+    vec3 diffuse = diff * lightColor * brightness;
     vec3 result = (ambient + diffuse) * objectColor;
 
     float x = max(diff, 0.0);
