@@ -16,6 +16,8 @@ find_package(GLEW REQUIRED)
 include_directories(${GLEW_LIBRARY_DIR})
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
+find_package(glfw3 REQUIRED)
+include_directories(${glfw_INCLUDE_DIRS})
 #find_package(libSOIL REQUIRED)
 
 include_directories("/usr/include/SOIL/")
@@ -39,7 +41,7 @@ add_executable(Project5 ${SOURCES} ${HEADERS} ${HEADERS2})
 #add_library(soilLib SHARED IMPORTED)
 #set_property(TARGET soilLib PROPERTY IMPORTED_LOCATION "/usr/lib/libSOIL.so")
 
-target_link_libraries(Project5 ${GLUT_LIBRARIES} ${GLU_LIBRARIES} ${OPENGL_LIBRARIES} "/usr/lib/libSOIL.so" ${GLEW_LIBRARIES}) 
+target_link_libraries(Project5 ${GLUT_LIBRARIES} ${GLU_LIBRARIES} ${OPENGL_LIBRARIES} "/usr/lib/libSOIL.so" ${GLEW_LIBRARIES} glfw) 
 # ${SOIL})
 
 

@@ -16,7 +16,7 @@
 #define CC(arg) (arg / 255.0f)
 #endif
 
-#ifndef IGNOREIGNORE
+#ifdef IGNOREIGNORE
 
 void makeWindow(GLFWwindow* &window)
 {
@@ -44,7 +44,7 @@ void processInput(GLFWwindow* &window)
 
 void render(GLFWwindow* &window)
 {
-    glClearColor(CC(52),CC(52),CC(52),1.0f);
+    glClearColor(CC(20),CC(20),CC(20),1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -171,15 +171,16 @@ int main()
     UniformVar lightPosU = lightingShader.addUniform("lightPos");
     UniformVar lightColorU = lightingShader.addUniform("lightColor");
     UniformVar objectColorU = lightingShader.addUniform("objectColor");
-    UniformVar lightSettingsU = lightingShader.addUniform("lightSettings");
     UniformVar camPosU = lightingShader.addUniform("camPos");
 
     // view
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 9.0f);
+    glm::vec3 camPos = glm::vec3(3.0f, 2.0f, 3.0f);
     // note that we're translating the scene in the reverse direction of where we want to move
     glm::mat4 view = glm::lookAt(camPos, // position
                         glm::vec3(0.0f, 0.0f, 0.0f), // target
                         glm::vec3(0.0f, 1.0f, 0.0f)); // up vector.
+
+    
 
     // projection
     glm::mat4 projection;
@@ -195,8 +196,6 @@ int main()
     lightCubeShader.setUniformGLM(projectionLS, projection);
 
 
-    // light
-    
 
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
@@ -206,102 +205,33 @@ int main()
         // rendering commands
         render(window);
 
-        glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-        glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
+        glm::vec3 lightPos(-1.0f, 1.0f, -1.0f);
 
-        glm::vec3 lightPosOriginal(-4.0f, 2.1f, 3.5f);
-        
-        for(int cubeI = 0; cubeI < 4; cubeI++)
-        {
-            glm::vec3 newLightTranslate = glm::vec3(cubeI * 2.6,0,0);
-
-            glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
-
-            glm::vec4 lightSettings(0.3f, 0.5f, 0.3f, pow(2, 1 + cubeI));
-            // transforms
-            glm::mat4 model = glm::mat4(1.0f);
-            glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,1.5,0);
-            model = glm::translate(model, boxPosition);
-            //glm::vec3 scale
-            glm::vec3 scalar = glm::vec3(1.2, 1.2, 1.2);
-            model = glm::scale(model, scalar);
-            model = glm::rotate(model, glm::radians(30.0f - cubeI * 5.0f), glm::vec3(0.0,1.0,0.0));
-
-
-            // transforms
-            lightingShader.useShader();
-            lightingShader.setUniformGLM(modelU, model);
-
-            lightingShader.setUniformV3(objectColorU, toyColor);
-            lightingShader.setUniformV3(lightColorU, lightColor);  
-            lightingShader.setUniformV4(lightSettingsU, lightSettings);      
-
-            lightingShader.setUniformV3(lightPosU, lightPos);
-
-            glBindVertexArray(cubeVAO);
-            glDrawArrays(GL_TRIANGLES,0, 36);
-
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, lightPos);
-            model = glm::scale(model, glm::vec3(0.2f)); 
-            
-            lightCubeShader.useShader();
-            lightCubeShader.setUniformGLM(modelLS, model);
-            lightCubeShader.setUniformV3(lightColorLS, lightColor);
-
-
-           // glBindVertexArray(lightCubeVAO);
-           // glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
-
-        for(int cubeI = 0; cubeI < 4; cubeI++)
-        {
-            glm::vec3 newLightTranslate = glm::vec3(cubeI * 2.6,-4,0);
-
-            glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
-
-            glm::vec4 lightSettings(0.3f, 0.5f, 0.3f, pow(2,cubeI + 5));
-            // transforms
-            glm::mat4 model = glm::mat4(1.0f);
-            glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,-1.5,0);
-            model = glm::translate(model, boxPosition);
-            //glm::vec3 scale
-            glm::vec3 scalar = glm::vec3(1.2, 1.2, 1.2);
-            model = glm::scale(model, scalar);
-            model = glm::rotate(model, glm::radians(30.0f - cubeI * 5.0f), glm::vec3(0.0,1.0,0.0));
-
-
-            // transforms
-            lightingShader.useShader();
-            lightingShader.setUniformGLM(modelU, model);
-
-            lightingShader.setUniformV3(objectColorU, toyColor);
-            lightingShader.setUniformV3(lightColorU, lightColor);  
-            lightingShader.setUniformV4(lightSettingsU, lightSettings);      
-
-            lightingShader.setUniformV3(lightPosU, lightPos);
-
-            glBindVertexArray(cubeVAO);
-            glDrawArrays(GL_TRIANGLES,0, 36);
-
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, lightPos);
-            model = glm::scale(model, glm::vec3(0.2f)); 
-            
-            lightCubeShader.useShader();
-            lightCubeShader.setUniformGLM(modelLS, model);
-            lightCubeShader.setUniformV3(lightColorLS, lightColor);
-
-
-            //glBindVertexArray(lightCubeVAO);
-            //glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
-
-
-
-// light.... 
+        // transforms
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPosOriginal);
+        glm::vec3 boxPosition = glm::vec3(0,0,0);
+        model = glm::translate(model, boxPosition);
+
+
+        // transforms
+        lightingShader.useShader();
+        lightingShader.setUniformGLM(modelU, model);
+
+
+        glm::vec3 lightColor(1.0f, 0.9f, 0.3f);
+        glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
+        glm::vec3 result = lightColor * toyColor; // = (1.0f, 0.5f, 0.31f);  Color equals the light x the toyColor. ToyColor: What reflected.
+
+        lightingShader.setUniformV3(objectColorU, toyColor);
+        lightingShader.setUniformV3(lightColorU, lightColor);        
+
+        lightingShader.setUniformV3(lightPosU, lightPos);
+
+        glBindVertexArray(cubeVAO);
+        glDrawArrays(GL_TRIANGLES,0, 36);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f)); 
         
         lightCubeShader.useShader();
