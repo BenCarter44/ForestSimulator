@@ -2,8 +2,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-
 #include "Shader.h"
 
 #include <glm/glm.hpp>
@@ -11,6 +9,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <image.h>
+
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
@@ -47,6 +47,10 @@ void render(GLFWwindow* &window)
     glClearColor(CC(20),CC(20),CC(20),1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+
+
+
 
 int main()
 {
@@ -197,10 +201,14 @@ int main()
 
     // light
     
+    Image texture1("textures/2.png");
+
 
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
     {
+        
+
         processInput(window);
 
         // rendering commands
@@ -297,6 +305,7 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
+    texture1.bind();
 
 
 // light.... 
