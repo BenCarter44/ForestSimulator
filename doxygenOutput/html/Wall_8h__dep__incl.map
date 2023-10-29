@@ -1,5 +1,0 @@
-<map id="include/Wall.h" name="include/Wall.h">
-<area shape="rect" id="node1" title="Holds the Wall Display Object class." alt="" coords="64,5,177,32"/>
-<area shape="rect" id="node2" href="$main_8cpp.html" title="The main program." alt="" coords="5,80,111,107"/>
-<area shape="rect" id="node3" href="$Wall_8cpp.html" title="Creates the Wall object using the multiPolygon class." alt="" coords="135,80,235,107"/>
-</map>

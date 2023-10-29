@@ -11,7 +11,6 @@
 #include <stb_image.h>
 
 #include <iostream>
-#include <image.h>
 
 
 #ifndef CC
@@ -261,11 +260,6 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-
-
-
-
-
     UniformVar modelLS = lightCubeShader.addUniform("model");
     UniformVar viewLS = lightCubeShader.addUniform("view");
     UniformVar projectionLS = lightCubeShader.addUniform("projection");
@@ -285,10 +279,6 @@ int main()
     UniformVar modelTXT = textShader.addUniform("model");
     UniformVar viewTXT = textShader.addUniform("view");
     UniformVar projectionTXT = textShader.addUniform("projection");
-
-
-
-    
 
     // view
     glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 9.0f);
@@ -330,14 +320,15 @@ int main()
         glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
 
         glm::vec3 lightPosOriginal(-4.0f, 2.1f, 3.5f);
+        glm::vec4 lightSettings(0.3f, 0.4f, 0.4f, 0.0f);
         
         for(int cubeI = 0; cubeI < 4; cubeI++)
         {
             glm::vec3 newLightTranslate = glm::vec3(cubeI * 2.6,0,0);
-
             glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
+            glm::vec4 specularStrength = glm::vec4(0.0f, 0.0f, 0.0f, pow(2, 1 + cubeI));
+            glm::vec4 renderedLightSettings = lightSettings + specularStrength;
 
-            glm::vec4 lightSettings(0.3f, 0.4f, 0.4f, pow(2, 1 + cubeI));
             // transforms
             glm::mat4 model = glm::mat4(1.0f);
             glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,1.5,0);
@@ -354,7 +345,7 @@ int main()
 
             lightingShader.setUniformV3(objectColorU, toyColor);
             lightingShader.setUniformV3(lightColorU, lightColor);  
-            lightingShader.setUniformV4(lightSettingsU, lightSettings);      
+            lightingShader.setUniformV4(lightSettingsU, renderedLightSettings);      
 
             lightingShader.setUniformV3(lightPosU, lightPos);
 
@@ -377,10 +368,10 @@ int main()
         for(int cubeI = 0; cubeI < 4; cubeI++)
         {
             glm::vec3 newLightTranslate = glm::vec3(cubeI * 2.6,-4,0);
-
             glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
+            glm::vec4 specularStrength = glm::vec4(0.0f, 0.0f, 0.0f, pow(2,cubeI + 5));
+            glm::vec4 renderedLightSettings = lightSettings + specularStrength;
 
-            glm::vec4 lightSettings(0.3f, 0.4f, 0.4f, pow(2,cubeI + 5));
             // transforms
             glm::mat4 model = glm::mat4(1.0f);
             glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,-1.5,0);
@@ -397,7 +388,7 @@ int main()
 
             lightingShader.setUniformV3(objectColorU, toyColor);
             lightingShader.setUniformV3(lightColorU, lightColor);  
-            lightingShader.setUniformV4(lightSettingsU, lightSettings);      
+            lightingShader.setUniformV4(lightSettingsU, renderedLightSettings);      
 
             lightingShader.setUniformV3(lightPosU, lightPos);
 
