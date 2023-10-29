@@ -1,3 +1,14 @@
+/**
+ * @file shader.cpp
+ * @author Ben Carter and Josh Canode
+ * @brief This is the source file for the shader class.
+ * @version 0.1
+ * @date 2023-10-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "Shader.h"
 #include <fstream>
 #include <sstream>

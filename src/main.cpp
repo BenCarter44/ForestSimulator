@@ -30,7 +30,7 @@
 
 void makeWindow(GLFWwindow* &window)
 {
-    window = glfwCreateWindow(800, 600, "Light Diffuse", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Specular Lighting Project", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -314,16 +314,40 @@ int main()
     textShader.setUniformGLM(projectionTXT, projection);
 
 
+    float moveSpeed = 0.0;
+    float lastTime = glfwGetTime();
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
     {
-        
-
 
         processInput(window);
 
         // rendering commands
         render(window);
+
+        if(glfwGetTime() > lastTime + 1 && moveSpeed < 5.0f)
+        {
+            moveSpeed = 1.05 * moveSpeed + 0.001;
+        //    std::cout << moveSpeed << std::endl;
+            lastTime = glfwGetTime();
+        }
+        
+        glm::vec3 adjustedCameraT = glm::vec3(moveSpeed * sin(glfwGetTime() * 2), 0.0f, 0.0f);
+        glm::vec3 adjustedCamera = camPos + adjustedCameraT;
+
+        glm::mat4 view2 = glm::lookAt(adjustedCamera, // position
+                        glm::vec3(0.0f, 0.0f, 0.0f), // target
+                        glm::vec3(0.0f, 1.0f, 0.0f)); // up vector.
+
+        lightingShader.useShader();
+        lightingShader.setUniformGLM(viewU, view2);
+        lightingShader.setUniformV3(camPosU, adjustedCamera);
+
+        lightCubeShader.useShader();
+        lightCubeShader.setUniformGLM(viewLS, view2);
+
+        textShader.useShader();
+        textShader.setUniformGLM(viewTXT, view2);
 
         glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
         glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
@@ -439,21 +463,6 @@ int main()
         glfwPollEvents();
         glfwSwapBuffers(window);
 
-// light.... 
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPosOriginal);
-        model = glm::scale(model, glm::vec3(0.2f)); 
-        
-        lightCubeShader.useShader();
-        lightCubeShader.setUniformGLM(modelLS, model);
-        lightCubeShader.setUniformV3(lightColorLS, lightColor);
-
-
-        glBindVertexArray(lightCubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        glfwPollEvents();
-        glfwSwapBuffers(window);
     }
 
     glfwTerminate();
