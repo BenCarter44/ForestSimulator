@@ -1,4 +1,13 @@
-
+/**
+ * @file main.cpp
+ * @author Ben Carter and Josh Canode
+ * @brief This program displays 8 cubes each that is lit with an unique light that has different specular values.
+ * @version 0.1
+ * @date 2023-10-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
