@@ -1,3 +1,13 @@
+/**
+ * @file Shader.h
+ * @author Ben Carter and Josh Canode
+ * @brief This is the Shader Class Header file.
+ * @version 0.1
+ * @date 2023-10-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef SHADER_CUSTOM_H
 #define SHADER_CUSTOM_H
 
@@ -18,6 +28,7 @@ struct UniformVar
     {
         varname = c;
     }
+    UniformVar() { }
 };
 
 class Shader
@@ -43,7 +54,10 @@ public:
     void setUniformGLM(UniformVar ufVar, glm::mat4 &t);
     void setUniformV3(UniformVar ufVar, glm::vec3 &v);
     void setUniformV4(UniformVar ufVar, glm::vec4 &v);
+    void setUniform1i(UniformVar ufVar, int a); // uniform for all shader/frag and all points.
 };
+
+
 
 
 #endif

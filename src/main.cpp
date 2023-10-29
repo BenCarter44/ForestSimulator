@@ -1,16 +1,26 @@
-
+/**
+ * @file main.cpp
+ * @author Ben Carter and Josh Canode
+ * @brief This program displays 8 cubes each that is lit with an unique light that has different specular values.
+ * @version 0.1
+ * @date 2023-10-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-
 #include "Shader.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <stb_image.h>
+
 #include <iostream>
+
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
@@ -20,7 +30,7 @@
 
 void makeWindow(GLFWwindow* &window)
 {
-    window = glfwCreateWindow(800, 600, "Light Diffuse", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Specular Lighting Project", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -47,6 +57,10 @@ void render(GLFWwindow* &window)
     glClearColor(CC(52),CC(52),CC(52),1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+
+
+
 
 int main()
 {
@@ -114,6 +128,78 @@ int main()
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
 
+    float texCoords[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,   0.75,
+         0.5f,  0.5f, -0.5f,  1.0f,   0.75,
+        -0.5f,  0.5f, -0.5f,  0.0f,   0.75,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,   0.75,
+         0.5f,  0.5f,  0.5f,  1.0f,   0.75,
+        -0.5f,  0.5f,  0.5f,  0.0f,   0.75,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f,   0.75,
+        -0.5f, -0.5f, -0.5f,  0.0f,   0.75,
+        -0.5f, -0.5f, -0.5f,  0.0f,   0.75,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,   0.75,
+         0.5f, -0.5f, -0.5f,  0.0f,   0.75,
+         0.5f, -0.5f, -0.5f,  0.0f,   0.75,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f,   0.75,
+         0.5f, -0.5f, -0.5f,  1.0f,   0.75,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,   0.75,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,   0.75,
+         0.5f,  0.5f, -0.5f,  1.0f,   0.75,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,   0.75
+
+ 
+};
+    
+    float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load and generate the texture
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("textures/Background.jpg", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+
     Shader lightingShader;
     lightingShader.addShaderFromFile("3DColor.vs");
     lightingShader.addShaderFromFile("3DColor.frag");
@@ -123,6 +209,13 @@ int main()
     lightCubeShader.addShaderFromFile("3DLightSource.vs");
     lightCubeShader.addShaderFromFile("3DLightSource.frag");
     lightCubeShader.createProgram();
+
+    Shader textShader;
+    textShader.addShaderFromFile("textObject.vs");
+    textShader.addShaderFromFile("textObject.frag");
+    textShader.createProgram();
+    UniformVar textVar = textShader.addUniform("ourTexture");
+    textShader.setUniform1i(textVar, 0);
 
    // myShader.addShaderFromCharVertex(vertexShaderSource);
     //myShader.addShaderFromCharFrag(fragShaderSource);
@@ -159,6 +252,23 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    //text shader
+     unsigned int textVBO, textVAO;
+    glGenVertexArrays(1, &textVAO);
+    glGenBuffers(1, &textVBO);
+
+    glBindVertexArray(textVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
     UniformVar modelLS = lightCubeShader.addUniform("model");
     UniformVar viewLS = lightCubeShader.addUniform("view");
     UniformVar projectionLS = lightCubeShader.addUniform("projection");
@@ -173,6 +283,11 @@ int main()
     UniformVar objectColorU = lightingShader.addUniform("objectColor");
     UniformVar lightSettingsU = lightingShader.addUniform("lightSettings");
     UniformVar camPosU = lightingShader.addUniform("camPos");
+
+    //text
+    UniformVar modelTXT = textShader.addUniform("model");
+    UniformVar viewTXT = textShader.addUniform("view");
+    UniformVar projectionTXT = textShader.addUniform("projection");
 
     // view
     glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 9.0f);
@@ -194,30 +309,59 @@ int main()
     lightCubeShader.setUniformGLM(viewLS, view);
     lightCubeShader.setUniformGLM(projectionLS, projection);
 
+    textShader.useShader();
+    textShader.setUniformGLM(viewTXT, view);
+    textShader.setUniformGLM(projectionTXT, projection);
 
-    // light
-    
 
+    float moveSpeed = 0.0;
+    float lastTime = glfwGetTime();
     // MAIN LOOP
     while(!glfwWindowShouldClose(window))
     {
+
         processInput(window);
 
         // rendering commands
         render(window);
 
+        if(glfwGetTime() > lastTime + 1 && moveSpeed < 5.0f)
+        {
+            moveSpeed = 1.05 * moveSpeed + 0.001;
+        //    std::cout << moveSpeed << std::endl;
+            lastTime = glfwGetTime();
+        }
+        
+        glm::vec3 adjustedCameraT = glm::vec3(moveSpeed * sin(glfwGetTime() * 2), 0.0f, 0.0f);
+        glm::vec3 adjustedCamera = camPos + adjustedCameraT;
+
+        glm::mat4 view2 = glm::lookAt(adjustedCamera, // position
+                        glm::vec3(0.0f, 0.0f, 0.0f), // target
+                        glm::vec3(0.0f, 1.0f, 0.0f)); // up vector.
+
+        lightingShader.useShader();
+        lightingShader.setUniformGLM(viewU, view2);
+        lightingShader.setUniformV3(camPosU, adjustedCamera);
+
+        lightCubeShader.useShader();
+        lightCubeShader.setUniformGLM(viewLS, view2);
+
+        textShader.useShader();
+        textShader.setUniformGLM(viewTXT, view2);
+
         glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
         glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
 
         glm::vec3 lightPosOriginal(-4.0f, 2.1f, 3.5f);
+        glm::vec4 lightSettings(0.3f, 0.4f, 0.4f, 0.0f);
         
         for(int cubeI = 0; cubeI < 4; cubeI++)
         {
             glm::vec3 newLightTranslate = glm::vec3(cubeI * 2.6,0,0);
-
             glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
+            glm::vec4 specularStrength = glm::vec4(0.0f, 0.0f, 0.0f, pow(2, 1 + cubeI));
+            glm::vec4 renderedLightSettings = lightSettings + specularStrength;
 
-            glm::vec4 lightSettings(0.3f, 0.5f, 0.3f, pow(2, 1 + cubeI));
             // transforms
             glm::mat4 model = glm::mat4(1.0f);
             glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,1.5,0);
@@ -234,7 +378,7 @@ int main()
 
             lightingShader.setUniformV3(objectColorU, toyColor);
             lightingShader.setUniformV3(lightColorU, lightColor);  
-            lightingShader.setUniformV4(lightSettingsU, lightSettings);      
+            lightingShader.setUniformV4(lightSettingsU, renderedLightSettings);      
 
             lightingShader.setUniformV3(lightPosU, lightPos);
 
@@ -257,10 +401,10 @@ int main()
         for(int cubeI = 0; cubeI < 4; cubeI++)
         {
             glm::vec3 newLightTranslate = glm::vec3(cubeI * 2.6,-4,0);
-
             glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
+            glm::vec4 specularStrength = glm::vec4(0.0f, 0.0f, 0.0f, pow(2,cubeI + 5));
+            glm::vec4 renderedLightSettings = lightSettings + specularStrength;
 
-            glm::vec4 lightSettings(0.3f, 0.5f, 0.3f, pow(2,cubeI + 5));
             // transforms
             glm::mat4 model = glm::mat4(1.0f);
             glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,-1.5,0);
@@ -277,7 +421,7 @@ int main()
 
             lightingShader.setUniformV3(objectColorU, toyColor);
             lightingShader.setUniformV3(lightColorU, lightColor);  
-            lightingShader.setUniformV4(lightSettingsU, lightSettings);      
+            lightingShader.setUniformV4(lightSettingsU, renderedLightSettings);      
 
             lightingShader.setUniformV3(lightPosU, lightPos);
 
@@ -298,22 +442,27 @@ int main()
         }
 
 
-
-// light.... 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPosOriginal);
-        model = glm::scale(model, glm::vec3(0.2f)); 
-        
-        lightCubeShader.useShader();
-        lightCubeShader.setUniformGLM(modelLS, model);
-        lightCubeShader.setUniformV3(lightColorLS, lightColor);
+        glm::vec3 textPosition = glm::vec3(0,0,-5);
+
+        model = glm::translate(model, textPosition);
+
+        model = glm::scale(model, glm::vec3(18.0f, 15.0f, 1)); 
+        model = glm::scale(model, glm::vec3(0.875,0.85,1)); 
 
 
-        glBindVertexArray(lightCubeVAO);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        textShader.useShader();
+        textShader.setUniformGLM(modelTXT, model);
+        glBindVertexArray(textVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glfwPollEvents();
         glfwSwapBuffers(window);
+
     }
 
     glfwTerminate();
