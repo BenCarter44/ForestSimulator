@@ -127,6 +127,11 @@ void Shader::setUniform3f(UniformVar ufVar, float a, float b, float c) // unifor
     glUniform3f(ufVar.location,a,b,c);
 }
 
+void Shader::setUniform1i(UniformVar ufVar, int a) // uniform for all shader/frag and all points.
+{
+    glUniform1i(ufVar.location,a);
+}
+
 void Shader::setUniformV3(UniformVar ufVar, glm::vec3 &a) // uniform for all shader/frag and all points.
 {
     glUniform3f(ufVar.location,a.x,a.y,a.z);
