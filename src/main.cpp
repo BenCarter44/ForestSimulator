@@ -337,7 +337,7 @@ int main()
 
             glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
 
-            glm::vec4 lightSettings(0.3f, 0.5f, 0.3f, pow(2, 1 + cubeI));
+            glm::vec4 lightSettings(0.3f, 0.4f, 0.4f, pow(2, 1 + cubeI));
             // transforms
             glm::mat4 model = glm::mat4(1.0f);
             glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,1.5,0);
@@ -380,7 +380,7 @@ int main()
 
             glm::vec3 lightPos = lightPosOriginal + newLightTranslate;
 
-            glm::vec4 lightSettings(0.3f, 0.5f, 0.3f, pow(2,cubeI + 5));
+            glm::vec4 lightSettings(0.3f, 0.4f, 0.4f, pow(2,cubeI + 5));
             // transforms
             glm::mat4 model = glm::mat4(1.0f);
             glm::vec3 boxPosition = glm::vec3(-3 + cubeI * 2,-1.5,0);
