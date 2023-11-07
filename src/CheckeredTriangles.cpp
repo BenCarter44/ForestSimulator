@@ -1,3 +1,6 @@
+
+#ifdef PART1BUILD
+
 #ifdef __APPLE_CC__
 #include <GLUT/glut.h>
 #else
@@ -146,3 +149,4 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }
+#endif
