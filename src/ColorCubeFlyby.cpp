@@ -3,6 +3,8 @@
 // in the scene, we can render it using backface culling only. i.e., there
 // is no need for a depth buffer.
 
+#ifdef PART2BUILD
+
 #ifdef __APPLE_CC__
 #include <GLUT/glut.h>
 #else
@@ -509,3 +511,4 @@ int main(int argc, char** argv) {
 
 }
 
+#endif
