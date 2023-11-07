@@ -135,7 +135,7 @@ void drawCube(CubeInfo* cbInfo)
   float scaleDistance = mapValue(distanceToCamera,0.0, 12.5,8.0, 0.1);
 //  std::cout << distanceToCamera << ' ' << scaleDistance << ' ' << timeU << std::endl;
 
-  glm::mat4 model = glm::mat4(1.0f); // scaledDistance
+  glm::mat4 model = glm::mat4(1.0f);
   
   model = glm::translate(model, pos);
   model = glm::rotate(model, timeU, glm::vec3(sin(timeU), cos(timeU), sin(timeU / 3)));
@@ -304,12 +304,13 @@ void draw() {
     sd.write(-0.95, 0.85, "s - Stop Animation");
     sd.write(-0.95, 0.80, "c - Continue Animation");
     sd.write(-0.95, 0.75, "r - Rotate Animation");
-    sd.write(-0.95, 0.7, "u / up-arrow - Move image up (requires it to be stopped first)");
-    sd.write(-0.95, 0.65, "d / down-arrow - Move image down (requires it to be stopped first)");
-    sd.write(-0.95, 0.6, "left-arrow - Move image left (requires it to be stopped first)");
-    sd.write(-0.95, 0.55, "right-arrow - Move image right (requires it to be stopped first)");
-    sd.write(-0.95, 0.5, "h - Toggle Help (this menu)");
-    sd.write(-0.95, 0.45, "By Benjamin Carter and Josh Canode");
+    sd.write(-0.95, 0.70, "+/- or [] -  Zoom In/Out");
+    sd.write(-0.95, 0.65, "u / up-arrow - Move image up (requires it to be stopped first)");
+    sd.write(-0.95, 0.60, "d / down-arrow - Move image down (requires it to be stopped first)");
+    sd.write(-0.95, 0.55, "left-arrow - Move image left (requires it to be stopped first)");
+    sd.write(-0.95, 0.50, "right-arrow - Move image right (requires it to be stopped first)");
+    sd.write(-0.95, 0.45, "h - Toggle Help (this menu)");
+    sd.write(-0.95, 0.40, "By Benjamin Carter and Josh Canode");
     sd.close();
   }
   
@@ -348,7 +349,6 @@ void timer(int v) {
     model = glm::rotate(model, rotate, normal);
     glm::vec4 result = model * glm::vec4(0.0f, -10 * sin(timeU), 30 * cos(timeU),0.0f);
     
-
     result = result + camOffset;
 
     gluLookAt(result.x,result.y,result.z, camOffset.x, camOffset.y, camOffset.z, normal.x, normal.y, normal.z);
@@ -401,33 +401,33 @@ void keyboard(unsigned char key, int x, int y)
 
     //std::cout << normal.x << ' ' << normal.y << ' ' << normal.z << ' ' << camPos.x << ' ' << camPos.y << ' ' << camPos.z << ' ' << left.x << ' ' << left.y << ' ' << left.z << std::endl;
 
-    if(key == 'u' || key == GLUT_KEY_UP)
+    if(key == 'u' || key == 'U' || key == GLUT_KEY_UP)
     {
         camOffset -= glm::vec4(normal, 0.0f) * 0.25f;
     }
-    else if(key == 'd' || key == GLUT_KEY_DOWN)
+    else if(key == 'd' || key == 'D' || key == GLUT_KEY_DOWN)
     {
         camOffset += glm::vec4(normal, 0.0f) * 0.25f;
     }
-    else if(key == 'o' || key == GLUT_KEY_LEFT)
+    else if(key == 'o' || key == 'O' || key == GLUT_KEY_LEFT)
     {
         camOffset -= glm::vec4(left, 0.0f) * 0.25f;
     }
-    else if(key == 'p' || key == GLUT_KEY_RIGHT)
+    else if(key == 'p' || key == 'P' || key == GLUT_KEY_RIGHT)
     {
         camOffset += glm::vec4(left, 0.0f) * 0.25f;
     }
   }
 //  cout << key << endl;
-  if(key == 's')
+  if(key == 's' || key == 'S')
   {
     stop = true;
   }
-  else if(key == 'c')
+  else if(key == 'c' || key == 'C')
   {
     stop = false;
   }
-  else if(key == 'r')
+  else if(key == 'r' || key == 'R')
   {
     rotate += 0.05f;
   }
@@ -439,7 +439,7 @@ void keyboard(unsigned char key, int x, int y)
   {
     zoom = zoom / 1.01;
   }
-  else if(key == 'h')
+  else if(key == 'h' || key == 'H')
   {
     help = !help;
   }
