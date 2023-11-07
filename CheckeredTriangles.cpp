@@ -15,6 +15,7 @@ bool rotating = true; // Flag to control rotation
 #define magenta {0xff, 0, 0xff}
 GLubyte texture[][3] = {
     red, yellow,
+
     yellow, red,
 };
 
@@ -59,9 +60,10 @@ void display() {
         angle += 0.2f; // Increment the rotation angle
     } else
     {
-
         glRotatef(angle, 0.0f, 0.0f, 1.0f); // Rotate around the z-axis
     }
+
+    
 
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.5, 1.0);    glVertex2f(-3, 3);
@@ -81,13 +83,44 @@ void display() {
     glutSwapBuffers();
 }
 
+void moveUp(int direction) {
+    switch (direction) {
+        case 1: // up arrow
+            glTranslatef(0.0f, 0.1f, 0.0f); // move up
+            break;
+        case 2: // down arrow
+            glTranslatef(0.0f, -0.1f, 0.0f); // move down
+            break;
+        case 3: // right arrow
+            glTranslatef(0.1f, 0.0f, 0.0f); // move right
+            break;
+        case 4: // left arrow
+            glTranslatef(-0.1f, 0.0f, 0.0f); // move left
+            break;
+        default:
+            break;
+    }
+}
+
 
 void keyboard(unsigned char key, int x, int y) {
     if (key == 's' || key == 'S') {
         rotating = false; // Stop rotation when 's' is pressed
     } else if (key == 'c' || key == 'C') {
         rotating = true; // Continue rotation when 'c' is pressed
-    }
+    } else if (key == 72) { // up arrow
+        moveUp(1);
+        // move up
+    } else if (key == 80) { // down arrow
+        moveUp(2);
+        // move down
+    } else if (key == 77) { // right arrow
+        moveUp(3);
+        // move right
+    } else if (key == 75) { // left arrow
+        moveUp(4);
+        // move left
+    }   
 }
 
 
