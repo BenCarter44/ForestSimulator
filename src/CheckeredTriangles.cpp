@@ -153,7 +153,7 @@ void specialKeys(int key, int x, int y) {
 // Initializes GLUT and enters the main loop.
 int main(int argc, char** argv) {
     std::cout << "Checkered Triangles - Josh Canode and Benjamin Carter\n=============================" << std::endl;
-    std::cout << "Press s to stop animation\nPress c to continue animation\nPress - to zoom out\nPress + to zoom in\n" << std::endl; 
+    std::cout << "Press s to stop animation\nPress c to continue animation\nPress - to zoom out\nPress + to zoom in\nUse arrow keys to move object up/down/left/right" << std::endl; 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(520, 390);
