@@ -1,16 +1,16 @@
-// This application is a trivial illustration of texture mapping.  It draws
-// several triangles, each with a texture mapped on to it.  The same texture
-// is used for each triangle, but the mappings vary quite a bit so it looks as
-// if each triangle has a different texture.
-
+/**
+ * @file CheckeredTriangles.cpp
+ * @author Josh Canode and Benjamin Carter
+ * @brief A checkered triangle "windmill". Camera position is movable.
+ * @version 0.1
+ * @date 2023-11-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifdef PART1BUILD
 
-
-#ifdef __APPLE_CC__
-#include <GLUT/glut.h>
-#else
 #include <GL/glut.h>
-#endif
 #include <cstdio>
 #include <stdio.h>
 #include <iostream>
