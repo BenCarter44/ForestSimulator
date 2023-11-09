@@ -13,10 +13,14 @@
 #endif
 #include <cstdio>
 #include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 // Global variables
     float x_pos = 0;
     float y_pos = 0;
+    float zoom = 1.0;
 
 
 bool rotating = true; // Flag to control rotation
@@ -78,7 +82,7 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+    gluLookAt(0, 0, 5 * zoom, 0, 0, 0, 0, 1, 0);
 
  
         glTranslatef(x_pos, y_pos, 0.0f); // Translate to the center of the triangle
@@ -109,11 +113,20 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 's':
         case 'S':
+        case 'p':
             rotating = false; // Stop rotation when 's' is pressed
             break;
         case 'c':
         case 'C':
             rotating = true; // Continue rotation when 'c' is pressed
+            break;
+        case '-':
+        case '_':
+            zoom = zoom / 0.9;
+            break;
+        case '+':
+        case '=':
+            zoom = zoom / 1.1;
             break;
     }
 }
@@ -139,6 +152,8 @@ void specialKeys(int key, int x, int y) {
 
 // Initializes GLUT and enters the main loop.
 int main(int argc, char** argv) {
+    std::cout << "Checkered Triangles - Josh Canode and Benjamin Carter\n=============================" << std::endl;
+    std::cout << "Press s to stop animation\nPress c to continue animation\nPress - to zoom out\nPress + to zoom in\n" << std::endl; 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(520, 390);
@@ -149,7 +164,6 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyboard); // Register the keyboard callback
     glutSpecialFunc(specialKeys);
     glutTimerFunc(100, updateAngle, 0); 
-
 
     glutMainLoop();
     return 0;
