@@ -1,15 +1,18 @@
-// This program is a flyby around the RGB color cube.  One intersting note
-// is that because the cube is a convex polyhedron and it is the only thing
-// in the scene, we can render it using backface culling only. i.e., there
-// is no need for a depth buffer.
-
+/**
+ * @file ColorCubeFlyby.cpp
+ * @author Benjamin Carter
+ * @brief This program/animation animates cubes that bounce from one plane to another. The camera position is adjustable.
+ * @version 1.0
+ * @date 2023-11-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ * 
+ *  It was taken from an in-class resource and then modified.
+ */
 #ifdef PART2BUILD
 
-#ifdef __APPLE_CC__
-#include <GLUT/glut.h>
-#else
 #include <GL/glut.h>
-#endif
 #include <cmath>
 
 #include <iostream>
@@ -34,18 +37,52 @@ bool help = true;
 const int NUM_VERTICES = 8;
 const int NUM_FACES = 6;
 
+/**
+ * @brief Maps value x from range in_min/in_max to out_min out_max. This is a linear mapping.
+ * 
+ * @param x 
+ * @param in_min 
+ * @param in_max 
+ * @param out_min 
+ * @param out_max 
+ * @return float 
+ */
 float mapValue(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+/**
+ * @brief The structure holding information for each cube.
+ * 
+ */
 struct CubeInfo
 {
+  /**
+   * @brief Velocity vector of cube.
+   * 
+   */
   glm::vec3 velocity;
+  /**
+   * @brief Store position on bounce.
+   * 
+   */
   glm::vec3 oldPosition;
+  /**
+   * @brief Store time on bounce.
+   * 
+   */
   float oldTime = 0.0f;
 
+  /**
+   * @brief Colors array. A vertice count x 3 array.
+   * 
+   */
   float** colors;
 
+  /**
+   * @brief Construct a new Cube Info object. Random color set.
+   * 
+   */
   CubeInfo()
   {
     velocity = glm::vec3(0.0f);
@@ -60,6 +97,11 @@ struct CubeInfo
     }
   }
 
+  /**
+   * @brief Increase the lower threshold of the color (increase saturation)
+   * 
+   * @param in 
+   */
   void brightnessAdd(float in)
   {
     for(int i = 0; i < NUM_VERTICES; i++)
@@ -70,6 +112,13 @@ struct CubeInfo
     }
   }
 
+  /**
+   * @brief Increase the lower threshold of the color with RGB each independently
+   * 
+   * @param inX 
+   * @param inY 
+   * @param inZ 
+   */
   void brightnessAdd(float inX, float inY, float inZ)
   {
     for(int i = 0; i < NUM_VERTICES; i++)
@@ -82,7 +131,10 @@ struct CubeInfo
 
 };
 
-// x's
+/**
+ * @brief The cubes and planes.
+ * 
+ */
 float planeX = 10;
 
 CubeInfo cube1;
@@ -90,10 +142,12 @@ CubeInfo cube2;
 CubeInfo cube3;
 CubeInfo cube4;
 
+/**
+ * @brief The camera position.
+ * 
+ */
 glm::vec4 camOffset;
 float zoom;
-
-
 
 
 // The cube has opposite corners at (0,0,0) and (1,1,1), which are black and
@@ -101,8 +155,6 @@ float zoom;
 // green gradient, and the z-axis is the blue gradient.  The cube's position
 // and colors are fixed.
 namespace Cube {
-
-
 
 GLfloat vertices[NUM_VERTICES][3] = {
   {-0.5, -0.5, -0.5}, {-0.5, -0.5, 0.5}, {-0.5, 0.5, -0.5}, {-0.5, 0.5, 0.5},
@@ -116,11 +168,16 @@ GLfloat vertexColors[NUM_VERTICES][3] = {
   {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.0, 1.0, 0.0}, {0.0, 1.0, 1.0},
   {1.0, 0.0, 0.0}, {1.0, 0.0, 1.0}, {1.0, 1.0, 0.0}, {1.0, 1.0, 1.0}};
 
-
+/**
+ * @brief Draw a single cube. Set its properties through the CubeInfo struct.
+ * 
+ * @param cbInfo 
+ */
 void drawCube(CubeInfo* cbInfo)
 {
   glBegin(GL_QUADS);
   glm::vec3 pos = cbInfo->velocity * (timeU - cbInfo->oldTime) + cbInfo->oldPosition;
+  /* If cube bounce, reflect on normal  */
   if((pos.x > planeX && cbInfo->velocity.x > 0) || (pos.x < -planeX && cbInfo->velocity.x < 0))
   {
       glm::vec3 normalPlane = glm::vec3((pos.x > 0) * -2 + 1, 0, 0);
@@ -128,21 +185,14 @@ void drawCube(CubeInfo* cbInfo)
       cbInfo->velocity = ref;
       cbInfo->oldPosition = pos;
       cbInfo->oldTime = timeU;
-  //    std::cout << ref.x << ' ' << ref.y << ' ' << ref.z << ' ' << pos.x << endl;
   }
-  glm::vec3 camPos = glm::vec3(8*cos(timeU), 7*cos(timeU)-1, 4*cos(timeU/3)+2);
-      
-  glm::vec3 root = glm::vec3(0, 0, 0);
-  float distanceToCamera = glm::distance(root, camPos);
-  float scaleDistance = mapValue(distanceToCamera,0.0, 12.5,8.0, 0.1);
-//  std::cout << distanceToCamera << ' ' << scaleDistance << ' ' << timeU << std::endl;
 
+  /* Movement and rotation */
   glm::mat4 model = glm::mat4(1.0f);
-  
   model = glm::translate(model, pos);
   model = glm::rotate(model, timeU, glm::vec3(sin(timeU), cos(timeU), sin(timeU / 3)));
 
-
+  /* Draw each vertex.*/
   for (int i = 0; i < NUM_FACES; i++) {
     for (int j = 0; j < 4; j++) {
       glColor3f(cbInfo->colors[faces[i][j]][0], cbInfo->colors[faces[i][j]][1], cbInfo->colors[faces[i][j]][2]);
@@ -158,6 +208,14 @@ void drawCube(CubeInfo* cbInfo)
   glEnd();
 }
 
+/**
+ * @brief Helper for rendering strings to window.
+ * 
+ * @param x 
+ * @param y 
+ * @param font - Use GLUT fonts.
+ * @param string 
+ */
 void renderBitmapString(float x, float y, void *font, const char* string) {
   glRasterPos2f(x, y);
   int counter = 0;
@@ -170,6 +228,10 @@ void renderBitmapString(float x, float y, void *font, const char* string) {
   }
 }
 
+/**
+ * @brief The StringDraw class. Draws a string to a window.
+ * 
+ */
 class StringDraw
 {
   void* ft;
@@ -193,44 +255,35 @@ public:
   }
   void close()
   {
-    glMatrixMode(GL_PROJECTION); //swapped this with...
+    glMatrixMode(GL_PROJECTION);
     glPopMatrix();
-    glMatrixMode(GL_MODELVIEW); //...this
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
-    //added this
     glEnable(GL_TEXTURE_2D);
   }
 };
 
+/**
+ * @brief Draw function. Draw the planes, then the axes, then the cubes, then the outside planes.
+ * 
+ */
 void draw() {
 
   glBegin(GL_QUADS);
     glColor3f(153.0f / 255.0f ,102.0f / 255.0f ,51.0f / 255.0f);
-
-    // glVertex3f(-planeX, PLANE_SIZE, PLANE_SIZE);
-    // glVertex3f(-planeX, PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(-planeX, -PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(-planeX, -PLANE_SIZE, PLANE_SIZE);
-
     glVertex3f(-planeX, -PLANE_SIZE, PLANE_SIZE);
     glVertex3f(-planeX, -PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(-planeX, PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(-planeX, PLANE_SIZE, PLANE_SIZE);
 
-    glColor3f(153.0f / 255.0f ,102.0f / 255.0f ,51.0f / 255.0f);
     glVertex3f(planeX, PLANE_SIZE, PLANE_SIZE);
     glVertex3f(planeX, PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(planeX, -PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(planeX, -PLANE_SIZE, PLANE_SIZE);
 
-    // glVertex3f(planeX, -PLANE_SIZE, PLANE_SIZE);
-    // glVertex3f(planeX, -PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(planeX, PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(planeX, PLANE_SIZE, PLANE_SIZE);
-
-
   glEnd();
 
+  /* Draw Axes */
   glBegin(GL_LINES);
     glColor3f(255.0f,0.0f,0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
@@ -264,14 +317,13 @@ void draw() {
 
   glEnd();
 
-  
-
-
+  /* Draw Cubes */
   drawCube(&cube1);
   drawCube(&cube2);
   drawCube(&cube3);
   drawCube(&cube4);
   
+  /* Draw planes */
   glBegin(GL_QUADS);
     glColor3f(153.0f / 255.0f ,102.0f / 255.0f ,51.0f / 255.0f);
     glVertex3f(-planeX, PLANE_SIZE, PLANE_SIZE);
@@ -279,25 +331,13 @@ void draw() {
     glVertex3f(-planeX, -PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(-planeX, -PLANE_SIZE, PLANE_SIZE);
 
-    // glVertex3f(-planeX, -PLANE_SIZE, PLANE_SIZE);
-    // glVertex3f(-planeX, -PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(-planeX, PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(-planeX, PLANE_SIZE, PLANE_SIZE);
-
-    glColor3f(153.0f / 255.0f ,102.0f / 255.0f ,51.0f / 255.0f);
-    // glVertex3f(planeX, PLANE_SIZE, PLANE_SIZE);
-    // glVertex3f(planeX, PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(planeX, -PLANE_SIZE, -PLANE_SIZE);
-    // glVertex3f(planeX, -PLANE_SIZE, PLANE_SIZE);
-
     glVertex3f(planeX, -PLANE_SIZE, PLANE_SIZE);
     glVertex3f(planeX, -PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(planeX, PLANE_SIZE, -PLANE_SIZE);
     glVertex3f(planeX, PLANE_SIZE, PLANE_SIZE);
-
-
   glEnd();
 
+  /* Draw help */
   if(help)
   {
     glColor3f(1.0f,1.0f,1.0f);
@@ -316,7 +356,6 @@ void draw() {
     sd.close();
   }
   
-
 }
 }
 
@@ -333,21 +372,20 @@ void display() {
   glutSwapBuffers();
 }
 
-// We'll be flying around the cube by moving the camera along the orbit of the
-// curve u->(8*cos(u), 7*cos(u)-1, 4*cos(u/3)+2).  We keep the camera looking
-// at the center of the cube (0.5, 0.5, 0.5) and vary the up vector to achieve
-// a weird tumbling effect.
+/**
+ * @brief Adjust all animation counters. This runs every 1/60 sec.
+ * 
+ * @param v 
+ */
 void timer(int v) {
   if(!stop)
   {
     timeU += 0.01;
   }
     glLoadIdentity();
-  //  gluLookAt(8*cos(timeU), 7*cos(timeU)-1, 4*cos(timeU/3)+2, 0, 0, 0, cos(timeU), 1, 0);
     glm::mat4 model = glm::mat4(zoom);
     glm::vec3 normal = glm::vec3(0, -10 * cos(timeU), -30 * sin(timeU));
 
-//  model = glm::rotate(model, timeU, glm::vec3(sin(timeU), cos(timeU), sin(timeU / 3)));
     model = glm::rotate(model, rotate, normal);
     glm::vec4 result = model * glm::vec4(0.0f, -10 * sin(timeU), 30 * cos(timeU),0.0f);
     
@@ -384,8 +422,13 @@ void init() {
   glDepthFunc(GL_LESS);
 }
 
-
-
+/**
+ * @brief Handles keyboard input.
+ * 
+ * @param key 
+ * @param x  - not used
+ * @param y - not used
+ */
 void keyboard(unsigned char key, int x, int y)
 {
   if(stop)
@@ -446,9 +489,15 @@ void keyboard(unsigned char key, int x, int y)
     help = !help;
   }
 
-
 }
 
+/**
+ * @brief Handles special characters. Calls keyboard.
+ * 
+ * @param key 
+ * @param x  - not used
+ * @param y - not used
+ */
 void placeholderKeyboard(int key, int x, int y)
 {
   if(key == GLUT_KEY_UP)
@@ -470,6 +519,7 @@ void placeholderKeyboard(int key, int x, int y)
 }
 
 // The usual main for a GLUT application.
+
 int main(int argc, char** argv) {
   srand((unsigned)time(0));
   timeU = 0.0;
