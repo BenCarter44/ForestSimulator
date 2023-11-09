@@ -65,9 +65,11 @@ void reshape(int width, int height) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-// Draws three textured triangles.  Each triangle uses the same texture,
-// but the mappings of texture coordinates to vertex coordinates is
-// different in each triangle.
+/**
+ * @brief Update angle every 5 milliseconds.
+ * 
+ * @param a not used
+ */
 void updateAngle(int a)
 {
     if(rotating){
