@@ -2,25 +2,28 @@
 #include <cmath>
 #include <iostream>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Mesh.h"
+#include <stdio.h>
+#include <time.h>
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
 #endif
 
-void frame(int a);
-using namespace std;
 
-float mapF(float x, float in_min, float in_max, float out_min, float out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
+// Globals.
+Mesh groundMesh = Mesh();
+glm::vec3 camPos;
+unsigned int frameCount = 0;
+float currentTime = 0;
+float timeFPSOffset = 0;
+float fps = 60.0f;
+float oldFPS = fps;
 
-float myFunction(float x, float z)
+
+float groundFunction(float x, float z)
 {
     return cos((x - 1) / 2.0f) + cos((z - 2) / 2.0f) + 0.1 * sin(x - 1);
-
 }
 
 void reshape(int width, int height) {
@@ -31,155 +34,8 @@ void reshape(int width, int height) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-
-class Mesh
+void renderAxes()
 {
-private:
-    glm::vec3* meshPoints;
-    glm::vec3* cubePoints;
-    glm::vec3* sidePoints;
-    float div;
-    float start;
-    float end;
-    int totalPoints;
-    int totalCubePoints;
-    float floorY;
-public:
-    Mesh(float division, float start, float end, float floor)
-    {
-        totalPoints = division * division * 4;
-        meshPoints = new glm::vec3[totalPoints];
-        totalCubePoints = division * division;
-        cubePoints = new glm::vec3[totalCubePoints];
-        sidePoints = new glm::vec3[totalPoints * 4];
-        div = division;
-        this->start = start;
-        this->end = end;
-        this->floorY = floor;
-    }
-    ~Mesh()
-    {
-        delete[] meshPoints;
-        delete[] cubePoints;
-        delete[] sidePoints;
-    }
-    void setupMesh()
-    {
-        int meshCount = 0;
-        int cubeCount = 0;
-        int sideCount = 0;
-        for(float iy = 0; iy < div; iy++)
-        {
-            float adjY = mapF(iy, 0, div, start, end);
-            float adjYnext = mapF(iy + 1, 0, div, start, end);
-            for(float ix = 0; ix < div; ix++)
-            {
-                float adjX = mapF(ix, 0, div, start, end);
-                float adjXnext = mapF(ix + 1, 0, div, start, end);
-
-                float adjXhalf = mapF(ix + 0.5, 0, div, start, end);
-                float adjYhalf = mapF(iy + 0.5, 0, div, start, end);
-                float z = myFunction(adjXhalf, adjYhalf);
-
-                cubePoints[cubeCount].x = adjXhalf;
-                cubePoints[cubeCount].z = adjYhalf;
-                cubePoints[cubeCount].y = z;
-                cubeCount++;
-
-                // start, start
-                meshPoints[meshCount].x = adjX;
-                meshPoints[meshCount].y = z;
-                meshPoints[meshCount].z = adjY;
-                meshCount++;
-
-                // start, start + division
-                meshPoints[meshCount].x = adjX;
-                meshPoints[meshCount].y = z;
-                meshPoints[meshCount].z = adjYnext;
-                meshCount++;
-
-                // start + division, start + division
-                meshPoints[meshCount].x = adjXnext;
-                meshPoints[meshCount].y = z;
-                meshPoints[meshCount].z = adjYnext;
-                meshCount++;
-
-                // start + division, start
-                meshPoints[meshCount].x = adjXnext;
-                meshPoints[meshCount].y = z;
-                meshPoints[meshCount].z = adjY;
-                meshCount++;
-
-                // sides now.
-                for(int j = 0; j < 4; j++)
-                {
-                int firstPoint = -4 + j + meshCount;
-                int secondPoint = -4 + (j + 1) % 4 + meshCount;
-
-                sidePoints[sideCount] = meshPoints[firstPoint];
-                sideCount++;
-                sidePoints[sideCount] = meshPoints[secondPoint];
-                sideCount++;
-                sidePoints[sideCount] = meshPoints[secondPoint];
-                sidePoints[sideCount].y = floorY;
-                sideCount++;
-                sidePoints[sideCount] = meshPoints[firstPoint];
-                sidePoints[sideCount].y = floorY;
-                sideCount++;
-                }
-            }
-        }
-    }
-    glm::vec3* getTopPoints()
-    {
-        return meshPoints;
-    }
-    int numberTopPoints()
-    {
-        return totalPoints;
-    }
-
-    glm::vec3* getCubePoints()
-    {
-        return cubePoints;
-    }
-    int numberCubePoints()
-    {
-        return totalCubePoints;
-    }
-
-    glm::vec3* getSidePoints()
-    {
-        return sidePoints;
-    }
-
-    int numberSidePoints()
-    {
-        return totalPoints * 4;
-    }
-
-};
-
-
-void renderScene(void)
-{
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity(); // clears all transformations and what not.
-
-  gluLookAt(15,4.5,10, // The position of the camera
-      0.0, 0.0, 0.0f, // face what point
-      0.0f, 1.0f, 0.0f // camera rotation.
-      );
-
-  frame(0);
-}
-
-void frame(int ignore)
-{
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   // sets the matrix mode
-    
   glBegin(GL_LINES);
     glColor3f(255.0f,0.0f,0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
@@ -194,61 +50,111 @@ void frame(int ignore)
     glVertex3f(0.0f, 0.0f, 5.0f);
 
   glEnd();
+}
 
-  Mesh myMesh = Mesh(20, 0, 10, -3);
-  myMesh.setupMesh();
-  glColor3f(CC(95), CC(171), CC(37));
-  glBegin(GL_QUADS);
-    glm::vec3* points = myMesh.getTopPoints();
-    for(int i = 0; i < myMesh.numberTopPoints(); i++)
+void renderGround()
+{
+    glColor3f(CC(95), CC(171), CC(37));
+    glBegin(GL_QUADS);
+    glm::vec3* points = groundMesh.getTopPoints();
+    for(int i = 0; i < groundMesh.numberTopPoints(); i++)
     {
         glVertex3f(points[i].x - 5,points[i].y,points[i].z - 5);
     }
-    glEnd();
+   glEnd();
 
-  glPointSize(4);
-  glBegin(GL_POINTS);
-  glColor3f(CC(255), CC(255), CC(255));
-    glm::vec3* pointsCenter = myMesh.getCubePoints();
-    for(int i = 0; i < myMesh.numberCubePoints(); i++)
+    glColor3f(CC(110), CC(64), CC(28));
+    glBegin(GL_QUADS);
+    glm::vec3* pointsSide = groundMesh.getSidePoints();
+    for(int i = 0; i < groundMesh.numberSidePoints(); i++)
+    {
+        glVertex3f(pointsSide[i].x - 5,pointsSide[i].y,pointsSide[i].z - 5);
+    }
+    glEnd();
+}
+
+void renderCamera(void)
+{
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity(); // clears all transformations and what not.
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians((float)frameCount), glm::vec3(0, 1, 0) );
+
+    gluLookAt(15, 4.5, 10, // The position of the camera
+             0.0, 0.0, 0.0f, // face what point
+             0.0f, 1.0f, 0.0f // camera rotation.
+      );
+}
+
+void frame()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // sets the matrix mode
+    
+    renderAxes();
+    renderGround();
+
+    glPointSize(2);
+    glBegin(GL_POINTS);
+    glColor3f(CC(255), CC(255), CC(255));
+    glm::vec3* pointsCenter = groundMesh.getCubePoints();
+    for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
         glVertex3f(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
     }
     glEnd();
 
-  glColor3f(CC(110), CC(64), CC(28));
-  glPointSize(1);
-  glBegin(GL_QUADS);
-  glm::vec3* pointsSide = myMesh.getSidePoints();
-    for(int i = 0; i < myMesh.numberSidePoints(); i++)
-    {
-        glVertex3f(pointsSide[i].x - 5,pointsSide[i].y,pointsSide[i].z - 5);
-    }
-    glEnd();
-
- 
-  glutSwapBuffers();
+    glFlush();
+    glutSwapBuffers();
 }
 
+void timer(int a)
+{
+    frameCount = a;
+    timeFPSOffset = currentTime;
+    currentTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
+
+    fps = 0.9 * (1 / (currentTime - timeFPSOffset + 0.00001)) + 0.1 * fps;
+
+    glutPostRedisplay();
+    glutTimerFunc(1000.0 / 60.0f, timer, a + 1); 
+}
 
 void idleFunction()
 {
-  
+    if(frameCount % 30 == 0 && fps != oldFPS)
+    {
+        std::cout << fps << std::endl; 
+        oldFPS = fps;
+    }
 }
 
+void setupCalculations()
+{
+    groundMesh = Mesh(20, 0, 6, -3, groundFunction);
+    groundMesh.setup();
+
+    camPos = glm::vec3(15.0f, 4.5f, 10.0f);
+
+    renderCamera();
+}
 
 int main(int argc, char** argv)
 {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
-  glutInitWindowPosition(100, 100);
-  glutInitWindowSize(640, 640);
-  glutCreateWindow("A Function in 3D");
-  glutDisplayFunc(renderScene);
-  glutIdleFunc(idleFunction);
-  glutReshapeFunc(reshape);
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_PROGRAM_POINT_SIZE);
-  glutMainLoop();
-  return 0;
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(640, 640);
+    glutCreateWindow("A Function in 3D");
+    glutDisplayFunc(frame);
+    glutTimerFunc(100, timer, 0);
+    glutIdleFunc(idleFunction);
+    glutReshapeFunc(reshape);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_PROGRAM_POINT_SIZE);
+
+    setupCalculations();
+    glutMainLoop();
+    return 0;
 }
