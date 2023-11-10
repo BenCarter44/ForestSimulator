@@ -37,26 +37,31 @@ class Mesh
 private:
     glm::vec3* meshPoints;
     glm::vec3* cubePoints;
+    glm::vec3* sidePoints;
     float div;
     float start;
     float end;
     int totalPoints;
     int totalCubePoints;
+    float floorY;
 public:
-    Mesh(float division, float start, float end)
+    Mesh(float division, float start, float end, float floor)
     {
         totalPoints = division * division * 4;
         meshPoints = new glm::vec3[totalPoints];
         totalCubePoints = division * division;
         cubePoints = new glm::vec3[totalCubePoints];
+        sidePoints = new glm::vec3[totalPoints * 4];
         div = division;
         this->start = start;
         this->end = end;
+        this->floorY = floor;
     }
     void setupMesh()
     {
         int meshCount = 0;
         int cubeCount = 0;
+        int sideCount = 0;
         for(float iy = 0; iy < div; iy++)
         {
             float adjY = mapF(iy, 0, div, start, end);
@@ -98,6 +103,24 @@ public:
                 meshPoints[meshCount].y = z;
                 meshPoints[meshCount].z = adjY;
                 meshCount++;
+
+                // sides now.
+                for(int j = 0; j < 4; j++)
+                {
+                int firstPoint = -4 + j + meshCount;
+                int secondPoint = -4 + (j + 1) % 4 + meshCount;
+
+                sidePoints[sideCount] = meshPoints[firstPoint];
+                sideCount++;
+                sidePoints[sideCount] = meshPoints[secondPoint];
+                sideCount++;
+                sidePoints[sideCount] = meshPoints[secondPoint];
+                sidePoints[sideCount].y = floorY;
+                sideCount++;
+                sidePoints[sideCount] = meshPoints[firstPoint];
+                sidePoints[sideCount].y = floorY;
+                sideCount++;
+                }
             }
         }
     }
@@ -118,6 +141,17 @@ public:
     {
         return totalCubePoints;
     }
+
+    glm::vec3* getSidePoints()
+    {
+        return sidePoints;
+    }
+
+    int numberSidePoints()
+    {
+        return totalPoints * 4;
+    }
+
 };
 
 
@@ -155,7 +189,7 @@ void frame(int ignore)
 
   glEnd();
 
-  Mesh myMesh = Mesh(20, 0, 10);
+  Mesh myMesh = Mesh(20, 0, 10, -3);
   myMesh.setupMesh();
   glColor3f(CC(95), CC(171), CC(37));
   glBegin(GL_QUADS);
@@ -172,26 +206,17 @@ void frame(int ignore)
     glm::vec3* pointsCenter = myMesh.getCubePoints();
     for(int i = 0; i < myMesh.numberCubePoints(); i++)
     {
-        
         glVertex3f(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
     }
     glEnd();
 
   glColor3f(CC(110), CC(64), CC(28));
-  float floorY = -3;
   glPointSize(1);
   glBegin(GL_QUADS);
-    for(int i = 0; i < myMesh.numberTopPoints() / 4; i++)
+  glm::vec3* pointsSide = myMesh.getSidePoints();
+    for(int i = 0; i < myMesh.numberSidePoints(); i++)
     {
-        for(int j = 0; j < 4; j++)
-        {
-        int firstPoint = i * 4 + j;
-        int nextPoint = i * 4 + (j + 1) % 4;
-        glVertex3f(points[firstPoint].x - 5,points[firstPoint].y,points[firstPoint].z - 5);
-        glVertex3f(points[nextPoint].x - 5,points[nextPoint].y,points[nextPoint].z - 5);
-        glVertex3f(points[nextPoint].x - 5,floorY,points[nextPoint].z - 5);
-        glVertex3f(points[firstPoint].x - 5,floorY,points[firstPoint].z - 5);
-        }   
+        glVertex3f(pointsSide[i].x - 5,pointsSide[i].y,pointsSide[i].z - 5);
     }
     glEnd();
 
