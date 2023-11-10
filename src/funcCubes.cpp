@@ -57,6 +57,12 @@ public:
         this->end = end;
         this->floorY = floor;
     }
+    ~Mesh()
+    {
+        delete[] meshPoints;
+        delete[] cubePoints;
+        delete[] sidePoints;
+    }
     void setupMesh()
     {
         int meshCount = 0;
