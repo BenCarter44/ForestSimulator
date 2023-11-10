@@ -5,20 +5,24 @@
 #include "Mesh.h"
 #include <stdio.h>
 #include <time.h>
+#include "TextWriter.h"
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
 #endif
 
 
+#define TARGET_FPS 120.0f
 // Globals.
 Mesh groundMesh = Mesh();
-glm::vec3 camPos;
+glm::vec4 camPos;
 unsigned int frameCount = 0;
 float currentTime = 0;
 float timeFPSOffset = 0;
-float fps = 60.0f;
-float oldFPS = fps;
+float fps = 0.0f;
+float writeoutFPS = fps;
+int screenHeight = 0;
+int screenWidth = 0;
 
 
 float groundFunction(float x, float z)
@@ -26,7 +30,10 @@ float groundFunction(float x, float z)
     return cos((x - 1) / 2.0f) + cos((z - 2) / 2.0f) + 0.1 * sin(x - 1);
 }
 
-void reshape(int width, int height) {
+void reshape(int width, int height)
+{
+    screenHeight = height;
+    screenWidth = width;
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -79,9 +86,11 @@ void renderCamera(void)
     glLoadIdentity(); // clears all transformations and what not.
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians((float)frameCount), glm::vec3(0, 1, 0) );
+    model = glm::rotate(model, glm::radians(currentTime * 8), glm::vec3(0, 1, 0) );
 
-    gluLookAt(15, 4.5, 10, // The position of the camera
+    // apply the model to the vertex.
+    glm::vec3 camPosAdjust = model * camPos;
+    gluLookAt(camPosAdjust.x, camPosAdjust.y, camPosAdjust.z, // The position of the camera
              0.0, 0.0, 0.0f, // face what point
              0.0f, 1.0f, 0.0f // camera rotation.
       );
@@ -89,8 +98,8 @@ void renderCamera(void)
 
 void frame()
 {
+    renderCamera();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // sets the matrix mode
     
     renderAxes();
     renderGround();
@@ -105,6 +114,13 @@ void frame()
     }
     glEnd();
 
+    // render FPS.
+    TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
+    char buff[20];
+    sprintf(buff, "FPS: %4.1f",writeoutFPS);
+    tw.write(-0.95, 0.92, buff);
+    tw.close();
+
     glFlush();
     glutSwapBuffers();
 }
@@ -115,18 +131,18 @@ void timer(int a)
     timeFPSOffset = currentTime;
     currentTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
-    fps = 0.9 * (1 / (currentTime - timeFPSOffset + 0.00001)) + 0.1 * fps;
+    fps = 0.8 * (1 / (currentTime - timeFPSOffset + 0.00001)) + 0.2 * fps;
 
     glutPostRedisplay();
-    glutTimerFunc(1000.0 / 60.0f, timer, a + 1); 
+    glutTimerFunc(1000.0 / (0.7 * TARGET_FPS + 0.3 * fps), timer, a + 1); 
 }
 
 void idleFunction()
 {
-    if(frameCount % 30 == 0 && fps != oldFPS)
+    if(frameCount % ((int)(0.5 * fps) + 1) == 0 && abs(fps - writeoutFPS) > 0.05)
     {
-        std::cout << fps << std::endl; 
-        oldFPS = fps;
+    //    std::cout << frameCount << std::endl;
+        writeoutFPS = fps;
     }
 }
 
@@ -135,7 +151,7 @@ void setupCalculations()
     groundMesh = Mesh(20, 0, 6, -3, groundFunction);
     groundMesh.setup();
 
-    camPos = glm::vec3(15.0f, 4.5f, 10.0f);
+    camPos = glm::vec4(15.0f, 4.5f, 10.0f, 0.0f);
 
     renderCamera();
 }
@@ -146,6 +162,8 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(640, 640);
+    screenHeight = 640;
+    screenWidth = 640;
     glutCreateWindow("A Function in 3D");
     glutDisplayFunc(frame);
     glutTimerFunc(100, timer, 0);
