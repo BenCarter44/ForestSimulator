@@ -67,3 +67,5 @@ AliveTree::AliveTree(float x, float y, float height) : Tree(x, y, height) {
 void AliveTree::draw() const {
     // Implement the drawing logic for a living tree (as a cube) here.
 }
+
+
