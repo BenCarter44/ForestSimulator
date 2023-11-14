@@ -15,6 +15,7 @@ void Tree::noTree() { dimensions = 0.0f; }
 
 void Tree::draw() const {
     // Implement the drawing logic for a generic tree (as a cube) here.
+    
 }
 
 // BurningTree class constructor

@@ -52,7 +52,6 @@ class Tree
     float x_pos;
     float y_pos;
     float z_pos;
-    float dimensions;
     Color color;
     glm::vec3 dimensions;
     int treeState;
@@ -91,8 +90,40 @@ public:
     void draw()
     {
         glBegin(GL_QUADS);
+        //bottom
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+        //top
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos - (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos + dimensions.y, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos + dimensions.y, z_pos - (dimensions.z / 2));
+        //sides
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos - (dimensions.z / 2));
+        //sides
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos - (dimensions.z / 2));
 
-        glVertex3f(xPos)
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+        glVertex3f(x_pos - (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos, z_pos + (dimensions.z / 2));
+        glVertex3f(x_pos + (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
+
+
+
+        
         
 
         /* Draw each vertex.*/
@@ -204,10 +235,9 @@ public:
         float chanceTOspread = (neighbors * forest->TREE_NEIGHBOR_BURN_FACTOR) + forest->TREE_BURN_CHANCE_MIN;
         if(randomIF(chanceTOspread))
         {
-            
+            // spread
+            spreadToNeighbors();
         }
-        
-            
         
             
     }
@@ -230,6 +260,11 @@ public:
         }
         
     
+    }
+
+    void spreadToNeighbors()
+    {
+        TODO
     }
     
     
