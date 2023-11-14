@@ -5,7 +5,10 @@
 #include "Mesh.h"
 #include <stdio.h>
 #include <time.h>
+#include <ctime>
+#include <cstdlib>  // for rand() and srand()
 #include "TextWriter.h"
+#include "Trees.h"
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
@@ -23,6 +26,10 @@ float fps = 0.0f;
 float writeoutFPS = fps;
 int screenHeight = 0;
 int screenWidth = 0;
+ForestAnimationSettings forestSettings;
+
+// Trees
+Tree** allTrees;
 
 
 float groundFunction(float x, float z)
@@ -102,19 +109,28 @@ void frame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     renderAxes();
-    renderGround();
+     renderGround();
 
-    glPointSize(2);
-    glBegin(GL_POINTS);
-    glColor3f(CC(255), CC(255), CC(255));
-    glm::vec3* pointsCenter = groundMesh.getCubePoints();
+    // glPointSize(2);
+    // glBegin(GL_POINTS);
+    // glColor3f(CC(255), CC(255), CC(255));
+    // glm::vec3* pointsCenter = groundMesh.getCubePoints();
+    // for(int i = 0; i < groundMesh.numberCubePoints(); i++)
+    // {
+    //     glVertex3f(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
+    // }
+
+    // glEnd();
+   // glPointSize(1);
+
+ //   render the trees.
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
-        glVertex3f(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
+        allTrees[i]->draw();
     }
-    glEnd();
-
+   
     // render FPS.
+    glColor3f(CC(255), CC(255), CC(255));
     TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
     char buff[20];
     sprintf(buff, "FPS: %4.1f",writeoutFPS);
@@ -148,8 +164,25 @@ void idleFunction()
 
 void setupCalculations()
 {
-    groundMesh = Mesh(20, 0, 6, -3, groundFunction);
+    std::srand(std::time(0) * 2.0f - 22);
+    groundMesh = Mesh(50, 0, 8, -3, groundFunction);
     groundMesh.setup();
+
+    allTrees = new Tree*[groundMesh.numberCubePoints()];
+    glm::vec3* pointsCenter = groundMesh.getCubePoints();
+
+    float squareWidth = groundMesh.getSquareWidth();
+
+    for(int i = 0; i < groundMesh.numberCubePoints(); i++)
+    {
+        glm::vec3 position = glm::vec3(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
+
+        float treeWidth = squareWidth * 0.6;
+        float randomHeight = Mesh::mapF(std::rand(), 0, RAND_MAX, 0.2, 1);
+        glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
+
+        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps);
+    }
 
     camPos = glm::vec4(15.0f, 4.5f, 10.0f, 0.0f);
 
