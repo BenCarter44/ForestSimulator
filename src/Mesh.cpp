@@ -121,3 +121,8 @@ int Mesh::numberSidePoints()
 {
     return totalPoints * 4;
 }
+
+float Mesh::getSquareWidth()
+{
+    return abs(end - start) / div; 
+}
