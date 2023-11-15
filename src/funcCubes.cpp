@@ -16,6 +16,8 @@
 
 
 #define TARGET_FPS 120.0f
+float UNITS_PER_SECOND = 0.5f;
+
 // Globals.
 Mesh groundMesh = Mesh();
 glm::vec4 camPos;
@@ -24,12 +26,15 @@ float currentTime = 0;
 float timeFPSOffset = 0;
 float fps = 0.0f;
 float writeoutFPS = fps;
+float unitCounter = 0.0f;
+
 int screenHeight = 0;
 int screenWidth = 0;
 ForestAnimationSettings forestSettings;
 
 // Trees
 Tree** allTrees;
+
 
 
 float groundFunction(float x, float z)
@@ -126,6 +131,7 @@ void frame()
  //   render the trees.
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
+        allTrees[i]->simulate();
         allTrees[i]->draw();
     }
    
@@ -135,6 +141,18 @@ void frame()
     char buff[20];
     sprintf(buff, "FPS: %4.1f",writeoutFPS);
     tw.write(-0.95, 0.92, buff);
+    sprintf(buff, "Years: %4.1f",unitCounter);
+    tw.write(-0.95, 0.85, buff);
+
+    sprintf(buff, "Alive Tree: %d",Tree::numberOfTreesAlive);
+    tw.write(-0.95, 0.80, buff);
+    sprintf(buff, "Burning Tree: %d",Tree::numberOfTreesBurning);
+    tw.write(-0.95, 0.75, buff);
+    sprintf(buff, "Burned Tree: %d",Tree::numberOfTreesBurned);
+    tw.write(-0.95, 0.70, buff);
+    sprintf(buff, "Bare Rock: %d",Tree::numberOfNoTrees);
+    tw.write(-0.95, 0.65, buff);
+
     tw.close();
 
     glFlush();
@@ -146,6 +164,10 @@ void timer(int a)
     frameCount = a;
     timeFPSOffset = currentTime;
     currentTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
+    if(frameCount > 10)
+    {
+        unitCounter += (currentTime - timeFPSOffset) * UNITS_PER_SECOND;
+    }
 
     fps = 0.8 * (1 / (currentTime - timeFPSOffset + 0.00001)) + 0.2 * fps;
 
@@ -164,8 +186,13 @@ void idleFunction()
 
 void setupCalculations()
 {
+    unitCounter = 0.0;
     std::srand(std::time(0) * 2.0f - 22);
-    groundMesh = Mesh(50, 0, 8, -3, groundFunction);
+    
+    /*
+    Mesh!!
+    */
+    groundMesh = Mesh(25, 0, 8, -3, groundFunction);
     groundMesh.setup();
 
     allTrees = new Tree*[groundMesh.numberCubePoints()];
@@ -181,10 +208,11 @@ void setupCalculations()
         float randomHeight = Mesh::mapF(std::rand(), 0, RAND_MAX, 0.2, 1);
         glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
 
-        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps);
+        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter);
+        allTrees[i]->incrementAge(100.0);
     }
 
-    camPos = glm::vec4(15.0f, 4.5f, 10.0f, 0.0f);
+    camPos = glm::vec4(12.0f, 7.5f, 8.0f, 0.0f);
 
     renderCamera();
 }
