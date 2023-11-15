@@ -202,7 +202,7 @@ void Tree::aliveTOBurning()
     numberOfTreesAlive--;
     treeState = 2;
     creationTime = *(unitClock);
-//    std::cout << *unitClock <<  "Tree on fire!\n";
+//    std::cout << *unitClock <<  " Tree on fire!\n";
 }
 
 void Tree::burnedTOAlive()
@@ -221,7 +221,7 @@ void Tree::burnedTONoTree()
     numberOfNoTrees++;
     treeState = 0;
     creationTime = *(unitClock);
-//     std::cout << *unitClock << " A burned tree rotted away... bare rock now\n";
+     std::cout << *unitClock << " A burned tree rotted away... bare rock now\n";
 }
 void Tree::burningTOBurned()
 {

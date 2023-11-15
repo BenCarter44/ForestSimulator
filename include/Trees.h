@@ -16,7 +16,7 @@
 
 struct ForestAnimationSettings // per a "unit" in time.
 {
-    float TREE_NEW_GROW_RATE = 0.02f;
+    float TREE_NEW_GROW_RATE = 0.05f;
     float TREE_BURN_CHANCE_MAX = 0.0f; // 0.0033f;
     float TREE_BURN_CHANCE_MIN = 0.04f;
     float TREE_BURN_AGE_FACTOR = 1.0f;

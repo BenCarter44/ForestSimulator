@@ -18,6 +18,15 @@
 #define TARGET_FPS 120.0f
 float UNITS_PER_SECOND = 0.5f;
 
+
+#define MESH_DIVISIONS 50
+#define MESH_START -12
+#define MESH_END 12
+#define MESH_DEPTH -3
+
+#define MESH_TRANSLATE_X 0
+#define MESH_TRANSLATE_Z 0
+
 // Globals.
 Mesh groundMesh = Mesh();
 glm::vec4 camPos;
@@ -39,7 +48,7 @@ Tree** allTrees;
 
 float groundFunction(float x, float z)
 {
-    return cos((x - 1) / 2.0f) + cos((z - 2) / 2.0f) + 0.1 * sin(x - 1);
+    return cos((x - 1) / 2.0f) + cos((z - 2) / 2.0f) + 0.1 * sin(x - 1) + 0.05 * x;
 }
 
 void reshape(int width, int height)
@@ -78,16 +87,17 @@ void renderGround()
     glm::vec3* points = groundMesh.getTopPoints();
     for(int i = 0; i < groundMesh.numberTopPoints(); i++)
     {
-        glVertex3f(points[i].x - 5,points[i].y,points[i].z - 5);
+        glVertex3f(points[i].x + MESH_TRANSLATE_X,points[i].y,points[i].z + MESH_TRANSLATE_Z);
     }
    glEnd();
 
+    // draw sides.
     glColor3f(CC(110), CC(64), CC(28));
     glBegin(GL_QUADS);
     glm::vec3* pointsSide = groundMesh.getSidePoints();
     for(int i = 0; i < groundMesh.numberSidePoints(); i++)
     {
-        glVertex3f(pointsSide[i].x - 5,pointsSide[i].y,pointsSide[i].z - 5);
+        glVertex3f(pointsSide[i].x + MESH_TRANSLATE_X, pointsSide[i].y, pointsSide[i].z + MESH_TRANSLATE_Z);
     }
     glEnd();
 }
@@ -100,10 +110,13 @@ void renderCamera(void)
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::rotate(model, glm::radians(currentTime * 8), glm::vec3(0, 1, 0) );
 
+
+
     // apply the model to the vertex.
     glm::vec3 camPosAdjust = model * camPos;
+    
     gluLookAt(camPosAdjust.x, camPosAdjust.y, camPosAdjust.z, // The position of the camera
-             0.0, 0.0, 0.0f, // face what point
+             0.0f, 0.0f, 0.0f, // face what point
              0.0f, 1.0f, 0.0f // camera rotation.
       );
 }
@@ -136,7 +149,7 @@ void frame()
     }
    
     // render FPS.
-    glColor3f(CC(255), CC(255), CC(255));
+    glColor3f(CC(0), CC(0), CC(0));
     TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
     char buff[20];
     sprintf(buff, "FPS: %4.1f",writeoutFPS);
@@ -192,7 +205,7 @@ void setupCalculations()
     /*
     Mesh!!
     */
-    groundMesh = Mesh(25, 0, 8, -3, groundFunction);
+    groundMesh = Mesh(MESH_DIVISIONS, MESH_START, MESH_END, MESH_DEPTH, groundFunction);
     groundMesh.setup();
 
     allTrees = new Tree*[groundMesh.numberCubePoints()];
@@ -202,7 +215,7 @@ void setupCalculations()
 
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
-        glm::vec3 position = glm::vec3(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
+        glm::vec3 position = glm::vec3(pointsCenter[i].x + MESH_TRANSLATE_X,pointsCenter[i].y,pointsCenter[i].z + MESH_TRANSLATE_Z);
 
         float treeWidth = squareWidth * 0.6;
         float randomHeight = Mesh::mapF(std::rand(), 0, RAND_MAX, 0.2, 1);
@@ -213,7 +226,8 @@ void setupCalculations()
     }
 
     camPos = glm::vec4(12.0f, 7.5f, 8.0f, 0.0f);
-
+    
+    glClearColor(CC(131), CC(228), CC(233), 1.0f);
     renderCamera();
 }
 
@@ -225,7 +239,7 @@ int main(int argc, char** argv)
     glutInitWindowSize(640, 640);
     screenHeight = 640;
     screenWidth = 640;
-    glutCreateWindow("A Function in 3D");
+    glutCreateWindow("Tree Simulator");
     glutDisplayFunc(frame);
     glutTimerFunc(100, timer, 0);
     glutIdleFunc(idleFunction);
