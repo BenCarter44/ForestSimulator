@@ -60,6 +60,10 @@ private:
     float* unitClock;
     float creationTime;
     float heightPercent;
+    int numberOfNeighbors;
+    int neighborsOnFire = 0;
+    Tree** neighborTrees;
+
 
 public:
     static int numberOfTreesAlive;
@@ -69,8 +73,17 @@ public:
 
     // Constructor
     Tree(); // do not use... Exits only for memory allocation with new. 
-    Tree(glm::vec3 position, glm::vec3 dimensions, ForestAnimationSettings* forest, float* fps, float unitsPerSecond, float* unitClockI);
-    
+    Tree(
+        glm::vec3 position, 
+        glm::vec3 dimensions, 
+        ForestAnimationSettings* forest, 
+        float* fps, 
+        float unitsPerSecond, 
+        float* unitClockI, 
+        Tree** neighborsTrees,
+        int numberOFneighbors
+    );
+
     // A unit in time.
     void incrementAge(float t);
     void draw();
@@ -88,6 +101,9 @@ private:
     void simAliveTree();
     void simBurningTree();
     void simBurnedTree();
+
+    void registerNeighborFire();
+    void regieterNeighborNoFire();
 
 public:
     void simulate();

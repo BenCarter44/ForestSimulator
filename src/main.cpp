@@ -9,6 +9,7 @@
 #include <cstdlib>  // for rand() and srand()
 #include "TextWriter.h"
 #include "Trees.h"
+#include <vector>
 
 #ifndef CC
 #define CC(arg) (arg / 255.0f)
@@ -127,27 +128,15 @@ void frame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     renderAxes();
-     renderGround();
+    renderGround();
 
-    // glPointSize(2);
-    // glBegin(GL_POINTS);
-    // glColor3f(CC(255), CC(255), CC(255));
-    // glm::vec3* pointsCenter = groundMesh.getCubePoints();
-    // for(int i = 0; i < groundMesh.numberCubePoints(); i++)
-    // {
-    //     glVertex3f(pointsCenter[i].x - 5,pointsCenter[i].y,pointsCenter[i].z - 5);
-    // }
-
-    // glEnd();
-   // glPointSize(1);
-
- //   render the trees.
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
         allTrees[i]->simulate();
         allTrees[i]->draw();
     }
-   
+    
+    
     // render FPS.
     glColor3f(CC(0), CC(0), CC(0));
     TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
@@ -197,6 +186,75 @@ void idleFunction()
     }
 }
 
+void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees)
+{
+    
+    int x_start = i % MESH_DIVISIONS;
+    int y_start = i / MESH_DIVISIONS;
+
+
+    for(int x = x_start - 1; x <= x_start+1; x++)
+    {
+        if (x < 0 || x >= MESH_DIVISIONS)
+        {
+            continue;
+        }
+
+        for (int y = y_start - 1; y <= y_start+1; y++)
+        {   
+            if (y < 0 || y >= MESH_DIVISIONS)
+            {
+                continue;
+            }
+            if (x == x_start && y == y_start)
+            {
+                continue;
+            }
+            
+                if(x + 1 < MESH_DIVISIONS)
+                {
+                    i = x + 1 + MESH_DIVISIONS * y;
+                    foundNeighbors.push_back(allTrees[i]);
+                } 
+                else if (x + 1 < MESH_DIVISIONS)
+                {
+                    i = x + 1 + MESH_DIVISIONS * y;
+                    foundNeighbors.push_back(allTrees[i]);
+                }
+                else if (x - 1 > 0)
+                {
+                    i = x - 1 + MESH_DIVISIONS * y;
+                    foundNeighbors.push_back(allTrees[i]);
+                }
+                else if (x - 1 > 0)
+                {
+                    i = x - 1 + MESH_DIVISIONS * y;
+                    foundNeighbors.push_back(allTrees[i]);
+                }
+                if(y + 1 < MESH_DIVISIONS)
+                {
+                    i = x + MESH_DIVISIONS * (y + 1);
+                    foundNeighbors.push_back(allTrees[i]);
+                } 
+                else if (y + 1 < MESH_DIVISIONS)
+                {
+                    i = x + MESH_DIVISIONS * (y + 1);
+                    foundNeighbors.push_back(allTrees[i]);
+                }
+                else if (y - 1 > 0)
+                {
+                    i = x + MESH_DIVISIONS * (y - 1);
+                    foundNeighbors.push_back(allTrees[i]);
+                }
+                else if (y - 1 > 0)
+                {
+                    i = x + MESH_DIVISIONS * (y - 1);
+                    foundNeighbors.push_back(allTrees[i]);
+                }
+        }
+    }
+}
+
 void setupCalculations()
 {
     unitCounter = 0.0;
@@ -208,7 +266,8 @@ void setupCalculations()
     groundMesh = Mesh(MESH_DIVISIONS, MESH_START, MESH_END, MESH_DEPTH, groundFunction);
     groundMesh.setup();
 
-    allTrees = new Tree*[groundMesh.numberCubePoints()];
+    /* Create the tree array */
+    allTrees = new Tree*[groundMesh.numberCubePoints()]; 
     glm::vec3* pointsCenter = groundMesh.getCubePoints();
 
     float squareWidth = groundMesh.getSquareWidth();
@@ -221,8 +280,16 @@ void setupCalculations()
         float randomHeight = Mesh::mapF(std::rand(), 0, RAND_MAX, 0.2, 1);
         glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
 
-        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter);
+        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter, nullptr, 0);
         allTrees[i]->incrementAge(100.0);
+    }
+    
+    for(int i = 0; i < groundMesh.numberCubePoints(); i++)
+    {
+
+        std::vector<Tree*> foundNeighbors;
+        get_neighbors(i,foundNeighbors, allTrees);
+
     }
 
     camPos = glm::vec4(12.0f, 7.5f, 8.0f, 0.0f);

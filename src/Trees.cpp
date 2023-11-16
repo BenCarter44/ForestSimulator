@@ -10,8 +10,31 @@ Tree::Tree()
     setup = false;
 }
 
-Tree::Tree(glm::vec3 position, glm::vec3 dimensions, ForestAnimationSettings* forest, float* fps, float unitsPerSecond, float* unitClockI)
+Tree::Tree(
+    glm::vec3 position, 
+    glm::vec3 dimensions, 
+    ForestAnimationSettings* forest, 
+    float* fps, 
+    float unitsPerSecond, 
+    float* unitClockI, 
+    Tree** neighborsTrees,
+    int numberOfNeighbors)
 {
+    setup = true;
+    x_pos = position.x;
+    y_pos = position.y;
+    z_pos = position.z;
+    this->dimensions = dimensions;
+    heightPercent = 1.0f;
+    
+    neighborsOnFire = 0;
+    this->numberOfNeighbors = numberOfNeighbors;
+    this->neighborTrees = neighborsTrees;
+
+    unitClock = unitClockI;
+
+    creationTime = *(unitClock);
+
     setup = true;
     x_pos = position.x;
     y_pos = position.y;
@@ -202,7 +225,16 @@ void Tree::aliveTOBurning()
     numberOfTreesAlive--;
     treeState = 2;
     creationTime = *(unitClock);
-//    std::cout << *unitClock <<  " Tree on fire!\n";
+
+    for (int i=0; i < numberOfNeighbors; i++)
+    {
+        Tree* tree = neighborTrees[i];
+        tree->registerNeighborFire();
+    }
+
+
+
+    std::cout << *unitClock <<  " Tree on fire!\n";
 }
 
 void Tree::burnedTOAlive()
@@ -213,6 +245,12 @@ void Tree::burnedTOAlive()
     treeState = 1;
     creationTime = *(unitClock);
     std::cout << *unitClock << " A burned tree regrew!\n";
+
+    for (int i=0; i < numberOfNeighbors; i++)
+    {
+        Tree* tree = neighborTrees[i];
+        tree->regieterNeighborNoFire();
+    }
 }
 void Tree::burnedTONoTree()
 {
@@ -261,6 +299,7 @@ void Tree::simAliveTree()
         burningTOBurned();
         burnedTONoTree(); 
     }  
+    return;
 
     // change alive to burning 10 precent of the time
     float age = *(unitClock) - creationTime;
@@ -309,6 +348,16 @@ void Tree::simBurnedTree()
     }
     
 
+}
+
+void registerNeighborFire() // called be the tree reciving the fire
+{
+    neighborsOnFire += 1;
+}
+
+void regieterNeighborNoFire()
+{
+    neighborsOnFire -= 1;
 }
 
 void Tree::simulate()
