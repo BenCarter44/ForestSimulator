@@ -96,11 +96,6 @@ public:
     {
       //   TODO. will be in CPP file.
     }
-
-    void spreadToNeighbors()
-    {
-        //TODO
-    }
     
 };
 
