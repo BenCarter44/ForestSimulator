@@ -160,13 +160,9 @@ void Tree::draw()
     }
 
 
-
-    
 //    std::cout << x_pos << ' ' << y_pos << ' ' << z_pos << ' ' << dimensions.x << ' ' << dimensions.y << ' ' << dimensions.z << ' ' << std::endl;
     
     // for burning:
-
-
 
 
         float topY = heightPercent * (points[7].y - points[0].y) + points[0].y;
@@ -393,11 +389,14 @@ void Tree::simAliveTree()
         float flamability = forest->TREE_MINIMUM_FLAMABILITY + forest->TREE_AGE_FLAMABILITY_FACTOR * age;
         if(randomIF(flamability))
         {
-            // LIGHTNING SPAWN HERE
+            // LIGHTNING SPAWN HERE            
+            lightningStrike(glm::vec3(x_pos, y_pos, z_pos), dimensions);
+
             numberOfFireStarts++;
             treeFireStarter = true;
             exitAlive();
             enterBurning();
+
             return;
         }
     }
@@ -505,4 +504,81 @@ void Tree::simulate()
     {
         simBurnedTree();
     }
+}
+
+void Tree::lightningStrike(glm::vec3 position, glm::vec3 dimensions) {
+    static int frameCounter = 0;
+
+    float time = 3.0f; // Time in seconds to display the lightning
+
+    int numFrames = time * (*fps);
+    
+    float shrink_amount = dimensions.x / numFrames;
+
+
+    if (frameCounter < numFrames) {
+        
+        dimensions.x -= shrink_amount;
+        dimensions.z -= shrink_amount;
+
+        glm::vec3 point0 = glm::vec3(position.x - (dimensions.x / 2), position.y + 10.0f, position.z - (dimensions.z / 2));
+        glm::vec3 point1 = glm::vec3(position.x - (dimensions.x / 2), position.y + 10.0f, position.z + (dimensions.z / 2));
+        glm::vec3 point2 = glm::vec3(position.x + (dimensions.x / 2), position.y + 10.0f, position.z + (dimensions.z / 2));
+        glm::vec3 point3 = glm::vec3(position.x + (dimensions.x / 2), position.y + 10.0f, position.z - (dimensions.z / 2));
+
+        glm::vec3 point4 = glm::vec3(position.x - (dimensions.x / 2), position.y + dimensions.y, position.z - (dimensions.z / 2));
+        glm::vec3 point5 = glm::vec3(position.x - (dimensions.x / 2), position.y + dimensions.y, position.z + (dimensions.z / 2));
+        glm::vec3 point6 = glm::vec3(position.x + (dimensions.x / 2), position.y + dimensions.y, position.z + (dimensions.z / 2));
+        glm::vec3 point7 = glm::vec3(position.x + (dimensions.x / 2), position.y + dimensions.y, position.z - (dimensions.z / 2));
+        // Set the color
+        glColor3f(CC(255.0f), CC(255.0f), CC(255.0f));
+
+        // Draw the shape outlined by the points
+        glBegin(GL_POLYGON);
+
+        // Bottom face
+        glVertex3f(point0.x, point0.y, point0.z);
+        glVertex3f(point1.x, point1.y, point1.z);
+
+        glVertex3f(point1.x, point1.y, point1.z);
+        glVertex3f(point2.x, point2.y, point2.z);
+
+        glVertex3f(point2.x, point2.y, point2.z);
+        glVertex3f(point3.x, point3.y, point3.z);
+
+        glVertex3f(point3.x, point3.y, point3.z);
+        glVertex3f(point0.x, point0.y, point0.z);
+
+        // Top face
+        glVertex3f(point4.x, point4.y, point4.z);
+        glVertex3f(point5.x, point5.y, point5.z);
+
+        glVertex3f(point5.x, point5.y, point5.z);
+        glVertex3f(point6.x, point6.y, point6.z);
+
+        glVertex3f(point6.x, point6.y, point6.z);
+        glVertex3f(point7.x, point7.y, point7.z);
+
+        glVertex3f(point7.x, point7.y, point7.z);
+        glVertex3f(point4.x, point4.y, point4.z);
+
+        // Connecting lines between top and bottom faces
+        glVertex3f(point0.x, point0.y, point0.z);
+        glVertex3f(point4.x, point4.y, point4.z);
+
+        glVertex3f(point1.x, point1.y, point1.z);
+        glVertex3f(point5.x, point5.y, point5.z);
+
+        glVertex3f(point2.x, point2.y, point2.z);
+        glVertex3f(point6.x, point6.y, point6.z);
+
+        glVertex3f(point3.x, point3.y, point3.z);
+        glVertex3f(point7.x, point7.y, point7.z);
+
+        glEnd();
+
+        frameCounter++;
+    }
+    glColor3f(CC(0.0f), CC(0.0f), CC(0.0f));
+
 }
