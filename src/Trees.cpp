@@ -390,7 +390,7 @@ void Tree::simAliveTree()
         if(randomIF(flamability))
         {
             // LIGHTNING SPAWN HERE            
-            lightningStrike(glm::vec3(x_pos, y_pos, z_pos), dimensions);
+            // lightningStrike(glm::vec3(x_pos, y_pos, z_pos), dimensions);
 
             numberOfFireStarts++;
             treeFireStarter = true;

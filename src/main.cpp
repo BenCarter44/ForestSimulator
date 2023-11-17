@@ -20,11 +20,11 @@
 float UNITS_PER_SECOND = 0.5f;
 
 
-#define MESH_DIVISIONS 65
+#define MESH_DIVISIONS 40
 // 65, and 22 are finest at fps
 // 100, and 50 are for full screen.
-#define MESH_START -22
-#define MESH_END 22
+#define MESH_START -12
+#define MESH_END 12
 #define MESH_DEPTH -3
 
 #define MESH_TRANSLATE_X 0
@@ -116,7 +116,7 @@ void renderCamera(void)
 
     float x = cos(currentTime  / 10.0) * 18.0f;
     float z = sin(currentTime  / 10.0) * 18.0f;
-    float y = 7.0f + sin(currentTime/10) * 10;
+    float y = 7.0f + sin(currentTime/10) * 5.0f;
 
 
     gluLookAt(x, y, z, // The position of the camera
