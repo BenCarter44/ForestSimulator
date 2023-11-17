@@ -393,6 +393,7 @@ void Tree::simAliveTree()
         float flamability = forest->TREE_MINIMUM_FLAMABILITY + forest->TREE_AGE_FLAMABILITY_FACTOR * age;
         if(randomIF(flamability))
         {
+            // LIGHTNING SPAWN HERE
             numberOfFireStarts++;
             treeFireStarter = true;
             exitAlive();

@@ -20,9 +20,11 @@
 float UNITS_PER_SECOND = 0.5f;
 
 
-#define MESH_DIVISIONS 50
-#define MESH_START -24
-#define MESH_END 24
+#define MESH_DIVISIONS 65
+// 65, and 22 are finest at fps
+// 100, and 50 are for full screen.
+#define MESH_START -22
+#define MESH_END 22
 #define MESH_DEPTH -3
 
 #define MESH_TRANSLATE_X 0
