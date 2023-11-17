@@ -21,7 +21,7 @@ struct ForestAnimationSettings // per a "unit" in time.
     // noTree settings.
     float TREE_BLANK_SIT_VACANT_UNIT_TIME = 20.0f;
     float TREE_NEW_GROW_FLAT_RATE = 0.00004f; // smallest float value.
-    float TREE_NEW_GROW_NEIGHBOR_RATE = 0.003f;
+    float TREE_NEW_GROW_NEIGHBOR_RATE = 0.0025f;
 
     // alive tree settings.
     float TREE_INITIAL_ALIVE = 0.60f;
