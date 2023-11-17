@@ -112,30 +112,15 @@ void renderCamera(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); // clears all transformations and what not.
 
-
-    // float x = cos(currentTime  / 10.0) * 7.75f;
-    // float z = sin(currentTime  / 10.0) * 7.75f;
-
-    // float groundY = groundFunction(x, z);
-
-    // float x2 = cos((currentTime + 5)  / 10.0) * 7.75f;
-    // float z2 = sin((currentTime + 5)  / 10.0) * 7.75f;
-    // float y2 = groundFunction(x,z) ;
-
-    // gluLookAt(x, groundY + 1.9, z, // The position of the camera
-    //          x2, y2 + 1.5, z2, // face what point
-    //          0.0f, 1.0f, 0.0f // camera rotation.
-    //   );
-
     float x = cos(currentTime  / 10.0) * 18.0f;
     float z = sin(currentTime  / 10.0) * 18.0f;
+    float y = 7.0f + sin(currentTime/10) * 10;
 
-    gluLookAt(x, 16, z, // The position of the camera
+
+    gluLookAt(x, y, z, // The position of the camera
              0.0, 0.0, 0.0, // face what point
              0.0f, 1.0f, 0.0f // camera rotation.
       );
-
-
 }
 
 void frame()

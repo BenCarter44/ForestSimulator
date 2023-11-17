@@ -105,6 +105,7 @@ public:
         float* unitClockI
     );
 
+    void lightningStrike(glm::vec3 position, glm::vec3 dimensions);
 
     void setNeighborData(Tree** neighborTrees, int numberOFneighbors);
 
