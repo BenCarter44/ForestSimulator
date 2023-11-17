@@ -17,10 +17,10 @@
 
 
 #define TARGET_FPS 120.0f
-float UNITS_PER_SECOND = 0.5f;
+float UNITS_PER_SECOND = 0.2f;
 
 
-#define MESH_DIVISIONS 50
+#define MESH_DIVISIONS 30
 #define MESH_START -12
 #define MESH_END 12
 #define MESH_DEPTH -3
@@ -140,7 +140,7 @@ void frame()
     // render FPS.
     glColor3f(CC(0), CC(0), CC(0));
     TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
-    char buff[20];
+    char buff[40];
     sprintf(buff, "FPS: %4.1f",writeoutFPS);
     tw.write(-0.95, 0.92, buff);
     sprintf(buff, "Years: %4.1f",unitCounter);
@@ -155,8 +155,12 @@ void frame()
     sprintf(buff, "Bare Rock: %d",Tree::numberOfNoTrees);
     tw.write(-0.95, 0.65, buff);
 
+    sprintf(buff, "Number Of Fires Started: %d", Tree::numberOfFireStarts);
+    tw.write(-0.95, 0.58, buff);
+
     tw.close();
 
+    //std::cout << '\n';
     glFlush();
     glutSwapBuffers();
 }
@@ -214,7 +218,7 @@ void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees, i
             {
                 continue;
             }
-            foundNeighbors.push_back(allTrees[i]);
+            foundNeighbors.push_back(allTrees[checkIndex]);
         }
     }
 }
@@ -245,14 +249,17 @@ void setupCalculations()
         glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
 
         allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter);
-        allTrees[i]->incrementAge(100.0);
+       // allTrees[i]->incrementAge(0.0);
     }
     
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
         std::vector<Tree*> foundNeighbors;
         get_neighbors(i,foundNeighbors, allTrees, groundMesh.numberCubePoints());
-        Tree** neighbors = foundNeighbors.data();
+        
+        Tree** neighbors = new Tree*[foundNeighbors.size() > 0 ? foundNeighbors.size() : 1];
+        std::copy(foundNeighbors.begin(), foundNeighbors.end(), neighbors);
+
         int numberOfNeighbors = foundNeighbors.size();
         allTrees[i]->setNeighborData(neighbors, numberOfNeighbors);
     }
@@ -271,7 +278,7 @@ int main(int argc, char** argv)
     glutInitWindowSize(640, 640);
     screenHeight = 640;
     screenWidth = 640;
-    glutCreateWindow("Tree Simulator");
+    glutCreateWindow("Forest Lifecycle Simulator");
     glutDisplayFunc(frame);
     glutTimerFunc(100, timer, 0);
     glutIdleFunc(idleFunction);

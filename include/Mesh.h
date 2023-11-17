@@ -45,6 +45,13 @@ public:
       return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
+    static void mixColor(float change[3], float x, int r, int g, int b, int r2, int g2, int b2)
+    {
+        change[0] = mapF(x, 0.0f, 1.0f,r, r2);
+        change[1] = mapF(x, 0.0f, 1.0f,g, g2);
+        change[2] = mapF(x, 0.0f, 1.0f,b, b2);
+    }
+
 };
 
 #endif

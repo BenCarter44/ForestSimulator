@@ -4,6 +4,7 @@ int Tree::numberOfTreesAlive = 0;
 int Tree::numberOfTreesBurning = 0;
 int Tree::numberOfNoTrees = 0;
 int Tree::numberOfTreesBurned = 0;
+int Tree::numberOfFireStarts = 0;
 
 Tree::Tree()
 {
@@ -32,6 +33,9 @@ Tree::Tree(
 
     creationTime = *(unitClock);
 
+    burnTime = 0.0;
+    neighborsAlive = 0;
+
     setup = true;
     x_pos = position.x;
     y_pos = position.y;
@@ -52,10 +56,14 @@ Tree::Tree(
     if(treeState)
     {
         numberOfTreesAlive++;
+
+        treeID = numberOfTreesAlive;
     }
     else
     {
         numberOfNoTrees++;
+
+        treeID = -1 * numberOfNoTrees;
     }
 
     points[0] = glm::vec3(x_pos - (dimensions.x / 2), y_pos, z_pos - (dimensions.z / 2));
@@ -91,21 +99,47 @@ void Tree::draw()
     {
         //   glColor3f(1.0, 1.0, 1.0);
         glColor3f(CC(11.0f), CC(102.0f), CC(35.0f));
+        if(heightPercent < 1.0f)
+        {
+            heightPercent += 1.0 / ((*fps) * forest->ANIMATION_GROW_SPEED_SEC);
+        }
     }
     else if(treeState == 2)
     {
         glColor3f(CC(255.0f), CC(90.0f), CC(41.0f));
+
+        float age = burnTime - creationTime;
+        
+        float maxBurnLength = forest->TREE_BRUN_LENGTH_START + forest->TREE_BURN_LENGTH_AGE_FACTOR * age;
+    //    std::cout << maxBurnLength << ' ' << forest->TREE_BURN_LENGTH_END << std::endl;
+        if(maxBurnLength < forest->TREE_BURN_LENGTH_END)
+        {
+            maxBurnLength = forest->TREE_BURN_LENGTH_END;
+        }
+
+        heightPercent = 1.0 - Mesh::mapF(*unitClock, burnTime, maxBurnLength + burnTime,0.0, 0.75);
+    //    std::cout << heightPercent << '\t' << *unitClock << '\t' << burnTime << '\t' << maxBurnLength << std::endl;
+        if(*unitClock > burnTime + maxBurnLength)
+        {
+            exitBurning();
+            enterBurned();
+        }
     }
     else if(treeState == 3)
     {
         glColor3f(CC(51.0f), CC(12.0f), CC(0.0f));
     }
-    if(heightPercent < 1.0f)
-    {
-        heightPercent += 1.0 / ((*fps) * forest->ANIMATION_GROW_SPEED_SEC);
-    }
+
+
+
+    
 //    std::cout << x_pos << ' ' << y_pos << ' ' << z_pos << ' ' << dimensions.x << ' ' << dimensions.y << ' ' << dimensions.z << ' ' << std::endl;
     
+    // for burning:
+
+
+
+
         float topY = heightPercent * (points[7].y - points[0].y) + points[0].y;
 
     glBegin(GL_TRIANGLES);
@@ -203,76 +237,89 @@ bool Tree::randomIF(float percent)
     double randomVal = (double)std::rand() / (double)RAND_MAX;
     // float adjusted = pow(percent, 1.0 / ((*fps) / UNITS_PER_SECOND));
     float adjusted = percent / ((*fps) / UNITS_PER_SECOND);
-    // std::cout << "Percent: " << adjusted <<  "FPS: " << *fps << std::endl;
+    
+    // std::cout << "Original " << percent <<  " Percent: " << adjusted <<  "FPS: " << *fps << std::endl;
     return randomVal <= adjusted; 
 }
 
-void Tree::notreeTOAlive()
-{
-    if(!setup)
-    {
-        return;
-    }
-    heightPercent = 0.0f;
-    numberOfNoTrees--;
-    numberOfTreesAlive++;
-    treeState = 1;
-    creationTime = *(unitClock);
-    std::cout << *unitClock << " A tree grew in a new spot!!\n";
-}
 
-void Tree::aliveTOBurning()
+void Tree::enterNoTree()
 {
+    treeState = 0;
     heightPercent = 1.0f;
-    numberOfTreesBurning++;
-    numberOfTreesAlive--;
-    treeState = 2;
+    numberOfNoTrees++;
     creationTime = *(unitClock);
+    //std::cout << *unitClock << " A burned tree rotted away... bare rock now\n";
+}
+void Tree::exitNoTree()
+{
+    numberOfNoTrees--;
+}
+void Tree::enterAlive()
+{
+    treeState = 1;
+    heightPercent = 0.0f;
+    numberOfTreesAlive++;
+
+    creationTime = *(unitClock);
+    //std::cout << *unitClock << " A tree grew in a new spot!!\n";
 
     for (int i=0; i < numberOfNeighbors; i++)
+    {
+        Tree* tree = neighborTrees[i];
+        tree->registerNeighborAlive();
+    }
+}
+void Tree::exitAlive()
+{
+    numberOfTreesAlive--;
+}
+
+void Tree::enterBurning()
+{
+    treeState = 2;
+    numberOfTreesBurning++;
+    heightPercent = 1.0f;
+    burnTime = *(unitClock);
+
+    //std::cout << *unitClock << " My ID: " << treeID << " Tree on fire!\n";
+    // std::cout << "Alert # neighbors: " << numberOfNeighbors << std::endl;
+    for (int i = 0; i < numberOfNeighbors; i++)
     {
         Tree* tree = neighborTrees[i];
         tree->registerNeighborFire();
     }
-
-
-
-    std::cout << *unitClock <<  " Tree on fire!\n";
 }
 
-void Tree::burnedTOAlive()
+void Tree::exitBurning()
 {
-    heightPercent = 0.0f;
-    numberOfTreesBurned--;
-    numberOfTreesAlive++;
-    treeState = 1;
-    creationTime = *(unitClock);
-    std::cout << *unitClock << " A burned tree regrew!\n";
-
+    numberOfTreesBurning--;
     for (int i=0; i < numberOfNeighbors; i++)
     {
         Tree* tree = neighborTrees[i];
         tree->regieterNeighborNoFire();
+        tree->registerNeighborNotAlive();
+    }
+
+    if(treeFireStarter)
+    {
+        treeFireStarter = false;
+        numberOfFireStarts -= 1;
     }
 }
-void Tree::burnedTONoTree()
+
+void Tree::enterBurned()
 {
-    heightPercent = 1.0f;
-    numberOfTreesBurned--;
-    numberOfNoTrees++;
-    treeState = 0;
-    creationTime = *(unitClock);
-     std::cout << *unitClock << " A burned tree rotted away... bare rock now\n";
-}
-void Tree::burningTOBurned()
-{
-    heightPercent = 1.0f;
-    numberOfTreesBurning--;
+    heightPercent = 0.20f;
     numberOfTreesBurned++;
     treeState = 3;
     creationTime = *(unitClock);
-//      std::cout << *(unitClock) << " Tree finished burning and is dead\n";
 }
+void Tree::exitBurned()
+{
+    numberOfTreesBurned--;
+}
+
 
 void Tree::simNoTree()
 {
@@ -282,7 +329,8 @@ void Tree::simNoTree()
     }
     if(randomIF(forest->TREE_NEW_GROW_RATE))
     {
-        notreeTOAlive(); 
+        exitNoTree();
+        enterAlive(); 
     }    
 } 
 
@@ -294,15 +342,6 @@ void Tree::simAliveTree()
         return;
     }
 
-    // DELETE THE IF STATEMENT BELOW!
-    if(randomIF(forest->TREE_NEW_GROW_RATE))
-    {
-        // DELETE ME TOO.
-        aliveTOBurning();
-        burningTOBurned();
-        burnedTONoTree(); 
-    }  
-    return;
 
     // change alive to burning 10 precent of the time
     float age = *(unitClock) - creationTime;
@@ -312,9 +351,21 @@ void Tree::simAliveTree()
         percentToBurning = forest->TREE_BURN_CHANCE_MAX;
     }
     if(randomIF(percentToBurning))
+    {
+        std::cout << "Fire Started! TreeID: " << treeID << " Fire Percentage: " << percentToBurning << std::endl;
+        numberOfFireStarts++;
+        treeFireStarter = true;
+        exitAlive();
+        enterBurning();
+        return;
+    }
+
+    if(randomIF(neighborsOnFire * forest->TREE_NEIGHBOR_BURN_FACTOR / numberOfNeighbors))
     {  
-        aliveTOBurning();
-    }         
+    //    std::cout << "I am Alive. MyID: " << treeID << " Percent to burn: " << percentToBurning << std::endl;
+        exitAlive();
+        enterBurning();
+    }
 }
 
 void Tree::simBurningTree()
@@ -323,13 +374,7 @@ void Tree::simBurningTree()
     {
         return;
     }
-    
-    float chanceTOspread = (neighbors * forest->TREE_NEIGHBOR_BURN_FACTOR) + forest->TREE_BURN_CHANCE_MIN;
-    if(randomIF(chanceTOspread))
-    {
-        // spread
-        spreadToNeighbors();
-    }        
+    // get chance to completely burn...
 }
 
 void Tree::simBurnedTree()
@@ -338,16 +383,20 @@ void Tree::simBurnedTree()
     {
         return;
     }
+
     //regrow
     if(randomIF(forest->TREE_REGROW_FLAT_RATE))
     {
-        burnedTOAlive(); 
+        exitBurned();
+        enterAlive(); 
         return;
     }
+
     // die completely
     if(randomIF(forest->TREE_COMPLETE_DEATH_RATE))
     {
-        burnedTONoTree(); 
+        exitBurned();
+        enterNoTree();
     }
     
 
@@ -355,12 +404,26 @@ void Tree::simBurnedTree()
 
 void Tree::registerNeighborFire() // called be the tree reciving the fire
 {
+   // std::cout << "Neighbor on fire! My ID: " << treeID << std::endl;
     neighborsOnFire += 1;
 }
 
 void Tree::regieterNeighborNoFire()
 {
+//    std::cout << "Neighbor fire went out! " << treeID << std::endl;
     neighborsOnFire -= 1;
+}
+
+void Tree::registerNeighborAlive() // called be the tree reciving the fire
+{
+   // std::cout << "Neighbor on fire! My ID: " << treeID << std::endl;
+    neighborsAlive += 1;
+}
+
+void Tree::registerNeighborNotAlive()
+{
+   // std::cout << "Neighbor not alive! " << treeID << std::endl;
+    neighborsAlive -= 1;
 }
 
 void Tree::simulate()
@@ -383,6 +446,6 @@ void Tree::simulate()
     }
     else if(treeState == 3)
     {
-        simBurnedTree();
+         simBurnedTree();
     }
 }
