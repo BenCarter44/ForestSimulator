@@ -79,10 +79,11 @@ public:
         ForestAnimationSettings* forest, 
         float* fps, 
         float unitsPerSecond, 
-        float* unitClockI, 
-        Tree** neighborsTrees,
-        int numberOFneighbors
+        float* unitClockI
     );
+
+
+    void setNeighborData(Tree** neighborTrees, int numberOFneighbors);
 
     // A unit in time.
     void incrementAge(float t);

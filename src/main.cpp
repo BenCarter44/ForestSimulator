@@ -186,12 +186,11 @@ void idleFunction()
     }
 }
 
-void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees)
+void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees, int allTreesLength)
 {
-    
+    /* Convert the index into X and Y positions.*/ 
     int x_start = i % MESH_DIVISIONS;
     int y_start = i / MESH_DIVISIONS;
-
 
     for(int x = x_start - 1; x <= x_start+1; x++)
     {
@@ -210,47 +209,12 @@ void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees)
             {
                 continue;
             }
-            
-                if(x + 1 < MESH_DIVISIONS)
-                {
-                    i = x + 1 + MESH_DIVISIONS * y;
-                    foundNeighbors.push_back(allTrees[i]);
-                } 
-                else if (x + 1 < MESH_DIVISIONS)
-                {
-                    i = x + 1 + MESH_DIVISIONS * y;
-                    foundNeighbors.push_back(allTrees[i]);
-                }
-                else if (x - 1 > 0)
-                {
-                    i = x - 1 + MESH_DIVISIONS * y;
-                    foundNeighbors.push_back(allTrees[i]);
-                }
-                else if (x - 1 > 0)
-                {
-                    i = x - 1 + MESH_DIVISIONS * y;
-                    foundNeighbors.push_back(allTrees[i]);
-                }
-                if(y + 1 < MESH_DIVISIONS)
-                {
-                    i = x + MESH_DIVISIONS * (y + 1);
-                    foundNeighbors.push_back(allTrees[i]);
-                } 
-                else if (y + 1 < MESH_DIVISIONS)
-                {
-                    i = x + MESH_DIVISIONS * (y + 1);
-                    foundNeighbors.push_back(allTrees[i]);
-                }
-                else if (y - 1 > 0)
-                {
-                    i = x + MESH_DIVISIONS * (y - 1);
-                    foundNeighbors.push_back(allTrees[i]);
-                }
-                else if (y - 1 > 0)
-                {
-                    i = x + MESH_DIVISIONS * (y - 1);
-                    foundNeighbors.push_back(allTrees[i]);
-                }
+            int checkIndex = x + MESH_DIVISIONS * y;
+            if(checkIndex < 0 || checkIndex >= allTreesLength)
+            {
+                continue;
+            }
+            foundNeighbors.push_back(allTrees[i]);
         }
     }
 }
@@ -280,16 +244,17 @@ void setupCalculations()
         float randomHeight = Mesh::mapF(std::rand(), 0, RAND_MAX, 0.2, 1);
         glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
 
-        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter, nullptr, 0);
+        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter);
         allTrees[i]->incrementAge(100.0);
     }
     
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
     {
-
         std::vector<Tree*> foundNeighbors;
-        get_neighbors(i,foundNeighbors, allTrees);
-
+        get_neighbors(i,foundNeighbors, allTrees, groundMesh.numberCubePoints());
+        Tree** neighbors = foundNeighbors.data();
+        int numberOfNeighbors = foundNeighbors.size();
+        allTrees[i]->setNeighborData(neighbors, numberOfNeighbors);
     }
 
     camPos = glm::vec4(12.0f, 7.5f, 8.0f, 0.0f);

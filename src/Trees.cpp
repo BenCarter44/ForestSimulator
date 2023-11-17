@@ -16,9 +16,7 @@ Tree::Tree(
     ForestAnimationSettings* forest, 
     float* fps, 
     float unitsPerSecond, 
-    float* unitClockI, 
-    Tree** neighborsTrees,
-    int numberOfNeighbors)
+    float* unitClockI)
 {
     setup = true;
     x_pos = position.x;
@@ -28,8 +26,7 @@ Tree::Tree(
     heightPercent = 1.0f;
     
     neighborsOnFire = 0;
-    this->numberOfNeighbors = numberOfNeighbors;
-    this->neighborTrees = neighborsTrees;
+    this->numberOfNeighbors = 0;
 
     unitClock = unitClockI;
 
@@ -71,6 +68,12 @@ Tree::Tree(
     points[6] = glm::vec3(x_pos + (dimensions.x / 2), y_pos + dimensions.y, z_pos + (dimensions.z / 2));
     points[7] = glm::vec3(x_pos + (dimensions.x / 2), y_pos + dimensions.y, z_pos - (dimensions.z / 2));
     UNITS_PER_SECOND = unitsPerSecond;
+}
+
+void Tree::setNeighborData(Tree** neighborTrees, int nubmerOfNeighbors)
+{
+    this->numberOfNeighbors = nubmerOfNeighbors;
+    this->neighborTrees = neighborTrees;
 }
 
 void Tree::incrementAge(float t)
@@ -350,12 +353,12 @@ void Tree::simBurnedTree()
 
 }
 
-void registerNeighborFire() // called be the tree reciving the fire
+void Tree::registerNeighborFire() // called be the tree reciving the fire
 {
     neighborsOnFire += 1;
 }
 
-void regieterNeighborNoFire()
+void Tree::regieterNeighborNoFire()
 {
     neighborsOnFire -= 1;
 }
