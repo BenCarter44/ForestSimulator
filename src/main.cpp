@@ -17,12 +17,12 @@
 
 
 #define TARGET_FPS 120.0f
-float UNITS_PER_SECOND = 0.2f;
+float UNITS_PER_SECOND = 0.5f;
 
 
-#define MESH_DIVISIONS 30
-#define MESH_START -12
-#define MESH_END 12
+#define MESH_DIVISIONS 50
+#define MESH_START -24
+#define MESH_END 24
 #define MESH_DEPTH -3
 
 #define MESH_TRANSLATE_X 0
@@ -41,6 +41,7 @@ float unitCounter = 0.0f;
 int screenHeight = 0;
 int screenWidth = 0;
 ForestAnimationSettings forestSettings;
+float prevCamY = 0.0;
 
 // Trees
 Tree** allTrees;
@@ -83,7 +84,8 @@ void renderAxes()
 
 void renderGround()
 {
-    glColor3f(CC(95), CC(171), CC(37));
+   // glColor3f(CC(95), CC(171), CC(37));
+    glColor3f(CC(97), CC(44), CC(15));
     glBegin(GL_QUADS);
     glm::vec3* points = groundMesh.getTopPoints();
     for(int i = 0; i < groundMesh.numberTopPoints(); i++)
@@ -93,7 +95,9 @@ void renderGround()
    glEnd();
 
     // draw sides.
-    glColor3f(CC(110), CC(64), CC(28));
+   // glColor3f(CC(110), CC(64), CC(28));
+    glColor3f(CC(132), CC(60), CC(12));
+    
     glBegin(GL_QUADS);
     glm::vec3* pointsSide = groundMesh.getSidePoints();
     for(int i = 0; i < groundMesh.numberSidePoints(); i++)
@@ -108,18 +112,30 @@ void renderCamera(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); // clears all transformations and what not.
 
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians(currentTime * 8), glm::vec3(0, 1, 0) );
 
+    // float x = cos(currentTime  / 10.0) * 7.75f;
+    // float z = sin(currentTime  / 10.0) * 7.75f;
 
+    // float groundY = groundFunction(x, z);
 
-    // apply the model to the vertex.
-    glm::vec3 camPosAdjust = model * camPos;
-    
-    gluLookAt(camPosAdjust.x, camPosAdjust.y, camPosAdjust.z, // The position of the camera
-             0.0f, 0.0f, 0.0f, // face what point
+    // float x2 = cos((currentTime + 5)  / 10.0) * 7.75f;
+    // float z2 = sin((currentTime + 5)  / 10.0) * 7.75f;
+    // float y2 = groundFunction(x,z) ;
+
+    // gluLookAt(x, groundY + 1.9, z, // The position of the camera
+    //          x2, y2 + 1.5, z2, // face what point
+    //          0.0f, 1.0f, 0.0f // camera rotation.
+    //   );
+
+    float x = cos(currentTime  / 10.0) * 18.0f;
+    float z = sin(currentTime  / 10.0) * 18.0f;
+
+    gluLookAt(x, 16, z, // The position of the camera
+             0.0, 0.0, 0.0, // face what point
              0.0f, 1.0f, 0.0f // camera rotation.
       );
+
+
 }
 
 void frame()
@@ -138,7 +154,7 @@ void frame()
     
     
     // render FPS.
-    glColor3f(CC(0), CC(0), CC(0));
+    glColor3f(CC(255), CC(255), CC(255));
     TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
     char buff[40];
     sprintf(buff, "FPS: %4.1f",writeoutFPS);
@@ -249,7 +265,7 @@ void setupCalculations()
         glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
 
         allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter);
-       // allTrees[i]->incrementAge(0.0);
+        allTrees[i]->incrementAge(forestSettings.TREE_INITIAL_AGE);
     }
     
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
@@ -264,9 +280,9 @@ void setupCalculations()
         allTrees[i]->setNeighborData(neighbors, numberOfNeighbors);
     }
 
-    camPos = glm::vec4(12.0f, 7.5f, 8.0f, 0.0f);
+    camPos = glm::vec4(15.0f, 7.5f, 10.0f, 0.0f);
     
-    glClearColor(CC(131), CC(228), CC(233), 1.0f);
+   // glClearColor(CC(131), CC(228), CC(233), 1.0f);
     renderCamera();
 }
 
