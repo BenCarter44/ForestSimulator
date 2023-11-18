@@ -49,6 +49,9 @@ struct ForestAnimationSettings // per a "unit" in time.
     float TREE_REGROW_FLAT_RATE = 0.001f;
     float TREE_REGROW_NEIGHBOR_RATE = 0.15f;
     float TREE_COMPLETE_DEATH_RATE = 0.04f;
+
+    // lightning settings.
+    float LIGHTNING_FRAME_COUNT = 10.0f;
     
     
 };
@@ -72,6 +75,14 @@ private:
     float percentBurned;
     ForestAnimationSettings* forest;
     glm::vec3 points[8];
+    glm::vec3 lightningPoints[8];
+
+    // lightning
+    float lightningFrameCount;
+    float scaleX;
+    float scaleZ;
+    float shrinkRate;
+
     bool setup = false;
     float UNITS_PER_SECOND;
     float* unitClock;
