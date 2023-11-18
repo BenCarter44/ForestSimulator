@@ -30,7 +30,7 @@ struct ForestAnimationSettings // per a "unit" in time.
 
     // flamability settings of alive trees.
     float TREE_MINIMUM_FLAMABILITY = 0.20f; // ;33f; // 0.0033f;
-    float TREE_AGE_FLAMABILITY_FACTOR = 0.02f;
+    float TREE_AGE_FLAMABILITY_FACTOR = 0.022f;
 
     float TREE_SPONTANEOUS_IGNITE_BASE = 0.001f;
     float TREE_SPONTANEOUS_IGNITE_PER_ALIVE_TREES = 0.0001f;
@@ -44,10 +44,10 @@ struct ForestAnimationSettings // per a "unit" in time.
     float TREE_BURN_LENGTH_AGE_FACTOR = -0.1f;
 
     // burned tree settings.
-    float TREE_SIT_VACANT_UNIT_TIME = 10.0f;
+    float TREE_SIT_VACANT_UNIT_TIME = 20.0f;
     float TREE_REGROW_FLAT_RATE = 0.001f;
     float TREE_REGROW_NEIGHBOR_RATE = 0.15f;
-    float TREE_COMPLETE_DEATH_RATE = 0.05f;
+    float TREE_COMPLETE_DEATH_RATE = 0.04f;
     
     
 };

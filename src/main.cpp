@@ -17,7 +17,7 @@
 
 
 #define TARGET_FPS 120.0f
-float UNITS_PER_SECOND = 0.5f;
+float UNITS_PER_SECOND = 0.8f;
 
 
 #define MESH_DIVISIONS 60
