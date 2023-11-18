@@ -93,6 +93,11 @@ void Tree::setNeighborData(Tree** neighborTrees, int nubmerOfNeighbors)
     }
 }
 
+float Tree::getElevation()
+{
+        return y_pos;
+}
+
 int Tree::getStatus()
 {
     return treeState;
@@ -401,7 +406,19 @@ void Tree::simAliveTree()
         }
     }
     
-    if(randomIF(neighborsOnFire * forest->TREE_NEIGHBOR_BURN_FACTOR)) // are others on fire?
+    // DO UPHILL
+    float uphillBounus = 0.0f;
+    if(neighborsOnFire != 0)
+    {
+        for(int i=0; i < numberOfNeighbors; i++)
+        {
+            if(neighborTrees[i]->getStatus() == 2 && neighborTrees[i]->getElevation() < y_pos)
+            {
+                uphillBounus += forest->TREE_UPHILL_BURN_BONUS * (y_pos - neighborTrees[i]->getElevation());
+            }
+        }
+    }
+    if(randomIF((neighborsOnFire * forest->TREE_NEIGHBOR_BURN_FACTOR) + uphillBounus)) // are others on fire?
     {
         float flamability = forest->TREE_MINIMUM_FLAMABILITY + forest->TREE_AGE_FLAMABILITY_FACTOR * age;
         if(randomIF(flamability))

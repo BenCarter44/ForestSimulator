@@ -36,7 +36,8 @@ struct ForestAnimationSettings // per a "unit" in time.
     float TREE_SPONTANEOUS_IGNITE_PER_ALIVE_TREES = 0.0001f;
     float TREE_SPONTANEOUS_FIRE_START_DIVISOR = 10.0;
 
-    float TREE_NEIGHBOR_BURN_FACTOR = 0.25f; // max 8 neighbors.
+    float TREE_NEIGHBOR_BURN_FACTOR = 0.23f; // max 8 neighbors.
+    float TREE_UPHILL_BURN_BONUS = 0.1f; // per y height.
 
     // burning tree settings.
     float TREE_BRUN_LENGTH_START = 10.0f;
@@ -114,6 +115,7 @@ public:
     void draw();
     bool randomIF(float percent); // fps adjusted!
     int getStatus();
+    float getElevation();
 
 private:
     // transitions
