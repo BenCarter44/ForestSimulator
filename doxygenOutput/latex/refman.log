@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.11.18)  18 NOV 2023 22:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.11.18)  19 NOV 2023 16:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -883,26 +883,26 @@ LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
 LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
 (Font)              scaled to size 6.29996pt on input line 174.
 (./index.tex
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 7.
+
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 8.
+(Font)              scaled to size 10.79993pt on input line 10.
 
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 8.
+(hyperref)                than one, level fixed on input line 10.
 
-LaTeX Font Info:    Trying to load font information for TS1+phv on input line 1
-9.
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 2
+1.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1phv.fd
 File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 )
 LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 19.
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 19
-.
-
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [1
+(Font)              scaled to size 8.99994pt on input line 21.
+ [1
 
 
 ]) [2]
@@ -1003,7 +1003,7 @@ Chapter 5.
 pdfTeX warning: pdflatex (file ./Mesh_8h__incl.pdf): PDF inclusion: multiple pd
 fs with page group included in a single page
 >
-<Mesh_8h__incl.pdf, id=622, 476.78125pt x 156.585pt>
+<Mesh_8h__incl.pdf, id=623, 476.78125pt x 156.585pt>
 File: Mesh_8h__incl.pdf Graphic file (type pdf)
 <use Mesh_8h__incl.pdf>
 Package pdftex.def Info: Mesh_8h__incl.pdf  used on input line 15.
@@ -1013,7 +1013,7 @@ Package pdftex.def Info: Mesh_8h__incl.pdf  used on input line 15.
 pdfTeX warning: pdflatex (file ./Mesh_8h__dep__incl.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
 >
-<Mesh_8h__dep__incl.pdf, id=630, 446.66875pt x 212.795pt>
+<Mesh_8h__dep__incl.pdf, id=631, 446.66875pt x 212.795pt>
 File: Mesh_8h__dep__incl.pdf Graphic file (type pdf)
 <use Mesh_8h__dep__incl.pdf>
 Package pdftex.def Info: Mesh_8h__dep__incl.pdf  used on input line 22.
@@ -1039,7 +1039,7 @@ Underfull \hbox (badness 10000) detected at line 44
  []
 
 ) (./TextWriter_8h.tex <./TextWriter_8h__incl.pdf>
-<TextWriter_8h__incl.pdf, id=650, 476.78125pt x 212.795pt>
+<TextWriter_8h__incl.pdf, id=651, 476.78125pt x 212.795pt>
 File: TextWriter_8h__incl.pdf Graphic file (type pdf)
 <use TextWriter_8h__incl.pdf>
 Package pdftex.def Info: TextWriter_8h__incl.pdf  used on input line 14.
@@ -1049,7 +1049,7 @@ Package pdftex.def Info: TextWriter_8h__incl.pdf  used on input line 14.
 pdfTeX warning: pdflatex (file ./TextWriter_8h__dep__incl.pdf): PDF inclusion: 
 multiple pdfs with page group included in a single page
 >
-<TextWriter_8h__dep__incl.pdf, id=658, 283.0575pt x 156.585pt>
+<TextWriter_8h__dep__incl.pdf, id=659, 283.0575pt x 156.585pt>
 File: TextWriter_8h__dep__incl.pdf Graphic file (type pdf)
 <use TextWriter_8h__dep__incl.pdf>
 Package pdftex.def Info: TextWriter_8h__dep__incl.pdf  used on input line 21.
@@ -1075,7 +1075,7 @@ Underfull \hbox (badness 10000) detected at line 43
  []
 
 ) (./Trees_8h.tex <./Trees_8h__incl.pdf>
-<Trees_8h__incl.pdf, id=674, 624.3325pt x 212.795pt>
+<Trees_8h__incl.pdf, id=675, 624.3325pt x 212.795pt>
 File: Trees_8h__incl.pdf Graphic file (type pdf)
 <use Trees_8h__incl.pdf>
 Package pdftex.def Info: Trees_8h__incl.pdf  used on input line 21.
@@ -1085,7 +1085,7 @@ Package pdftex.def Info: Trees_8h__incl.pdf  used on input line 21.
 pdfTeX warning: pdflatex (file ./Trees_8h__dep__incl.pdf): PDF inclusion: multi
 ple pdfs with page group included in a single page
 >
-<Trees_8h__dep__incl.pdf, id=682, 258.9675pt x 156.585pt>
+<Trees_8h__dep__incl.pdf, id=683, 258.9675pt x 156.585pt>
 File: Trees_8h__dep__incl.pdf Graphic file (type pdf)
 <use Trees_8h__dep__incl.pdf>
 Package pdftex.def Info: Trees_8h__dep__incl.pdf  used on input line 28.
@@ -1111,7 +1111,7 @@ Underfull \hbox (badness 10000) detected at line 58
  []
 
 ) (./main_8cpp.tex <./main_8cpp__incl.pdf>
-<main_8cpp__incl.pdf, id=700, 684.5575pt x 269.005pt>
+<main_8cpp__incl.pdf, id=701, 684.5575pt x 269.005pt>
 File: main_8cpp__incl.pdf Graphic file (type pdf)
 <use main_8cpp__incl.pdf>
 Package pdftex.def Info: main_8cpp__incl.pdf  used on input line 23.
@@ -1155,7 +1155,7 @@ Overfull \vbox (0.198pt too high) has occurred while \output is active []
 pdfTeX warning: pdflatex (file ./Mesh_8cpp__incl.pdf): PDF inclusion: multiple 
 pdfs with page group included in a single page
 >
-<Mesh_8cpp__incl.pdf, id=795, 476.78125pt x 212.795pt>
+<Mesh_8cpp__incl.pdf, id=796, 476.78125pt x 212.795pt>
 File: Mesh_8cpp__incl.pdf Graphic file (type pdf)
 <use Mesh_8cpp__incl.pdf>
 Package pdftex.def Info: Mesh_8cpp__incl.pdf  used on input line 13.
@@ -1185,7 +1185,7 @@ Underfull \hbox (badness 10000) detected at line 30
 pdfTeX warning: pdflatex (file ./TextWriter_8cpp__incl.pdf): PDF inclusion: mul
 tiple pdfs with page group included in a single page
 >
-<TextWriter_8cpp__incl.pdf, id=804, 476.78125pt x 269.005pt>
+<TextWriter_8cpp__incl.pdf, id=805, 476.78125pt x 269.005pt>
 File: TextWriter_8cpp__incl.pdf Graphic file (type pdf)
 <use TextWriter_8cpp__incl.pdf>
 Package pdftex.def Info: TextWriter_8cpp__incl.pdf  used on input line 13.
@@ -1211,7 +1211,7 @@ Underfull \hbox (badness 10000) detected at line 30
  []
 
 ) (./Trees_8cpp.tex <./Trees_8cpp__incl.pdf>
-<Trees_8cpp__incl.pdf, id=819, 624.3325pt x 269.005pt>
+<Trees_8cpp__incl.pdf, id=820, 624.3325pt x 269.005pt>
 File: Trees_8cpp__incl.pdf Graphic file (type pdf)
 <use Trees_8cpp__incl.pdf>
 Package pdftex.def Info: Trees_8cpp__incl.pdf  used on input line 13.
@@ -1264,10 +1264,10 @@ r/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/urw/helvetic/uhvb8ac.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/urw/helvetic/uhvro8a.pfb>
-Output written on refman.pdf (31 pages, 254630 bytes).
+Output written on refman.pdf (31 pages, 254982 bytes).
 PDF statistics:
- 1009 PDF objects out of 1200 (max. 8388607)
- 908 compressed objects within 10 object streams
+ 1010 PDF objects out of 1200 (max. 8388607)
+ 909 compressed objects within 10 object streams
  243 named destinations out of 1000 (max. 500000)
  571 words of extra memory for PDF output out of 10000 (max. 10000000)
 

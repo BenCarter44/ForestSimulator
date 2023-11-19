@@ -3,7 +3,7 @@
 \contentsline {subsection}{\numberline {1.0.1}Requirements\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}:}{1}{subsection.1.0.1}%
 \contentsline {subsection}{\numberline {1.0.2}To build, use make}{1}{subsection.1.0.2}%
 \contentsline {subsection}{\numberline {1.0.3}Documentation}{1}{subsection.1.0.3}%
-\contentsline {subsection}{\numberline {1.0.4}File structure\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}:}{1}{subsection.1.0.4}%
+\contentsline {subsection}{\numberline {1.0.4}File structure\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}:}{2}{subsection.1.0.4}%
 \contentsline {chapter}{\numberline {2}Class Index}{3}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Class List}{3}{section.2.1}%
 \contentsline {chapter}{\numberline {3}File Index}{5}{chapter.3}%
