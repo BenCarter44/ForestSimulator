@@ -1,0 +1,74 @@
+\hypertarget{classTextWriter}{}\doxysection{Text\+Writer Class Reference}
+\label{classTextWriter}\index{TextWriter@{TextWriter}}
+
+
+The String\+Draw class. Draws a string to a window.  
+
+
+
+
+{\ttfamily \#include $<$Text\+Writer.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTextWriter_adcb47ffe85b4eb1c162ecb8d0e9bb200}{Text\+Writer}} (void $\ast$font, int screen\+Width, int screen\+Height)
+\begin{DoxyCompactList}\small\item\em Construct a Text Writer object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTextWriter_ad3fca94a3eb8ac8c6103da579601f9b8}{write}} (float x, float y, const char $\ast$string)
+\begin{DoxyCompactList}\small\item\em Write the string onto the screen at given point. Point is in normalized -\/1.\+0 to 1.\+0 coordinates, with center being 0,0. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTextWriter_afb45c3fc80525c932f8e616225e8334f}\label{classTextWriter_afb45c3fc80525c932f8e616225e8334f}} 
+void \mbox{\hyperlink{classTextWriter_afb45c3fc80525c932f8e616225e8334f}{close}} ()
+\begin{DoxyCompactList}\small\item\em Reset and cleanup after glut operations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The String\+Draw class. Draws a string to a window. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classTextWriter_adcb47ffe85b4eb1c162ecb8d0e9bb200}\label{classTextWriter_adcb47ffe85b4eb1c162ecb8d0e9bb200}} 
+\index{TextWriter@{TextWriter}!TextWriter@{TextWriter}}
+\index{TextWriter@{TextWriter}!TextWriter@{TextWriter}}
+\doxysubsubsection{\texorpdfstring{TextWriter()}{TextWriter()}}
+{\footnotesize\ttfamily Text\+Writer\+::\+Text\+Writer (\begin{DoxyParamCaption}\item[{void $\ast$}]{font,  }\item[{int}]{screen\+Width,  }\item[{int}]{screen\+Height }\end{DoxyParamCaption})}
+
+
+
+Construct a Text Writer object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em font} & -\/ The font to use. Use GLUT fonts. \\
+\hline
+{\em screen\+Width} & -\/ The screen width \\
+\hline
+{\em screen\+Height} & -\/ The screen height \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classTextWriter_ad3fca94a3eb8ac8c6103da579601f9b8}\label{classTextWriter_ad3fca94a3eb8ac8c6103da579601f9b8}} 
+\index{TextWriter@{TextWriter}!write@{write}}
+\index{write@{write}!TextWriter@{TextWriter}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void Text\+Writer\+::write (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{const char $\ast$}]{string }\end{DoxyParamCaption})}
+
+
+
+Write the string onto the screen at given point. Point is in normalized -\/1.\+0 to 1.\+0 coordinates, with center being 0,0. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em string} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{TextWriter_8h}{Text\+Writer.\+h}}\item 
+src/\mbox{\hyperlink{TextWriter_8cpp}{Text\+Writer.\+cpp}}\end{DoxyCompactItemize}

@@ -1,3 +1,14 @@
+/**
+ * @file TextWriter.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief Text Writer Class. Writes text to a screen using GLUT primitatives.
+ * @version 1.0
+ * @date 2023-11-18
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "TextWriter.h"
 
 void TextWriter::renderBitmapString(float x, float y, void *font, const char* string)

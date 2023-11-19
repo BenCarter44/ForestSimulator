@@ -1,3 +1,14 @@
+/**
+ * @file Mesh.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief The Mesh Class Source File. Creates a mesh terrain.
+ * @version 1.0
+ * @date 2023-11-18
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "Mesh.h"
 
 Mesh::Mesh()
