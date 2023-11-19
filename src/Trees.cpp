@@ -1,3 +1,14 @@
+/**
+ * @file Trees.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief Tree class source file.
+ * @version 1.0
+ * @date 2023-11-18
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "Trees.h"
 
 int Tree::numberOfTreesAlive = 0;

@@ -1,3 +1,15 @@
+/**
+ * @file main.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief The Main Program. Sets the meshes/trees and contains the GLUT windowing functions.
+ * @version 1.0
+ * @date 2023-11-18
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+
 #include <GL/glut.h>
 #include <cmath>
 #include <iostream>
@@ -15,12 +27,12 @@
 #define CC(arg) (arg / 255.0f)
 #endif
 
+/* Define Settings */
 
 #define TARGET_FPS 120.0f
 float UNITS_PER_SECOND = 0.8f;
 
-
-#define MESH_DIVISIONS 50
+#define MESH_DIVISIONS 40
 // 65, and 22 are finest rm at fps
 // 100, and 50 are for full screen.
 #define MESH_START -12
@@ -29,6 +41,7 @@ float UNITS_PER_SECOND = 0.8f;
 
 #define MESH_TRANSLATE_X 0
 #define MESH_TRANSLATE_Z 0
+
 
 // Globals.
 Mesh groundMesh = Mesh();
@@ -49,12 +62,24 @@ float prevCamY = 0.0;
 Tree** allTrees;
 
 
-
+/**
+ * @brief Ground Function. Returns a y value for every x,z coordinate.
+ * 
+ * @param x 
+ * @param z 
+ * @return float 
+ */
 float groundFunction(float x, float z)
 {
     return cos((x - 1) / 2.0f) + cos((z - 2) / 2.0f) + 0.1 * sin(x - 1) + 0.05 * x;
 }
 
+/**
+ * @brief Run when the window is reshaped.
+ * 
+ * @param width 
+ * @param height 
+ */
 void reshape(int width, int height)
 {
     screenHeight = height;
@@ -66,6 +91,10 @@ void reshape(int width, int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
+/**
+ * @brief Render axes lines for debugging.
+ * 
+ */
 void renderAxes()
 {
   glBegin(GL_LINES);
@@ -84,6 +113,10 @@ void renderAxes()
   glEnd();
 }
 
+/**
+ * @brief Render the ground mesh.
+ * 
+ */
 void renderGround()
 {
    // glColor3f(CC(95), CC(171), CC(37));
@@ -109,6 +142,10 @@ void renderGround()
     glEnd();
 }
 
+/**
+ * @brief Render the camera
+ * 
+ */
 void renderCamera(void)
 {
     glMatrixMode(GL_MODELVIEW);
@@ -125,12 +162,16 @@ void renderCamera(void)
       );
 }
 
+/**
+ * @brief The draw loop. Render everything on screen.
+ * 
+ */
 void frame()
 {
     renderCamera();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    renderAxes();
+   // renderAxes();
     renderGround();
 
     for(int i = 0; i < groundMesh.numberCubePoints(); i++)
@@ -139,6 +180,7 @@ void frame()
         allTrees[i]->draw();
     }
     
+    /* Render Text */
     
     // render FPS.
     glColor3f(CC(255), CC(255), CC(255));
@@ -175,6 +217,11 @@ void frame()
     glutSwapBuffers();
 }
 
+/**
+ * @brief The timer function. This calculates FPS and triggers redraw events.
+ * 
+ * @param a 
+ */
 void timer(int a)
 {
     frameCount = a;
@@ -191,6 +238,10 @@ void timer(int a)
     glutTimerFunc(1000.0 / (0.7 * TARGET_FPS + 0.3 * fps), timer, a + 1); 
 }
 
+/**
+ * @brief This runs during "downtime". Updates the writeoutFPS counter.
+ * 
+ */
 void idleFunction()
 {
     if(frameCount % ((int)(0.5 * fps) + 1) == 0 && abs(fps - writeoutFPS) > 0.05)
@@ -200,6 +251,14 @@ void idleFunction()
     }
 }
 
+/**
+ * @brief Calculate neighbors for trees. Operates "soft-returns" on the foundNeighbors vector object. 
+ * 
+ * @param i 
+ * @param foundNeighbors 
+ * @param allTrees 
+ * @param allTreesLength 
+ */
 void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees, int allTreesLength)
 {
     /* Convert the index into X and Y positions.*/ 
@@ -233,6 +292,10 @@ void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees, i
     }
 }
 
+/**
+ * @brief Initialize the trees and the mesh.
+ * 
+ */
 void setupCalculations()
 {
     unitCounter = 0.0;
@@ -280,6 +343,13 @@ void setupCalculations()
     renderCamera();
 }
 
+/**
+ * @brief Main program
+ * 
+ * @param argc - number of arguments
+ * @param argv - array of arguments
+ * @return int 
+ */
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);

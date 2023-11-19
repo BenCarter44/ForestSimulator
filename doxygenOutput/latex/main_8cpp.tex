@@ -1,0 +1,241 @@
+\hypertarget{main_8cpp}{}\doxysection{src/main.cpp File Reference}
+\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
+
+
+The Main Program. Sets the meshes/trees and contains the GLUT windowing functions.  
+
+
+{\ttfamily \#include $<$GL/glut.\+h$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include \char`\"{}Mesh.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$ctime$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include \char`\"{}Text\+Writer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Trees.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for main.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_afa62d6c07934b6abb00c7c75799ff411}\label{main_8cpp_afa62d6c07934b6abb00c7c75799ff411}} 
+\#define {\bfseries CC}(arg)~(arg / 255.\+0f)
+\item 
+\mbox{\Hypertarget{main_8cpp_acef24ae9a88131f27f1554acfd6ad976}\label{main_8cpp_acef24ae9a88131f27f1554acfd6ad976}} 
+\#define {\bfseries TARGET\+\_\+\+FPS}~120.\+0f
+\item 
+\mbox{\Hypertarget{main_8cpp_ab060668458fd8a8da1f602fe99a90877}\label{main_8cpp_ab060668458fd8a8da1f602fe99a90877}} 
+\#define {\bfseries MESH\+\_\+\+DIVISIONS}~40
+\item 
+\mbox{\Hypertarget{main_8cpp_a63587a45261a2b2d4d80c8db3dfd8d40}\label{main_8cpp_a63587a45261a2b2d4d80c8db3dfd8d40}} 
+\#define {\bfseries MESH\+\_\+\+START}~-\/12
+\item 
+\mbox{\Hypertarget{main_8cpp_a39dd9c0398ebb8759813b9273a7de6c5}\label{main_8cpp_a39dd9c0398ebb8759813b9273a7de6c5}} 
+\#define {\bfseries MESH\+\_\+\+END}~12
+\item 
+\mbox{\Hypertarget{main_8cpp_a297d833248d029a935f4a3b926f65207}\label{main_8cpp_a297d833248d029a935f4a3b926f65207}} 
+\#define {\bfseries MESH\+\_\+\+DEPTH}~-\/3
+\item 
+\mbox{\Hypertarget{main_8cpp_a121883f212cd173d56fdcd3567de110f}\label{main_8cpp_a121883f212cd173d56fdcd3567de110f}} 
+\#define {\bfseries MESH\+\_\+\+TRANSLATE\+\_\+X}~0
+\item 
+\mbox{\Hypertarget{main_8cpp_a7a35553a73c278f34a19a2e18f13f98f}\label{main_8cpp_a7a35553a73c278f34a19a2e18f13f98f}} 
+\#define {\bfseries MESH\+\_\+\+TRANSLATE\+\_\+Z}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{main_8cpp_af74f96c824d2be9ea91b348806133dca}{ground\+Function}} (float x, float z)
+\begin{DoxyCompactList}\small\item\em Ground Function. Returns a y value for every x,z coordinate. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a6819355374dd277347abd7c4235f0cd7}{reshape}} (int width, int height)
+\begin{DoxyCompactList}\small\item\em Run when the window is reshaped. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_a18af72e216ffb68d59fbf595f4064e39}\label{main_8cpp_a18af72e216ffb68d59fbf595f4064e39}} 
+void \mbox{\hyperlink{main_8cpp_a18af72e216ffb68d59fbf595f4064e39}{render\+Axes}} ()
+\begin{DoxyCompactList}\small\item\em Render axes lines for debugging. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_ade2485cff79e092aee18d47957475b25}\label{main_8cpp_ade2485cff79e092aee18d47957475b25}} 
+void \mbox{\hyperlink{main_8cpp_ade2485cff79e092aee18d47957475b25}{render\+Ground}} ()
+\begin{DoxyCompactList}\small\item\em Render the ground mesh. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_a596a2adb035c4e27cf6e5fa68678ce23}\label{main_8cpp_a596a2adb035c4e27cf6e5fa68678ce23}} 
+void \mbox{\hyperlink{main_8cpp_a596a2adb035c4e27cf6e5fa68678ce23}{render\+Camera}} (void)
+\begin{DoxyCompactList}\small\item\em Render the camera. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_ae8fa368bbea5177612cd2cf333448c66}\label{main_8cpp_ae8fa368bbea5177612cd2cf333448c66}} 
+void \mbox{\hyperlink{main_8cpp_ae8fa368bbea5177612cd2cf333448c66}{frame}} ()
+\begin{DoxyCompactList}\small\item\em The draw loop. Render everything on screen. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a6250bca655b21c5b042236c2d78fcd06}{timer}} (int a)
+\begin{DoxyCompactList}\small\item\em The timer function. This calculates FPS and triggers redraw events. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_a86b973a1a395428744e98df0a93100e8}\label{main_8cpp_a86b973a1a395428744e98df0a93100e8}} 
+void \mbox{\hyperlink{main_8cpp_a86b973a1a395428744e98df0a93100e8}{idle\+Function}} ()
+\begin{DoxyCompactList}\small\item\em This runs during \char`\"{}downtime\char`\"{}. Updates the writeout\+FPS counter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a8e8514640e0fbc292afe8ecb44dc8d92}{get\+\_\+neighbors}} (int i, std\+::vector$<$ \mbox{\hyperlink{classTree}{Tree}} $\ast$ $>$ \&found\+Neighbors, \mbox{\hyperlink{classTree}{Tree}} $\ast$$\ast$all\+Trees, int all\+Trees\+Length)
+\begin{DoxyCompactList}\small\item\em Calculate neighbors for trees. Operates \char`\"{}soft-\/returns\char`\"{} on the found\+Neighbors vector object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_aae000bd90e0dba12ec9718ef2ab35490}\label{main_8cpp_aae000bd90e0dba12ec9718ef2ab35490}} 
+void \mbox{\hyperlink{main_8cpp_aae000bd90e0dba12ec9718ef2ab35490}{setup\+Calculations}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the trees and the mesh. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_aa23f94dfff4657e030bd640d1366a7a2}\label{main_8cpp_aa23f94dfff4657e030bd640d1366a7a2}} 
+float {\bfseries UNITS\+\_\+\+PER\+\_\+\+SECOND} = 0.\+8f
+\item 
+\mbox{\Hypertarget{main_8cpp_a0bd92e080eeed58f716ae65a51b44ae0}\label{main_8cpp_a0bd92e080eeed58f716ae65a51b44ae0}} 
+\mbox{\hyperlink{classMesh}{Mesh}} {\bfseries ground\+Mesh} = \mbox{\hyperlink{classMesh}{Mesh}}()
+\item 
+\mbox{\Hypertarget{main_8cpp_a3247d6826b0c7bfb932ddab0cf61c7aa}\label{main_8cpp_a3247d6826b0c7bfb932ddab0cf61c7aa}} 
+glm\+::vec4 {\bfseries cam\+Pos}
+\item 
+\mbox{\Hypertarget{main_8cpp_a9c1866deb3068a1a8d475fbecc6a78d8}\label{main_8cpp_a9c1866deb3068a1a8d475fbecc6a78d8}} 
+unsigned int {\bfseries frame\+Count} = 0
+\item 
+\mbox{\Hypertarget{main_8cpp_aa1e945429dacc086ea2db82a7d7cd9af}\label{main_8cpp_aa1e945429dacc086ea2db82a7d7cd9af}} 
+float {\bfseries current\+Time} = 0
+\item 
+\mbox{\Hypertarget{main_8cpp_a8186e677f8bd40853cfcef1312ac91ac}\label{main_8cpp_a8186e677f8bd40853cfcef1312ac91ac}} 
+float {\bfseries time\+FPSOffset} = 0
+\item 
+\mbox{\Hypertarget{main_8cpp_a4f50e96f11c68d45dc109185efe011ad}\label{main_8cpp_a4f50e96f11c68d45dc109185efe011ad}} 
+float {\bfseries fps} = 0.\+0f
+\item 
+\mbox{\Hypertarget{main_8cpp_a00b34af61fb18c12a66dda6c6c16b4b0}\label{main_8cpp_a00b34af61fb18c12a66dda6c6c16b4b0}} 
+float {\bfseries writeout\+FPS} = fps
+\item 
+\mbox{\Hypertarget{main_8cpp_a09c8144301ceca29bf3bd78f12e37328}\label{main_8cpp_a09c8144301ceca29bf3bd78f12e37328}} 
+float {\bfseries unit\+Counter} = 0.\+0f
+\item 
+\mbox{\Hypertarget{main_8cpp_a9ebc1dbd77788c4bfa27758a6725413f}\label{main_8cpp_a9ebc1dbd77788c4bfa27758a6725413f}} 
+int {\bfseries screen\+Height} = 0
+\item 
+\mbox{\Hypertarget{main_8cpp_ae50cb92a78d9e0a4f4bd718fc02bd294}\label{main_8cpp_ae50cb92a78d9e0a4f4bd718fc02bd294}} 
+int {\bfseries screen\+Width} = 0
+\item 
+\mbox{\Hypertarget{main_8cpp_a59b21df0dc1ad3902216d3f182fd656a}\label{main_8cpp_a59b21df0dc1ad3902216d3f182fd656a}} 
+\mbox{\hyperlink{structForestAnimationSettings}{Forest\+Animation\+Settings}} {\bfseries forest\+Settings}
+\item 
+\mbox{\Hypertarget{main_8cpp_a521b2dd2d6ef31298182c4b603206097}\label{main_8cpp_a521b2dd2d6ef31298182c4b603206097}} 
+float {\bfseries prev\+CamY} = 0.\+0
+\item 
+\mbox{\Hypertarget{main_8cpp_aa8f2fca67d4698c769d6b4078b5e337a}\label{main_8cpp_aa8f2fca67d4698c769d6b4078b5e337a}} 
+\mbox{\hyperlink{classTree}{Tree}} $\ast$$\ast$ {\bfseries all\+Trees}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The Main Program. Sets the meshes/trees and contains the GLUT windowing functions. 
+
+\begin{DoxyAuthor}{Author}
+Benjamin Carter and Josh Canode 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2023-\/11-\/18
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2023 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a8e8514640e0fbc292afe8ecb44dc8d92}\label{main_8cpp_a8e8514640e0fbc292afe8ecb44dc8d92}} 
+\index{main.cpp@{main.cpp}!get\_neighbors@{get\_neighbors}}
+\index{get\_neighbors@{get\_neighbors}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_neighbors()}{get\_neighbors()}}
+{\footnotesize\ttfamily void get\+\_\+neighbors (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classTree}{Tree}} $\ast$ $>$ \&}]{found\+Neighbors,  }\item[{\mbox{\hyperlink{classTree}{Tree}} $\ast$$\ast$}]{all\+Trees,  }\item[{int}]{all\+Trees\+Length }\end{DoxyParamCaption})}
+
+
+
+Calculate neighbors for trees. Operates \char`\"{}soft-\/returns\char`\"{} on the found\+Neighbors vector object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+{\em found\+Neighbors} & \\
+\hline
+{\em all\+Trees} & \\
+\hline
+{\em all\+Trees\+Length} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_af74f96c824d2be9ea91b348806133dca}\label{main_8cpp_af74f96c824d2be9ea91b348806133dca}} 
+\index{main.cpp@{main.cpp}!groundFunction@{groundFunction}}
+\index{groundFunction@{groundFunction}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{groundFunction()}{groundFunction()}}
+{\footnotesize\ttfamily float ground\+Function (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{z }\end{DoxyParamCaption})}
+
+
+
+Ground Function. Returns a y value for every x,z coordinate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+Main program. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & -\/ number of arguments \\
+\hline
+{\em argv} & -\/ array of arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a6819355374dd277347abd7c4235f0cd7}\label{main_8cpp_a6819355374dd277347abd7c4235f0cd7}} 
+\index{main.cpp@{main.cpp}!reshape@{reshape}}
+\index{reshape@{reshape}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{reshape()}{reshape()}}
+{\footnotesize\ttfamily void reshape (\begin{DoxyParamCaption}\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+
+
+
+Run when the window is reshaped. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & \\
+\hline
+{\em height} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a6250bca655b21c5b042236c2d78fcd06}\label{main_8cpp_a6250bca655b21c5b042236c2d78fcd06}} 
+\index{main.cpp@{main.cpp}!timer@{timer}}
+\index{timer@{timer}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{timer()}{timer()}}
+{\footnotesize\ttfamily void timer (\begin{DoxyParamCaption}\item[{int}]{a }\end{DoxyParamCaption})}
+
+
+
+The timer function. This calculates FPS and triggers redraw events. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+\end{DoxyParams}
