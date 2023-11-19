@@ -33,7 +33,7 @@ File Structure:
 	- This is where the source files are
 -	include/
 	- This is where the header files are
--	Report.docx/.pdf
+-	Project8.docx/.pdf
 	- The report
 -   Makefile
     - The makefile
