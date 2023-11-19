@@ -42,3 +42,5 @@ File Structure:
     - The flowchart
 -   ForestStateGraph.drawio.png
     - A map of the different forest states.
+-   refman.pdf
+    - A computer generated documentation of the program
