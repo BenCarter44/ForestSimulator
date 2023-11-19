@@ -3,6 +3,7 @@ For course work for a class at Grand Canyon University
 
 By Benjamin Carter and Josh Canode.
 
+[Watch Video Here](https://codingcando.com/fileShare/file?code=TDAX62YKEW)
 --- 
 
 ### Requirements:
