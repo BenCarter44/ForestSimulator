@@ -52,6 +52,7 @@ struct ForestAnimationSettings // per a "unit" in time.
 
     // lightning settings.
     float LIGHTNING_FRAME_COUNT = 10.0f;
+    float LIGHTNING_HEIGHT = 20.0f;
     
     
 };

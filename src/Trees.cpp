@@ -260,12 +260,12 @@ void Tree::draw()
 
     if (lightningFrameCount != 0)
     {
-        float lightningScaleFactor = (lightningFrameCount / 10);
+        float lightningScaleFactor = (lightningFrameCount / 10.0f);
 
-        lightningPoints[0] = glm::vec3(x_pos - (dimensions.x / 2), y_pos + 10.0f, z_pos - (dimensions.z / 2));
-        lightningPoints[1] = glm::vec3(x_pos - (dimensions.x / 2), y_pos + 10.0f, z_pos + (dimensions.z / 2));
-        lightningPoints[2] = glm::vec3(x_pos + (dimensions.x / 2), y_pos + 10.0f, z_pos + (dimensions.z / 2));
-        lightningPoints[3] = glm::vec3(x_pos + (dimensions.x / 2), y_pos + 10.0f, z_pos - (dimensions.z / 2));
+        lightningPoints[0] = glm::vec3(x_pos - (dimensions.x / 2), y_pos + forest->LIGHTNING_HEIGHT, z_pos - (dimensions.z / 2));
+        lightningPoints[1] = glm::vec3(x_pos - (dimensions.x / 2), y_pos + forest->LIGHTNING_HEIGHT, z_pos + (dimensions.z / 2));
+        lightningPoints[2] = glm::vec3(x_pos + (dimensions.x / 2), y_pos + forest->LIGHTNING_HEIGHT, z_pos + (dimensions.z / 2));
+        lightningPoints[3] = glm::vec3(x_pos + (dimensions.x / 2), y_pos + forest->LIGHTNING_HEIGHT, z_pos - (dimensions.z / 2));
 
         lightningPoints[4] = glm::vec3(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos - (dimensions.z / 2));
         lightningPoints[5] = glm::vec3(x_pos - (dimensions.x / 2), y_pos + dimensions.y, z_pos + (dimensions.z / 2));
