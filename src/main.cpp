@@ -161,6 +161,13 @@ void frame()
     sprintf(buff, "Number Of Fires Started: %d", Tree::numberOfFireStarts);
     tw.write(-0.95, 0.58, buff);
 
+    sprintf(buff, "Forest Lifecycle Simulator");
+    tw.write(-0.95, -0.85, buff);
+    sprintf(buff, "By Benjamin Carter and Joshua Canode");
+    tw.write(-0.95, -0.91, buff);
+    sprintf(buff, "Fall 2023");
+    tw.write(-0.95, -0.96, buff);
+
     tw.close();
 
     //std::cout << '\n';
