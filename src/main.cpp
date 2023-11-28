@@ -1,372 +1,357 @@
-/**
- * @file main.cpp
- * @author Benjamin Carter and Josh Canode
- * @brief The Main Program. Sets the meshes/trees and contains the GLUT windowing functions.
- * @version 1.0
- * @date 2023-11-18
- * 
- * @copyright Copyright (c) 2023
- * 
- */
+#include <iostream>  // iostream include
 
+// GLEW
+#define GLEW_STATIC // Define glew_static
+#include <GL/glew.h> // glew include
 
-#include <GL/glut.h>
-#include <cmath>
-#include <iostream>
+// GLFW
+#include <GLFW/glfw3.h> // glfw include
 
-#include "Mesh.h"
-#include <stdio.h>
-#include <time.h>
-#include <ctime>
-#include <cstdlib>  // for rand() and srand()
-#include "TextWriter.h"
-#include "Trees.h"
-#include <vector>
+// SOIL
+#include <SOIL/SOIL.h> // soil include
 
-#ifndef CC
-#define CC(arg) (arg / 255.0f)
-#endif
+// GLM Mathematics
+#include <glm/glm.hpp> // glm include
+#include <glm/gtc/matrix_transform.hpp> // glm matrix math include
+#include <glm/gtc/type_ptr.hpp> // glm gtc include
 
-/* Define Settings */
+// Other includes
+#include "shader.h" // Include shader class
+#include "Camera.h" // Include Camera class
+#include "Model.h" // Include Model class
 
-#define TARGET_FPS 120.0f
-float UNITS_PER_SECOND = 0.8f;
+const GLuint WIDTH = 800, HEIGHT = 600; // Global variables for width and height of window
 
-#define MESH_DIVISIONS 40
-// 65, and 22 are finest rm at fps
-// 100, and 50 are for full screen.
-#define MESH_START -12
-#define MESH_END 12
-#define MESH_DEPTH -3
+// Function prototypes
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode); // key_callback method
+void do_movement(); // Movement method
 
-#define MESH_TRANSLATE_X 0
-#define MESH_TRANSLATE_Z 0
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f)); // Sets iniital camera pos (0, 0, 0)
+GLfloat lastX = WIDTH / 2.0; // Used for camera motion
+GLfloat lastY = HEIGHT / 2.0; // Used for camera motion
+bool keys[1024]; // Allowable number of key strokes
 
+glm::vec3 lightPos(1.0f, 1.0f, -2.0f); // Sets light position
 
-// Globals.
-Mesh groundMesh = Mesh();
-glm::vec4 camPos;
-unsigned int frameCount = 0;
-float currentTime = 0;
-float timeFPSOffset = 0;
-float fps = 0.0f;
-float writeoutFPS = fps;
-float unitCounter = 0.0f;
+GLfloat deltaTime = 0.0f; // Initialize deltaTime for camera movement
+GLfloat lastFrame = 0.0f; // Initialize lastFrame for camera movement
 
-int screenHeight = 0;
-int screenWidth = 0;
-ForestAnimationSettings forestSettings;
-float prevCamY = 0.0;
+int main() {
+    // Init GLFW
+    glfwInit(); // Initialize GLFW
+    // Set all the required options for GLFW
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Set major context version
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Set minor context version
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Set profiles
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); // Set resizable to false
 
-// Trees
-Tree** allTrees;
+    // Create GLFWwindow
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Project 9", nullptr, nullptr); // Create window
+    glfwMakeContextCurrent(window); // Make context method
 
+    // Set required callback functions
+    glfwSetKeyCallback(window, key_callback); // Set key_callback method
 
-/**
- * @brief Ground Function. Returns a y value for every x,z coordinate.
- * 
- * @param x 
- * @param z 
- * @return float 
- */
-float groundFunction(float x, float z)
-{
-    return cos((x - 1) / 2.0f) + cos((z - 2) / 2.0f) + 0.1 * sin(x - 1) + 0.05 * x;
-}
+    glewExperimental = GL_TRUE; // Set glew to experimental
 
-/**
- * @brief Run when the window is reshaped.
- * 
- * @param width 
- * @param height 
- */
-void reshape(int width, int height)
-{
-    screenHeight = height;
-    screenWidth = width;
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
-    glMatrixMode(GL_MODELVIEW);
-}
+    glewInit(); // Initialize GLEW
 
-/**
- * @brief Render axes lines for debugging.
- * 
- */
-void renderAxes()
-{
-  glBegin(GL_LINES);
-    glColor3f(255.0f,0.0f,0.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(5.0f, 0.0f, 0.0f);
+    glViewport(0, 0, WIDTH, HEIGHT); // Define viewport dimensions
 
-    glColor3f(0.0f,0.0f,255.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 5.0f, 0.0f);
+    glEnable(GL_DEPTH_TEST); // Set up OpenGL options
 
-    glColor3f(0.0f,255.0f,0.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 0.0f, 5.0f);
+    // INSERT SHADERS HERE FOR PROJECT 10
+    Shader checkerboardShader("checkerboard.vs", "checkerboard.frag"); // Create shader for checkerboard
+    Shader cubeShader("cube.vs", "cube.frag"); // Create shader for cube object
+    Shader cylinderShader("cylinder.vs", "cylinder.frag"); // Create shader for cylinder object
+    Shader sphereShader("sphere.vs", "sphere.frag"); // Create shader for sphere object
 
-  glEnd();
-}
+    // Models for Cylinder and Sphere
+    Model cylinderModel("cylinder.obj"); // Defines model for cylinder using obj
+    Model sphereModel("sphere.obj"); // Define model for sphere using obj
 
-/**
- * @brief Render the ground mesh.
- * 
- */
-void renderGround()
-{
-   // glColor3f(CC(95), CC(171), CC(37));
-    glColor3f(CC(97), CC(44), CC(15));
-    glBegin(GL_QUADS);
-    glm::vec3* points = groundMesh.getTopPoints();
-    for(int i = 0; i < groundMesh.numberTopPoints(); i++)
-    {
-        glVertex3f(points[i].x + MESH_TRANSLATE_X,points[i].y,points[i].z + MESH_TRANSLATE_Z);
-    }
-   glEnd();
+    GLfloat vertices[] = {
+        // Coordinates: 3 Position, 3 Color, 2 Texture
+        // Back face of cube
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom left
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom right
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper right
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper right
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper left
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom left
 
-    // draw sides.
-   // glColor3f(CC(110), CC(64), CC(28));
-    glColor3f(CC(132), CC(60), CC(12));
-    
-    glBegin(GL_QUADS);
-    glm::vec3* pointsSide = groundMesh.getSidePoints();
-    for(int i = 0; i < groundMesh.numberSidePoints(); i++)
-    {
-        glVertex3f(pointsSide[i].x + MESH_TRANSLATE_X, pointsSide[i].y, pointsSide[i].z + MESH_TRANSLATE_Z);
-    }
-    glEnd();
-}
+        // Front face of cube
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  0.0f,  1.0f, // Bottom left
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  0.0f,  1.0f, // Bottom right
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f,  1.0f, // Upper right
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f,  1.0f, // Upper right
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f,  1.0f, // Upper left
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  0.0f,  1.0f, // Bottom left
 
-/**
- * @brief Render the camera
- * 
- */
-void renderCamera(void)
-{
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity(); // clears all transformations and what not.
+        // Left face
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f, // Upper close
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, -1.0f,  0.0f,  0.0f, // Upper far
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f, // Lower far
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f, // Lower far
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f, // Lower close
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f, // Upper close
 
-    float x = cos(currentTime  / 10.0) * 18.0f;
-    float z = sin(currentTime  / 10.0) * 18.0f;
-    float y = 15.0f + sin(currentTime / 11.0f) * 10.0f;
+        // Right face
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f, // Upper close
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f,  0.0f, // Upper far
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f, // Lower far
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f, // Lower far
+        0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f, // Lower close
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f, // Upper close
 
+        // Bottom face
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,  0.0f, -1.0f,  0.0f, // Left far
+        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,  0.0f, -1.0f,  0.0f, // Right far
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,  0.0f, -1.0f,  0.0f, // Right close
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,  0.0f, -1.0f,  0.0f, // Right close
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  0.0f, -1.0f,  0.0f, // Left close
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,  0.0f, -1.0f,  0.0f, // Left far
 
-    gluLookAt(x, y, z, // The position of the camera
-             0.0, 0.0, 0.0, // face what point
-             0.0f, 1.0f, 0.0f // camera rotation.
-      );
-}
+        // Top Face
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f, // Left far
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f, // Right far
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f, // Right close
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f, // Right close
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f, // Left close
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f // Left far
+    };
+    GLuint VBO, VAO; // Initialize VBO, VAO
+    glGenVertexArrays(1, &VAO); // Generate VAO
+    glGenBuffers(1, &VBO); // Generate VBO
 
-/**
- * @brief The draw loop. Render everything on screen.
- * 
- */
-void frame()
-{
-    renderCamera();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-   // renderAxes();
-    renderGround();
+    glBindVertexArray(VAO);  // Bind VAO
 
-    for(int i = 0; i < groundMesh.numberCubePoints(); i++)
-    {
-        allTrees[i]->simulate();
-        allTrees[i]->draw();
-    }
-    
-    /* Render Text */
-    
-    // render FPS.
-    glColor3f(CC(255), CC(255), CC(255));
-    TextWriter tw = TextWriter(GLUT_BITMAP_9_BY_15, screenWidth, screenHeight);
-    char buff[40];
-    sprintf(buff, "FPS: %4.1f",writeoutFPS);
-    tw.write(-0.95, 0.92, buff);
-    sprintf(buff, "Years: %4.1f",unitCounter);
-    tw.write(-0.95, 0.85, buff);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);  // Bind VBO
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);  // Buffer Data
 
-    sprintf(buff, "Alive Tree: %d",Tree::numberOfTreesAlive);
-    tw.write(-0.95, 0.80, buff);
-    sprintf(buff, "Burning Tree: %d",Tree::numberOfTreesBurning);
-    tw.write(-0.95, 0.75, buff);
-    sprintf(buff, "Burned Tree: %d",Tree::numberOfTreesBurned);
-    tw.write(-0.95, 0.70, buff);
-    sprintf(buff, "Bare Rock: %d",Tree::numberOfNoTrees);
-    tw.write(-0.95, 0.65, buff);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Set vertex attribute pointer for pos
+    glEnableVertexAttribArray(0); // Enable vertex attrib array with 0
+    // TexCoord attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Set vertex attrib pointer for texcoord
+    glEnableVertexAttribArray(2); // Enable with 2
+    // Normalized Position Attribute
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Set normalized pos vertex attrib
+    glEnableVertexAttribArray(4); // Enable with 4
 
-    sprintf(buff, "Number Of Fires Started: %d", Tree::numberOfFireStarts);
-    tw.write(-0.95, 0.58, buff);
+    glBindVertexArray(0); // Unbind VAO
 
-    sprintf(buff, "Forest Lifecycle Simulator");
-    tw.write(-0.95, -0.85, buff);
-    sprintf(buff, "By Benjamin Carter and Joshua Canode");
-    tw.write(-0.95, -0.91, buff);
-    sprintf(buff, "Fall 2023");
-    tw.write(-0.95, -0.96, buff);
+    // DEFINE TEXTURES HERE Project 10 --> NOTE FOR PROJECT 10
 
-    tw.close();
+    // Game Loop
+    while (!glfwWindowShouldClose(window)) {
+        // Calculate deltaTime for camera movement
+        GLfloat currentFrame = glfwGetTime(); // Get current time
+        deltaTime = currentFrame - lastFrame; // Calculate change in time
+        lastFrame = currentFrame; // Set last frame to current frame
 
-    //std::cout << '\n';
-    glFlush();
-    glutSwapBuffers();
-}
+        // Check for events
+        glfwPollEvents(); // Callback glfwPollEvents to check for events
+        do_movement(); // Callback do_movement()
 
-/**
- * @brief The timer function. This calculates FPS and triggers redraw events.
- * 
- * @param a 
- */
-void timer(int a)
-{
-    frameCount = a;
-    timeFPSOffset = currentTime;
-    currentTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
-    if(frameCount > 10)
-    {
-        unitCounter += (currentTime - timeFPSOffset) * UNITS_PER_SECOND;
-    }
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear buffers
 
-    fps = 0.8 * (1 / (currentTime - timeFPSOffset + 0.00001)) + 0.2 * fps;
-
-    glutPostRedisplay();
-    glutTimerFunc(1000.0 / (0.7 * TARGET_FPS + 0.3 * fps), timer, a + 1); 
-}
-
-/**
- * @brief This runs during "downtime". Updates the writeoutFPS counter.
- * 
- */
-void idleFunction()
-{
-    if(frameCount % ((int)(0.5 * fps) + 1) == 0 && abs(fps - writeoutFPS) > 0.05)
-    {
-    //    std::cout << frameCount << std::endl;
-        writeoutFPS = fps;
-    }
-}
-
-/**
- * @brief Calculate neighbors for trees. Operates "soft-returns" on the foundNeighbors vector object. 
- * 
- * @param i 
- * @param foundNeighbors 
- * @param allTrees 
- * @param allTreesLength 
- */
-void get_neighbors(int i, std::vector<Tree*> &foundNeighbors, Tree** allTrees, int allTreesLength)
-{
-    /* Convert the index into X and Y positions.*/ 
-    int x_start = i % MESH_DIVISIONS;
-    int y_start = i / MESH_DIVISIONS;
-
-    for(int x = x_start - 1; x <= x_start+1; x++)
-    {
-        if (x < 0 || x >= MESH_DIVISIONS)
-        {
-            continue;
-        }
-
-        for (int y = y_start - 1; y <= y_start+1; y++)
-        {   
-            if (y < 0 || y >= MESH_DIVISIONS)
-            {
-                continue;
-            }
-            if (x == x_start && y == y_start)
-            {
-                continue;
-            }
-            int checkIndex = x + MESH_DIVISIONS * y;
-            if(checkIndex < 0 || checkIndex >= allTreesLength)
-            {
-                continue;
-            }
-            foundNeighbors.push_back(allTrees[checkIndex]);
-        }
-    }
-}
-
-/**
- * @brief Initialize the trees and the mesh.
- * 
- */
-void setupCalculations()
-{
-    unitCounter = 0.0;
-    std::srand(std::time(0) * 2.0f - 22);
-    
-    /*
-    Mesh!!
-    */
-    groundMesh = Mesh(MESH_DIVISIONS, MESH_START, MESH_END, MESH_DEPTH, groundFunction);
-    groundMesh.setup();
-
-    /* Create the tree array */
-    allTrees = new Tree*[groundMesh.numberCubePoints()]; 
-    glm::vec3* pointsCenter = groundMesh.getCubePoints();
-
-    float squareWidth = groundMesh.getSquareWidth();
-
-    for(int i = 0; i < groundMesh.numberCubePoints(); i++)
-    {
-        glm::vec3 position = glm::vec3(pointsCenter[i].x + MESH_TRANSLATE_X,pointsCenter[i].y,pointsCenter[i].z + MESH_TRANSLATE_Z);
-
-        float treeWidth = squareWidth * 0.6;
-        float randomHeight = Mesh::mapF(std::rand(), 0, RAND_MAX, 0.2, 1);
-        glm::vec3 dimensions = glm::vec3(treeWidth, randomHeight, treeWidth);
-
-        allTrees[i] = new Tree(position, dimensions, &forestSettings, &fps, UNITS_PER_SECOND, &unitCounter);
-        allTrees[i]->incrementAge(forestSettings.TREE_INITIAL_AGE);
-    }
-    
-    for(int i = 0; i < groundMesh.numberCubePoints(); i++)
-    {
-        std::vector<Tree*> foundNeighbors;
-        get_neighbors(i,foundNeighbors, allTrees, groundMesh.numberCubePoints());
         
-        Tree** neighbors = new Tree*[foundNeighbors.size() > 0 ? foundNeighbors.size() : 1];
-        std::copy(foundNeighbors.begin(), foundNeighbors.end(), neighbors);
+        // Initialize Camera
+        glm::mat4 view = glm::mat4(1.0f); // Initialize view to identity
+        view = camera.GetViewMatrix(); // Set view based on camera
+        glm::mat4 projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f); // Initialize projection using initial values
+        glm::mat4 model = glm::mat4(1.0f); // Initialize model to be 4x4 identity
 
-        int numberOfNeighbors = foundNeighbors.size();
-        allTrees[i]->setNeighborData(neighbors, numberOfNeighbors);
+        // BIND TEXTURES HERE PROJECT 10
+
+        // CHECKERBOARD
+        checkerboardShader.Use(); // Use checkerboard shader
+
+        GLint squareColorLoc = glGetUniformLocation(checkerboardShader.Program, "squareColor"); // Retrieve uniform location for squareColor
+        GLint lightColorLoc = glGetUniformLocation(checkerboardShader.Program, "lightColor"); // Retrieve uniform location for lightColor
+        GLint lightPosLoc = glGetUniformLocation(checkerboardShader.Program, "lightPos"); // Retrieve uniform location for lightPos
+        GLint viewPosLoc = glGetUniformLocation(checkerboardShader.Program, "viewPos"); // Retrieve uniform location for viewPos
+
+        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass white color to lightColorLoc uniform
+        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to lightPosLoc uniform
+        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to viewPosLoc uniform
+
+        glm::mat4 view_square = view; // Create mat4 view_square equal to view generic defined above
+
+        GLint modelLoc = glGetUniformLocation(checkerboardShader.Program, "model"); // Retrieve model uniform location
+        GLint viewLoc = glGetUniformLocation(checkerboardShader.Program, "view"); // Retrieve view uniform location
+        GLint projLoc = glGetUniformLocation(checkerboardShader.Program, "projection"); // Retrieve projection uniform location
+
+        for (int i = 0; i < 8; i++) { // For 8 rows
+            for (int j = 0; j < 8; j++) { // For 8 columns
+                if ((i+j) % 2 == 0) { // Check if i+j is odd or even for color purposes
+                    glUniform3f(squareColorLoc, 1.0f, 0.0f, 1.0f); // If even square color is purple --> pass purple to uniform
+                } else {
+                    glUniform3f(squareColorLoc, 1.0f, 1.0f, 1.0f); // If even square color is white --> pas white to uniform
+                }
+                view_square = glm::translate(view_square, glm::vec3(j-4.0f, -0.5f, i-9.0f)); // Translate square to posiiton [setting x and z for grid]
+                view_square = glm::scale(view_square, glm::vec3(1.0f, 0.1f, 1.0f)); // Scale squares to be like tiles
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to uniform
+                glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_square)); // Pass view_square to uniform
+                glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to uniform
+                // Draw square
+                glBindVertexArray(VAO); // Bind vertex arrays
+                glDrawArrays(GL_TRIANGLES, 0, 36); // Draw arrays for cube
+                view_square = view; // Reset view_square to original view identity [i.e. Translations are independent]
+                
+            }
+        }
+
+        // CUBE
+        cubeShader.Use(); // Activate cube shader
+
+        // Set uniform locations
+        GLint cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
+        lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
+        lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
+        viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
+
+        // Pass to shaders
+        glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
+        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
+        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
+        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
+
+        glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
+        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
+
+        // Get uniform location
+        modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
+        viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
+        projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
+        // Pass locations to shader
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
+        // Draw cube
+        glBindVertexArray(VAO); // Bind vertex arrays
+        glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
+
+        
+        // CYLINDER
+        cylinderShader.Use(); // Activate cylinder shader
+
+        GLint cylinderColorLoc = glGetUniformLocation(cylinderShader.Program, "cylinderColor"); // Retrieve cylinderColor location
+        lightColorLoc = glGetUniformLocation(cylinderShader.Program, "lightColor"); // Reset lightColor location
+        lightPosLoc = glGetUniformLocation(cylinderShader.Program, "lightPos"); // Reset lightPos location
+        viewPosLoc = glGetUniformLocation(cylinderShader.Program, "viewPos"); // Reset viewPos location
+
+        glUniform3f(cylinderColorLoc, 0.0f, 1.0f, 0.0f); // Pass color to uniform
+        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
+        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
+        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
+
+        modelLoc = glGetUniformLocation(cylinderShader.Program, "model"); // Reset view location for cylinderShader
+        viewLoc = glGetUniformLocation(cylinderShader.Program, "view"); // Reset view location for cylinderShader
+        projLoc = glGetUniformLocation(cylinderShader.Program, "projection"); // Reset view location for cylinderShader
+
+        glm::mat4 view_cylinder = view; // Create mat4 view_cylinder using generic view identity
+        view_cylinder = glm::translate(view_cylinder, glm::vec3(1.2f, -3.0f, -5.5f)); // Translate cylinder back, to the right, and down
+        view_cylinder = glm::scale(view_cylinder, glm::vec3(0.5, 3.0, 0.5)); // Increase height of cylinder
+
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cylinder)); // Pass view_cylinder to shader
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass moel to shader
+
+        cylinderModel.Draw(cylinderShader); // Draw obj model
+
+        
+        // SPHERE
+        sphereShader.Use(); // Activate sphereShader
+
+        GLint sphereColorLoc = glGetUniformLocation(sphereShader.Program, "sphereColor"); // Retrieve sphereColor location
+        lightColorLoc = glGetUniformLocation(sphereShader.Program, "lightColor"); // Reset lightColor location for sphereShader
+        lightPosLoc = glGetUniformLocation(sphereShader.Program, "lightPos"); // Reset lightPos location for sphereShader
+        viewPosLoc = glGetUniformLocation(sphereShader.Program, "viewPos"); // Reset viewPos location for sphereShader
+
+        glUniform3f(sphereColorLoc, 0.0f, 0.0f, 1.0f); // Pass in sphere color to uniform
+        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass in light color to uniform
+        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass in light position to uniform
+        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass in camera position to uniform
+
+        modelLoc = glGetUniformLocation(sphereShader.Program, "model"); // Reset model uniform location for sphereShader
+        viewLoc = glGetUniformLocation(sphereShader.Program, "view"); // Reset view uniform location for sphereShader
+        projLoc = glGetUniformLocation(sphereShader.Program, "projection"); // Reset projection uniform location for sphereShader
+
+        glm::mat4 view_sphere = view; // Create mat4 view_sphere equal to view identity
+        view_sphere = glm::translate(view_sphere, glm::vec3(-1.2f, 0.0f, -5.0f)); // Translate sphere back and to the left
+        view_sphere = glm::scale(view_sphere, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale down sphere
+        
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_sphere)); // Pass view_sphere to uniform
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to uniform
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to uniform
+
+        sphereModel.Draw(sphereShader); // Draw sphere obj model
+
+        glBindVertexArray(0); // Bind zero at end
+        glfwSwapBuffers(window); // Swap screen buffers
+
     }
+    // Deallocate resources
+    glDeleteVertexArrays(1, &VAO); // Deallocate vertex arrays
+    glDeleteBuffers(1, &VBO); // Deallocate buffers
+    glfwTerminate(); // Terminate window
+    return 0; // Returns 0 for end of int main()
 
-    camPos = glm::vec4(15.0f, 7.5f, 10.0f, 0.0f);
-    
-   // glClearColor(CC(131), CC(228), CC(233), 1.0f);
-    renderCamera();
 }
 
-/**
- * @brief Main program
- * 
- * @param argc - number of arguments
- * @param argv - array of arguments
- * @return int 
- */
-int main(int argc, char** argv)
-{
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(640, 640);
-    screenHeight = 640;
-    screenWidth = 640;
-    glutCreateWindow("Forest Lifecycle Simulator");
-    glutDisplayFunc(frame);
-    glutTimerFunc(100, timer, 0);
-    glutIdleFunc(idleFunction);
-    glutReshapeFunc(reshape);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_PROGRAM_POINT_SIZE);
+// Method for key input
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) { // If ESC pressed
+        glfwSetWindowShouldClose(window, GL_TRUE); // Close window
+    } if (key >= 0 && key < 1024) { // Allow for 1024 key presses
+        if (action == GLFW_PRESS) { // If pressed
+            keys[key] = true; // Set keys[key] = true [key pressed]
+        } else if (action == GLFW_RELEASE) { // If released
+            keys[key] = false; // Set keys[key] = false [key not pressed]
+        }
+    }
+}
 
-    setupCalculations();
-    glutMainLoop();
-    return 0;
+// Initiates movement based on keyboard input
+void do_movement() {
+    if (keys[GLFW_KEY_LEFT_SHIFT] || keys[GLFW_KEY_RIGHT_SHIFT]) { // If either shift keys are pressed
+        if (keys[GLFW_KEY_UP]) { // If up arrow
+            camera.ProcessKeyboard(FORWARD, deltaTime); // Move camera forward with callback
+        } else if (keys[GLFW_KEY_DOWN]) { // If down arrow
+            camera.ProcessKeyboard(BACKWARD, deltaTime); // Move camera backward with callback
+        } else if (keys[GLFW_KEY_COMMA]) { // If comma --> less than symbol
+            camera.ProcessKeyboard(UPROLL, deltaTime); // Move camera in positive roll with callback
+        } else if (keys[GLFW_KEY_PERIOD]) { // If period --> greater than symbol
+            camera.ProcessKeyboard(DOWNROLL, deltaTime); // Move camera in negative roll with callback
+        }
+    }
+    else if (keys[GLFW_KEY_LEFT_CONTROL] || keys[GLFW_KEY_RIGHT_CONTROL]) { // If either ctrl key is pressed
+        if (keys[GLFW_KEY_DOWN]) { // If down arrow
+            camera.ProcessKeyboard(UPPITCH, deltaTime); // Move camera in positive pitch with callback
+        } else if (keys[GLFW_KEY_UP]) { // If up arrow
+            camera.ProcessKeyboard(DOWNPITCH, deltaTime); // Move camera in negative pitch with callback
+        } else if (keys[GLFW_KEY_RIGHT]) { // If right arrow
+            camera.ProcessKeyboard(UPYAW, deltaTime); // Move camera in positive yaw with callback
+        } else if (keys[GLFW_KEY_LEFT]) { // If left arrow
+            camera.ProcessKeyboard(DOWNYAW, deltaTime); // Move camera in negative yaw with callback
+        }
+    }
+    else if (keys[GLFW_KEY_RIGHT]) { // If right arrow
+        camera.ProcessKeyboard(RIGHT, deltaTime); // Translate camera right with callback
+    }
+    else if (keys[GLFW_KEY_LEFT]) { // If left arrow
+        camera.ProcessKeyboard(LEFT, deltaTime); // Translate camera left with callback
+    }
+    else if (keys[GLFW_KEY_UP]) { // If up arrow
+        camera.ProcessKeyboard(UP, deltaTime); // Translate camera up with callback
+    }
+    else if (keys[GLFW_KEY_DOWN]) { // If down arrow
+        camera.ProcessKeyboard(DOWN, deltaTime); // Translate camera down with callback
+    }
+    else if (keys[GLFW_KEY_R]) { // If r is pressed
+        camera.ResetCamera(); // Reset camera with callback
+    }
 }
