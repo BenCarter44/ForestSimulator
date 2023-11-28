@@ -253,8 +253,8 @@ int main() {
         projLoc = glGetUniformLocation(cylinderShader.Program, "projection"); // Reset view location for cylinderShader
 
         glm::mat4 view_cylinder = view; // Create mat4 view_cylinder using generic view identity
-        view_cylinder = glm::translate(view_cylinder, glm::vec3(1.2f, -3.0f, -5.5f)); // Translate cylinder back, to the right, and down
-        view_cylinder = glm::scale(view_cylinder, glm::vec3(0.5, 3.0, 0.5)); // Increase height of cylinder
+        view_cylinder = glm::translate(view_cylinder, glm::vec3(-1.7f, -2.5f, -5.2f)); // Translate cylinder back, to the right, and down
+        view_cylinder = glm::scale(view_cylinder, glm::vec3(0.5, 2.3, 0.5)); // Increase height of cylinder
 
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cylinder)); // Pass view_cylinder to shader
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
@@ -281,7 +281,7 @@ int main() {
         projLoc = glGetUniformLocation(sphereShader.Program, "projection"); // Reset projection uniform location for sphereShader
 
         glm::mat4 view_sphere = view; // Create mat4 view_sphere equal to view identity
-        view_sphere = glm::translate(view_sphere, glm::vec3(-1.2f, 0.0f, -5.0f)); // Translate sphere back and to the left
+        view_sphere = glm::translate(view_sphere, glm::vec3(1.3f, 0.0f, -5.0f)); // Translate sphere back and to the left
         view_sphere = glm::scale(view_sphere, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale down sphere
         
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_sphere)); // Pass view_sphere to uniform

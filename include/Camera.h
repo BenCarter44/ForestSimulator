@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp> // Matrix transform include
 
 #include <vector> // Include vector
+#include <iostream>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {
@@ -109,11 +110,13 @@ public:
 		if (direction == DOWNROLL) // If down roll
 			Roll -= 2.0f; // Decrement roll by 2 [degrees]
 			updateCameraVectors(); // Update rotation using callback
+
+		std::cout << Position.x << ' ' << Position.y << ' ' << Position.z << '\n';
 	}
 
 	// Resets camera position and rotation vectors
 	void ResetCamera() {
-		Position = glm::vec3(0.0f, 0.0f, 0.0f); // Resets position
+		Position = glm::vec3(0.0f, 0.0f, 0.0f); // 0.7f, -9.34212f); // Resets position
 		WorldUp = glm::vec3(0.0f, 1.0f, 0.0f); // Resets worldup vector
 		Yaw = YAW; // Resets yaw
 		Pitch = PITCH; // Resets pitch

@@ -25,7 +25,7 @@ class Model  // Provided in class
 public:
 	/*  Functions   */
 	// Constructor, expects a filepath to a 3D model.
-	Model(GLchar* path) // Model constructor using path
+	Model(const char* path) // Model constructor using path
 	{
 		this->loadModel(path); // Load model with callback and path
 	}
