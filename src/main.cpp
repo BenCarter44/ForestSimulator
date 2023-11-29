@@ -71,9 +71,9 @@ int main() {
     Model sphereModel("sphere.obj"); // Define model for sphere using obj
 
     GLfloat vertices[] = {
-        // Coordinates: 3 Position, 3 Color, 2 Texture
+        // Coordinates: 3 Position, 2 Texture, 3 Normal
         // Back face of cube
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom left
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,     0.0f,  0.0f, -1.0f, // Bottom left
         0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom right
         0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper right
         0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper right
@@ -130,13 +130,13 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);  // Buffer Data
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Set vertex attribute pointer for pos
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0); // Set vertex attribute pointer for pos
     glEnableVertexAttribArray(0); // Enable vertex attrib array with 0
-    // TexCoord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Set vertex attrib pointer for texcoord
+    // Normalized attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Set vertex attrib pointer for texcoord
     glEnableVertexAttribArray(2); // Enable with 2
     // Normalized Position Attribute
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Set normalized pos vertex attrib
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat))); // Set normalized pos vertex attrib
     glEnableVertexAttribArray(4); // Enable with 4
 
     glBindVertexArray(0); // Unbind VAO
@@ -187,7 +187,7 @@ int main() {
         for (int i = 0; i < 8; i++) { // For 8 rows
             for (int j = 0; j < 8; j++) { // For 8 columns
                 if ((i+j) % 2 == 0) { // Check if i+j is odd or even for color purposes
-                    glUniform3f(squareColorLoc, 1.0f, 0.0f, 1.0f); // If even square color is purple --> pass purple to uniform
+                    glUniform3f(squareColorLoc, 1.0f, 0.0f, 0.0f); // If even square color is purple --> pass purple to uniform
                 } else {
                     glUniform3f(squareColorLoc, 1.0f, 1.0f, 1.0f); // If even square color is white --> pas white to uniform
                 }

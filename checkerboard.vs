@@ -1,6 +1,7 @@
 #version 330 core
 layout (location = 0) in vec3 aPos; // aPos layout for loc 0
 layout (location = 1) in vec3 aNormal; // aNormal layout for loc 1
+layout (location = 2) in vec2 textCoord;
 
 out vec3 FragPos; // Returns FragPos
 out vec3 Normal; // Returns Normal

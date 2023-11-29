@@ -11,7 +11,7 @@ uniform vec3 squareColor; // Uniform loc for squareColor vec3
 
 void main() {
     // ambient
-    float ambientStrengh = 0.8; // Set ambient strength
+    float ambientStrengh = 0.0; // Set ambient strength
     vec3 ambient = ambientStrengh * lightColor; // Sets ambient
     
     // diffuse
