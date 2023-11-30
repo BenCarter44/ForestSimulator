@@ -31,7 +31,7 @@ GLfloat lastX = WIDTH / 2.0; // Used for camera motion
 GLfloat lastY = HEIGHT / 2.0; // Used for camera motion
 bool keys[1024]; // Allowable number of key strokes
 
-glm::vec3 lightPos(1.0f, 1.0f, -2.0f); // Sets light position
+glm::vec3 lightPos(0.0f, 9.0f, -3.0f); // Sets light position
 
 GLfloat deltaTime = 0.0f; // Initialize deltaTime for camera movement
 GLfloat lastFrame = 0.0f; // Initialize lastFrame for camera movement
@@ -73,12 +73,12 @@ int main() {
     GLfloat vertices[] = {
         // Coordinates: 3 Position, 2 Texture, 3 Normal
         // Back face of cube
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,     0.0f,  0.0f, -1.0f, // Bottom left
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom right
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper right
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper right
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  0.0f, -1.0f, // Upper left
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, -1.0f, // Bottom left
+        -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,     0.0f,  0.0f, 0.6f, // Bottom left
+        0.5f, -0.5f, -0.5f,     1.0f, 0.0f,     0.0f,  0.0f, 0.6f, // Bottom right
+        0.5f, 0.5f, -0.5f,      1.0f, 1.0f,     0.0f,  0.0f, 0.6f, // Upper right
+        0.5f, 0.5f, -0.5f,      1.0f, 1.0f,     0.0f,  0.0f, 0.6f, // Upper right
+        -0.5f, 0.5f, -0.5f,     0.0f, 1.0f,     0.0f,  0.0f, 0.6f, // Upper left
+        -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,     0.0f,  0.0f, 0.6f, // Bottom left
 
         // Front face of cube
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  0.0f,  1.0f, // Bottom left
@@ -89,12 +89,12 @@ int main() {
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  0.0f,  1.0f, // Bottom left
 
         // Left face
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f, // Upper close
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, -1.0f,  0.0f,  0.0f, // Upper far
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f, // Lower far
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f, // Lower far
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f, // Lower close
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f, // Upper close
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.4f,  0.0f,  0.0f, // Upper close
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.4f,  0.0f,  0.0f, // Upper far
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.4f,  0.0f,  0.0f, // Lower far
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.4f,  0.0f,  0.0f, // Lower far
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.4f,  0.0f,  0.0f, // Lower close
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.4f,  0.0f,  0.0f, // Upper close
 
         // Right face
         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f, // Upper close
@@ -130,13 +130,13 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);  // Buffer Data
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0); // Set vertex attribute pointer for pos
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Set vertex attribute pointer for pos
     glEnableVertexAttribArray(0); // Enable vertex attrib array with 0
-    // Normalized attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Set vertex attrib pointer for texcoord
+    // Text attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Set vertex attrib pointer for texcoord
     glEnableVertexAttribArray(2); // Enable with 2
     // Normalized Position Attribute
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat))); // Set normalized pos vertex attrib
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat))); // Set normalized pos vertex attrib
     glEnableVertexAttribArray(4); // Enable with 4
 
     glBindVertexArray(0); // Unbind VAO
@@ -206,6 +206,39 @@ int main() {
         // LIGHT
 
                 // CUBE
+        // cubeShader.Use(); // Activate cube shader
+
+        // // Set uniform locations
+        // GLint cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
+        // lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
+        // lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
+        // viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
+
+        // // Pass to shaders
+        // glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
+        // glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
+        // glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
+        // glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
+
+        // glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
+        // view_cube = glm::translate(view_cube, lightPos); // Translate cube back
+        // view_cube = glm::scale(view_cube, glm::vec3(0.1f, 0.1f, 0.1f)); // Scale down sphere
+    
+        // // Get uniform location
+        // modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
+        // viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
+        // projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
+        // // Pass locations to shader
+        // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
+        // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
+        // glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
+        // // Draw cube
+        // glBindVertexArray(VAO); // Bind vertex arrays
+        // glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
+
+
+
+        // CUBE
         cubeShader.Use(); // Activate cube shader
 
         // Set uniform locations
@@ -221,39 +254,6 @@ int main() {
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
 
         glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
-        view_cube = glm::translate(view_cube, lightPos); // Translate cube back
-        view_cube = glm::scale(view_cube, glm::vec3(0.1f, 0.1f, 0.1f)); // Scale down sphere
-    
-        // Get uniform location
-        modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
-        viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
-        projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
-        // Pass locations to shader
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
-        // Draw cube
-        glBindVertexArray(VAO); // Bind vertex arrays
-        glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
-
-
-
-        // CUBE
-        cubeShader.Use(); // Activate cube shader
-
-        // Set uniform locations
-        cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
-        lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
-        lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
-        viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
-
-        // Pass to shaders
-        glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
-        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
-        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
-        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
-
-        view_cube = view; // Create mat4 view_cube equal to identity view
         view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
 
         // Get uniform location
