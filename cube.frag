@@ -15,10 +15,11 @@ void main() {
     vec3 ambient = ambientStrengh * lightColor; // Sets ambient
     
     // diffuse
-    vec3 norm = normalize(Normal); // Normalizes normal
+    //vec3 norm = normalize(Normal); // Normalizes normal
+    vec3 norm = vec3(0,1,0);
     vec3 lightDir = normalize(lightPos - FragPos); // Gets lightDir
     float diff = max(dot(norm, lightDir), 0.0); // Gets diff
-    vec3 diffuse = diff * lightColor; // Sets diffuse
+    vec3 diffuse = diff * lightColor * 2; // Sets diffuse
 
     // specular
     float specularStrength = 0.25f; // Sets specularStrength
