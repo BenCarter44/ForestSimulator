@@ -203,8 +203,9 @@ int main() {
                 
             }
         }
+        // LIGHT
 
-        // CUBE
+                // CUBE
         cubeShader.Use(); // Activate cube shader
 
         // Set uniform locations
@@ -220,6 +221,39 @@ int main() {
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
 
         glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
+        view_cube = glm::translate(view_cube, lightPos); // Translate cube back
+        view_cube = glm::scale(view_cube, glm::vec3(0.1f, 0.1f, 0.1f)); // Scale down sphere
+    
+        // Get uniform location
+        modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
+        viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
+        projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
+        // Pass locations to shader
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
+        // Draw cube
+        glBindVertexArray(VAO); // Bind vertex arrays
+        glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
+
+
+
+        // CUBE
+        cubeShader.Use(); // Activate cube shader
+
+        // Set uniform locations
+        cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
+        lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
+        lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
+        viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
+
+        // Pass to shaders
+        glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
+        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
+        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
+        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
+
+        view_cube = view; // Create mat4 view_cube equal to identity view
         view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
 
         // Get uniform location
