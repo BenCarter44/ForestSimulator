@@ -3,7 +3,7 @@
 // GLEW
 #define GLEW_STATIC // Define glew_static
 #include <GL/glew.h> // glew include
-
+    
 // GLFW
 #include <GLFW/glfw3.h> // glfw include
 
@@ -19,6 +19,10 @@
 #include "shader.h" // Include shader class
 #include "Camera.h" // Include Camera class
 #include "Model.h" // Include Model class
+
+#include <stb_image.h>
+
+
 
 const GLuint WIDTH = 800, HEIGHT = 600; // Global variables for width and height of window
 
@@ -98,6 +102,7 @@ int main() {
     // INSERT SHADERS HERE FOR PROJECT 10
     Shader checkerboardShader("checkerboard.vs", "checkerboard.frag"); // Create shader for checkerboard
     Shader cubeShader("cube.vs", "cube.frag"); // Create shader for cube object
+    Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.frag"); // Create shader for cube object
     Shader cylinderShader("cylinder.vs", "cylinder.frag"); // Create shader for cylinder object
     Shader sphereShader("sphere.vs", "sphere.frag"); // Create shader for sphere object
 
@@ -151,8 +156,64 @@ int main() {
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
     };
 
+    float skyboxVertices[] = {
+        // positions          
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
 
-     unsigned int cubeVAO;
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
+    };
+
+
+    // skybox VAO
+    unsigned int skyboxVAO, skyboxVBO;
+    glGenVertexArrays(1, &skyboxVAO);
+    glGenBuffers(1, &skyboxVBO);
+    glBindVertexArray(skyboxVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+
+    unsigned int cubeVAO;
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &cubeVAO);
@@ -177,12 +238,12 @@ int main() {
     // create a cubeMap
     vector<std::string> faces
     { 
-        "negx.jpg",
-        "posx.jpg",
-        "posy.jpg",
-        "negy.jpg",
-        "posz.jpg",
-        "negz.jpg"
+        "images/negx.jpg",
+        "images/posx.jpg",
+        "images/posy.jpg",
+        "images/negy.jpg",
+        "images/posz.jpg",
+        "images/negz.jpg"
     };
     unsigned int cubemapTexture = loadCubemap(faces);  
 
@@ -257,71 +318,56 @@ int main() {
         // LIGHT
 
                 // CUBE
-        cubeShader.Use(); // Activate cube shader
+    //     cubeShader.Use(); // Activate cube shader
 
-        // Set uniform locations
-        GLint cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
-        lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
-        lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
-        viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
+    //     // Set uniform locations
+    //     GLint cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
+    //     lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
+    //     lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
+    //     viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
 
-        // Pass to shaders
-        glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
-        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
-        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
-        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
+    //     // Pass to shaders
+    //     glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
+    //     glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
+    //     glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
+    //     glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
 
-        glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
-        view_cube = glm::translate(view_cube, lightPos); // Translate cube back
-        view_cube = glm::scale(view_cube, glm::vec3(0.1f, 0.1f, 0.1f)); // Scale down sphere
+    //     glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
+    //    // view_cube = glm::translate(view_cube, lightPos); // Translate cube back
+    //    // view_cube = glm::scale(view_cube, glm::vec3(0.1f, 0.1f, 0.1f)); // Scale down sphere
     
-        // Get uniform location
-        modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
-        viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
-        projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
-        // Pass locations to shader
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
-        // Draw cube
-        glBindVertexArray(cubeVAO); // Bind vertex arrays
-        glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
+    //     // Get uniform location
+    //     modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
+    //     viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
+    //     projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
+    //     // Pass locations to shader
+    //     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
+    //     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
+    //     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
+    //     // Draw cube
+    //     glBindVertexArray(cubeVAO); // Bind vertex arrays
+    //     glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
 
 
 
         // CUBE
         glDepthMask(GL_FALSE);
-        cubeShader.Use(); // Activate cube shader
+        skyboxShader.Use(); // Activate cube shader
 
         // ... set view and projection matrix
         
 
         // Set uniform locations
-        cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
-        lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
-        lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
-        viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
-
-        // Pass to shaders
-        glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
-        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
-        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
-        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
-
+        GLint projectionLoc = glGetUniformLocation(skyboxShader.Program, "projection");
+        viewLoc = glGetUniformLocation(skyboxShader.Program, "view");
         view_cube = view; // Create mat4 view_cube equal to identity view
-        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
+       // view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
+    
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); 
 
-        // Get uniform location
-        modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
-        viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
-        projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
-        // Pass locations to shader
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
-        
         // Draw cube
-        glBindVertexArray(cubeVAO);
+        glBindVertexArray(skyboxVAO);
         glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glDepthMask(GL_TRUE);

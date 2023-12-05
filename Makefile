@@ -1,3 +1,3 @@
 
 project:
-        g++ -I include/ src/*.cpp -o Program -lGL -lGLEW -lglfw -lglut -lGLU -lSOIL -ldl -ldl -lassimp
+	g++ -I include/ src/*.cpp -o Program -lGL -lGLEW -lglfw -lglut -lGLU -lSOIL -ldl -lassimp    

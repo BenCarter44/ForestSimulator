@@ -1,3 +1,7 @@
+
+
+#ifdef IGNORE_ME
+
 /**
  * @file main.cpp
  * @author Ben Carter and Josh Canode
@@ -468,5 +472,7 @@ int main()
     glfwTerminate();
     return 0;
 }
+
+#endif
 
 #endif
