@@ -211,8 +211,26 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    
+    // create a cubeMap
+    vector<std::string> faces
+    { 
+        "images/posx.jpg", // right
+        "images/negx.jpg",  // left
+        "images/posy.jpg",  // top
+        "images/negy.jpg",  // bottom
+        "images/posz.jpg",  // front 
+        "images/negz.jpg"   // back
+    };
+   unsigned int cubemapTexture = loadCubemap(faces);  
 
 
+// OLD
+
+
+    glBindVertexArray(0); // Unbind VAO
+
+    
     unsigned int cubeVAO;
     unsigned int VBO;
     glGenBuffers(1, &VBO);
@@ -234,24 +252,6 @@ int main() {
     // Each "vector calculation in total" requires 3 * sizeof(float) to run
     // Start at the first byte (byte 0)
 
-    
-    // create a cubeMap
-    vector<std::string> faces
-    { 
-        "images/negx.jpg",
-        "images/posx.jpg",
-        "images/posy.jpg",
-        "images/negy.jpg",
-        "images/posz.jpg",
-        "images/negz.jpg"
-    };
-    unsigned int cubemapTexture = loadCubemap(faces);  
-
-
-// OLD
-
-
-    glBindVertexArray(0); // Unbind VAO
 
     // DEFINE TEXTURES HERE Project 10 --> NOTE FOR PROJECT 10
 
@@ -360,7 +360,7 @@ int main() {
         // Set uniform locations
         GLint projectionLoc = glGetUniformLocation(skyboxShader.Program, "projection");
         viewLoc = glGetUniformLocation(skyboxShader.Program, "view");
-        view_cube = view; // Create mat4 view_cube equal to identity view
+        glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
        // view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
     
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
