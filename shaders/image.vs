@@ -11,6 +11,9 @@ uniform mat4 projection; // Receives projection uniform
 
 void main() {
     gl_Position = projection * view * vec4(aPos, 1.0f);  // Implements transformations - multiplies transformation vectors
-    texCoord = vec2(1.0 - aTexCoord.x, aTexCoord.y);
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    texCoord = aTexCoord; // vec2(atan(aPos.x,aPos.y), atan(aPos.x,aPos.z));
+    // texCoord = vec2(1.0 - aTexCoord.x, aTexCoord.y);
 
 }
+

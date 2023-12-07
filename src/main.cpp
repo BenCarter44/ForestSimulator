@@ -75,6 +75,26 @@ unsigned int loadCubemap(vector<std::string> faces)
 }  
 
 
+
+GLuint texSphere;
+GLUquadric* sphere;
+
+void make_tex(void)
+{
+    unsigned char data[256][256][3];
+    for (int y = 0; y < 255; y++) {
+	for (int x = 0; x < 255; x++) {
+	    unsigned char *p = data[y][x];
+	    p[0] = p[1] = p[2] = (x ^ y) & 8 ? 255 : 0;
+	}
+    }
+    glGenTextures(1, &texSphere);
+    glBindTexture(GL_TEXTURE_2D, texSphere);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, (const GLvoid *) data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
 int main() {
     // Init GLFW
     glfwInit(); // Initialize GLFW
@@ -214,12 +234,18 @@ int main() {
     
     // Sphere Bump Texture Loading!
     
+    make_tex();
+    sphere = gluNewQuadric();
+    glEnable(GL_TEXTURE_2D);
+
+
+
     unsigned int bricks;
     glGenTextures(1, &bricks);
     glBindTexture(GL_TEXTURE_2D, bricks);
     // set the texture wrapping/filtering options (on the currently bound texture object)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the texture
@@ -229,6 +255,8 @@ int main() {
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     else
     {
