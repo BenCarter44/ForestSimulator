@@ -104,7 +104,7 @@ int main() {
     Shader cubeShader("cube.vs", "cube.frag"); // Create shader for cube object
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.frag"); // Create shader for cube object
     Shader cylinderShader("cylinder.vs", "cylinder.frag"); // Create shader for cylinder object
-    Shader sphereShader("sphere.vs", "sphere.frag"); // Create shader for sphere object
+    Shader sphereShader("shaders/image.vs", "shaders/image.frag"); // Create shader for sphere object
 
     // Models for Cylinder and Sphere
     Model cylinderModel("cylinder.obj"); // Defines model for cylinder using obj
@@ -212,6 +212,40 @@ int main() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     
+    // Sphere Bump Texture Loading!
+    
+    unsigned int bricks;
+    glGenTextures(1, &bricks);
+    glBindTexture(GL_TEXTURE_2D, bricks);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load and generate the texture
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("images/sphere_image.jpg", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+    // Create sphere shader
+    GLint txLoc = glGetUniformLocation(sphereShader.Program, "ourTexture");
+    glUniform1i(txLoc,bricks); // Pass white color to lightColorLoc uniform
+
+    
+
+
+
+
+
+
     // create a cubeMap
     vector<std::string> faces
     { 
@@ -402,16 +436,18 @@ int main() {
 
         
         // SPHERE
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, bricks);
         sphereShader.Use(); // Activate sphereShader
 
-        GLint sphereColorLoc = glGetUniformLocation(sphereShader.Program, "sphereColor"); // Retrieve sphereColor location
-        lightColorLoc = glGetUniformLocation(sphereShader.Program, "lightColor"); // Reset lightColor location for sphereShader
-        lightPosLoc = glGetUniformLocation(sphereShader.Program, "lightPos"); // Reset lightPos location for sphereShader
+        // GLint sphereColorLoc = glGetUniformLocation(sphereShader.Program, "sphereColor"); // Retrieve sphereColor location
+        // lightColorLoc = glGetUniformLocation(sphereShader.Program, "lightColor"); // Reset lightColor location for sphereShader
+        // lightPosLoc = glGetUniformLocation(sphereShader.Program, "lightPos"); // Reset lightPos location for sphereShader
         viewPosLoc = glGetUniformLocation(sphereShader.Program, "viewPos"); // Reset viewPos location for sphereShader
 
-        glUniform3f(sphereColorLoc, 0.0f, 0.0f, 1.0f); // Pass in sphere color to uniform
-        glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass in light color to uniform
-        glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass in light position to uniform
+        // glUniform3f(sphereColorLoc, 0.0f, 0.0f, 1.0f); // Pass in sphere color to uniform
+        // glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass in light color to uniform
+        // glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass in light position to uniform
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass in camera position to uniform
 
         modelLoc = glGetUniformLocation(sphereShader.Program, "model"); // Reset model uniform location for sphereShader
@@ -432,6 +468,8 @@ int main() {
         glfwSwapBuffers(window); // Swap screen buffers
 
     }
+
+
     // Deallocate resources
     glDeleteVertexArrays(1, &cubeVAO); // Deallocate vertex arrays
     glDeleteBuffers(1, &VBO); // Deallocate buffers
