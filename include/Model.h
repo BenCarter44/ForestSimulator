@@ -18,7 +18,7 @@ using namespace std; // Use namespace std
 
 #include "Mesh.h" // Include Mesh.h
 
-GLint TextureFromFile(const char* path, string directory); // Texture from file
+GLint TextureFromFile(const char* path); // Texture from file
 
 class Model  // Provided in class
 {
@@ -159,7 +159,7 @@ private:
 			mat->GetTexture(type, i, &str); // Get texture using type and string
 			// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
 			Texture texture; // Initialize texture
-			texture.id = TextureFromFile(str.C_Str(), this->directory); // Assign id
+			texture.id = TextureFromFile(str.C_Str()); // Assign id
 			texture.type = typeName; // Assign type
 			texture.path = str; // Assign path
 			textures.push_back(texture); // Push back texture
@@ -170,11 +170,11 @@ private:
 
 
 
-GLint TextureFromFile(const char* path, string directory)
+GLint TextureFromFile(const char* path)
 {
 	//Generate texture ID and load texture data 
-	string filename = string(path); // Get filename
-	filename = directory + '/' + filename; // Get filename with directory
+	//string filename = string(path); // Get filename
+	string filename = string(path); // Get filename with directory
 	GLuint textureID; // Initialize textureID
 	glGenTextures(1, &textureID); // Gen textures with textureID
 	int width,height; // Initialize width and height
