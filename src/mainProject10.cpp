@@ -1,6 +1,6 @@
 
 
-#ifdef PROJECT_10_BUILD
+#ifdef PROJECT_10_COMPILE
 
 #include <iostream>  // iostream include
 
