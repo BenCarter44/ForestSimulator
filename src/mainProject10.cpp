@@ -349,24 +349,6 @@ int main() {
             }
         }
         
-        // CUBE
-        glDepthMask(GL_FALSE);
-        skyboxShader.Use(); // Activate cube shader
-
-        // Set uniform locations
-        GLint projectionLoc = glGetUniformLocation(skyboxShader.Program, "projection");
-        viewLoc = glGetUniformLocation(skyboxShader.Program, "view");
-        glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
-        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
-        view_cube = glm::scale(view_cube, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale cube down
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); 
-
-        // Draw cube
-        glBindVertexArray(skyboxVAO);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glDepthMask(GL_TRUE);
 
         
         // CYLINDER
@@ -418,6 +400,27 @@ int main() {
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to uniform
 
         sphereModel.Draw(imageShader); // Draw sphere obj model
+
+
+        // CUBE
+        glDepthMask(GL_FALSE);
+        skyboxShader.Use(); // Activate cube shader
+
+        // Set uniform locations
+        GLint projectionLoc = glGetUniformLocation(skyboxShader.Program, "projection");
+        viewLoc = glGetUniformLocation(skyboxShader.Program, "view");
+        glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
+        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
+        view_cube = glm::scale(view_cube, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale cube down
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); 
+
+        // Draw cube
+        glBindVertexArray(skyboxVAO);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDepthMask(GL_TRUE);
+
 
         glBindVertexArray(0); // Bind zero at end
         glfwSwapBuffers(window); // Swap screen buffers

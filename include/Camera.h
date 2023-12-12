@@ -111,7 +111,7 @@ public:
 			Roll -= 2.0f; // Decrement roll by 2 [degrees]
 			updateCameraVectors(); // Update rotation using callback
 
-		std::cout << Position.x << ' ' << Position.y << ' ' << Position.z << '\n';
+		// std::cout << Position.x << ' ' << Position.y << ' ' << Position.z << '\n';
 	}
 
 	// Resets camera position and rotation vectors
