@@ -1,3 +1,7 @@
+
+
+#ifdef PROJECT_10_COMPILE
+
 #include <iostream>  // iostream include
 
 // GLEW
@@ -483,3 +487,6 @@ void do_movement() {
         camera.ResetCamera(); // Reset camera with callback
     }
 }
+
+
+#endif
