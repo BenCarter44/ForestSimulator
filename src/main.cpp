@@ -266,12 +266,7 @@ int main() {
     };
    unsigned int cubemapTexture = loadCubemap(faces);  
 
-
-// OLD
-
-
     glBindVertexArray(0); // Unbind VAO
-
     
     unsigned int cubeVAO;
     unsigned int VBO;
@@ -287,15 +282,6 @@ int main() {
     glEnableVertexAttribArray(0); 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);  
-    // (location, # of data types, the data type, normalizeVector??, how far apart are the "structures" passed in (or how many bytes is one structure?), offset number of bytes)
-    // location: matches the location = 0 (as can have multiple vertex attrib)
-    // # of data types: there are 3 floats in a vec3
-    // Do not normalize
-    // Each "vector calculation in total" requires 3 * sizeof(float) to run
-    // Start at the first byte (byte 0)
-
-
-    // DEFINE TEXTURES HERE Project 10 --> NOTE FOR PROJECT 10
 
     // Game Loop
     while (!glfwWindowShouldClose(window)) {
@@ -317,6 +303,7 @@ int main() {
         view = camera.GetViewMatrix(); // Set view based on camera
         glm::mat4 projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f); // Initialize projection using initial values
         glm::mat4 model = glm::mat4(1.0f); // Initialize model to be 4x4 identity
+        
 
         // BIND TEXTURES HERE PROJECT 10
 
@@ -357,54 +344,17 @@ int main() {
                 
             }
         }
-        // LIGHT
-
-                // CUBE
-    //     cubeShader.Use(); // Activate cube shader
-
-    //     // Set uniform locations
-    //     GLint cubeColorLoc = glGetUniformLocation(cubeShader.Program, "cubeColor"); // Retrieve uniform location
-    //     lightColorLoc = glGetUniformLocation(cubeShader.Program, "lightColor"); // Reset uniform location for cubeShader
-    //     lightPosLoc = glGetUniformLocation(cubeShader.Program, "lightPos"); // Reset uniform location for cubeShader
-    //     viewPosLoc = glGetUniformLocation(cubeShader.Program, "viewPos"); // Reset uniform location for cubeShader
-
-    //     // Pass to shaders
-    //     glUniform3f(cubeColorLoc, 1.0f, 0.0f, 0.0f); // Pass cube color to uniform
-    //     glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass light color to uniform
-    //     glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass light position to uniform
-    //     glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass camera position to uniform
-
-    //     glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
-    //    // view_cube = glm::translate(view_cube, lightPos); // Translate cube back
-    //    // view_cube = glm::scale(view_cube, glm::vec3(0.1f, 0.1f, 0.1f)); // Scale down sphere
-    
-    //     // Get uniform location
-    //     modelLoc = glGetUniformLocation(cubeShader.Program, "model"); // Reset modelLoc using cubeShader
-    //     viewLoc = glGetUniformLocation(cubeShader.Program, "view"); // Reset viewLoc using cubeShader
-    //     projLoc = glGetUniformLocation(cubeShader.Program, "projection"); // Reset projLoc using cubeShader
-    //     // Pass locations to shader
-    //     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // Pass model to shader
-    //     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); // Pass view_cube to shader
-    //     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Pass projection to shader
-    //     // Draw cube
-    //     glBindVertexArray(cubeVAO); // Bind vertex arrays
-    //     glDrawArrays(GL_TRIANGLES, 0, 36); // Draw cube
-
-
-
+        
         // CUBE
         glDepthMask(GL_FALSE);
         skyboxShader.Use(); // Activate cube shader
-
-        // ... set view and projection matrix
-        
 
         // Set uniform locations
         GLint projectionLoc = glGetUniformLocation(skyboxShader.Program, "projection");
         viewLoc = glGetUniformLocation(skyboxShader.Program, "view");
         glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
-       // view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
-    
+        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
+        view_cube = glm::scale(view_cube, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale cube down
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); 
 
@@ -446,21 +396,10 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, bricksTexture);
         imageShader.Use(); // Activate sphereShader
 
-        // GLint sphereColorLoc = glGetUniformLocation(sphereShader.Program, "sphereColor"); // Retrieve sphereColor location
-        // lightColorLoc = glGetUniformLocation(sphereShader.Program, "lightColor"); // Reset lightColor location for sphereShader
-        // lightPosLoc = glGetUniformLocation(sphereShader.Program, "lightPos"); // Reset lightPos location for sphereShader
-
-        // glUniform3f(sphereColorLoc, 0.0f, 0.0f, 1.0f); // Pass in sphere color to uniform
-        // glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Pass in light color to uniform
-        // glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z); // Pass in light position to uniform
-
         modelLoc = glGetUniformLocation(imageShader.Program, "model"); // Reset model uniform location for sphereShader
         viewLoc = glGetUniformLocation(imageShader.Program, "view"); // Reset view uniform location for sphereShader
         projLoc = glGetUniformLocation(imageShader.Program, "projection"); // Reset projection uniform location for sphereShader
         decisionLoc = glGetUniformLocation(imageShader.Program, "decision");
-
-        // imageLocation = glGetUniformLocation(imageShader.Program, "ourTexture");
-        // glUniform1i(imageLocation, bricksCylinderTexture); // Pass white color to lightColorLoc uniform
 
         glUniform2f(decisionLoc, 0.0, 1.0);
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass in camera position to uniform
