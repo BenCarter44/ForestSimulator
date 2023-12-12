@@ -374,6 +374,7 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, bricksCylinderTexture);
         imageShader.Use(); // Activate sphereShader
 
+
         modelLoc = glGetUniformLocation(imageShader.Program, "model"); // Reset model uniform location for sphereShader
         viewLoc = glGetUniformLocation(imageShader.Program, "view"); // Reset view uniform location for sphereShader
         projLoc = glGetUniformLocation(imageShader.Program, "projection"); // Reset projection uniform location for sphereShader
@@ -385,7 +386,7 @@ int main() {
         // glUniform1i(imageLocation, bricksCylinderTexture); // Pass white color to lightColorLoc uniform
 
         glm::mat4 view_cylinder = view; // Create mat4 view_cylinder using generic view identity
-        view_cylinder = glm::translate(view_cylinder, glm::vec3(-1.7f, -2.5f, -5.2f)); // Translate cylinder back, to the right, and down
+        view_cylinder = glm::translate(view_cylinder, glm::vec3( 1.0f, -2.5f, -5.2f)); // Translate cylinder back, to the right, and down
         view_cylinder = glm::scale(view_cylinder, glm::vec3(0.5, 2.3, 0.5)); // Increase height of cylinder
 
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cylinder)); // Pass view_cylinder to shader
@@ -409,7 +410,7 @@ int main() {
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z); // Pass in camera position to uniform
 
         glm::mat4 view_sphere = view; // Create mat4 view_sphere equal to view identity
-        view_sphere = glm::translate(view_sphere, glm::vec3(1.3f, 0.0f, -5.0f)); // Translate sphere back and to the left
+        view_sphere = glm::translate(view_sphere, glm::vec3( -1.3f, 0.0f, -5.0f)); // Translate sphere back and to the left
         view_sphere = glm::scale(view_sphere, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale down sphere
         
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_sphere)); // Pass view_sphere to uniform
