@@ -254,8 +254,8 @@ int main() {
     // Create sphere shader
     GLint imageLocation = glGetUniformLocation(imageShader.Program, "ourTexture");
     GLint imageLocation2 = glGetUniformLocation(imageShader.Program, "ourTexture2");
-    glUniform1i(imageLocation, bricksCylinderTexture); // Pass white color to lightColorLoc uniform
-    glUniform1i(imageLocation2, bricksTexture); // Pass white color to lightColorLoc uniform
+    glUniform1i(imageLocation, 0); // Pass white color to lightColorLoc uniform
+    glUniform1i(imageLocation2, 0); // Pass white color to lightColorLoc uniform
 
 
     // create a cubeMap
