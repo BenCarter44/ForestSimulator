@@ -40,4 +40,6 @@ File Structure:
     - The makefile
 -   Project9_Flowchart.png
     - The flowchart
+-   Project9.mp4
+	- The short video
 
