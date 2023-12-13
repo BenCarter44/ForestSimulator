@@ -28,11 +28,16 @@ File Structure:
 	- This is where the source files are
 -	include/
 	- This is where the header files are
+-   shaders/
+    - This is where the shaders are.
+-   Cylinder.mtl/.obj
+	- This is where the cylinder object is.
+-   Sphere.mtl/.obj
+	- This is where the sphere object is.
 -	Project9.docx/.pdf
 	- The report
 -   Makefile
     - The makefile
--   Project9_Flowchart.drawio.png
+-   Project9_Flowchart.png
     - The flowchart
-
 

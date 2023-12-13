@@ -1,4 +1,13 @@
-
+/**
+ * @file mainProject9.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief This program is an example of using shaders to color basic geometric shapes on a checkerboard. 
+ * @version 0.1
+ * @date 2023-12-12
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #ifdef PROECT_9_COMPILE
 

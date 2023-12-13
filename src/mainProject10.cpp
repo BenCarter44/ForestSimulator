@@ -1,4 +1,13 @@
-
+/**
+ * @file mainProject10.cpp
+ * @author Benjamin Carter and Josh Canode
+ * @brief This program is a continuation of Project 9, but using textures on objects.
+ * @version 0.1
+ * @date 2023-12-12
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #ifdef PROJECT_10_COMPILE
 
