@@ -119,7 +119,7 @@ int main() {
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); // Set resizable to false
 
     // Create GLFWwindow
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Project 9", nullptr, nullptr); // Create window
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Project 10", nullptr, nullptr); // Create window
     glfwMakeContextCurrent(window); // Make context method
 
     // Set required callback functions
@@ -135,7 +135,7 @@ int main() {
 
     // INSERT SHADERS HERE FOR PROJECT 10
     Shader checkerboardShader("shaders/checkerboard.vs", "shaders/checkerboard.frag"); // Create shader for checkerboard
-    Shader cubeShader("shaders/cube.vs", "cube.frag"); // Create shader for cube object
+    Shader cubeShader("shaders/cube.vs", "shaders/cube.frag"); // Create shader for cube object
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.frag"); // Create shader for cube object
     Shader imageShader("shaders/image.vs", "shaders/image.frag"); // Create shader for sphere object
 
@@ -419,7 +419,7 @@ int main() {
         GLint projectionLoc = glGetUniformLocation(skyboxShader.Program, "projection");
         viewLoc = glGetUniformLocation(skyboxShader.Program, "view");
         glm::mat4 view_cube = view; // Create mat4 view_cube equal to identity view
-        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.0f, -5.0f)); // Translate cube back
+        view_cube = glm::translate(view_cube, glm::vec3(0.0f, 0.1f, -5.0f)); // Translate cube back
         view_cube = glm::scale(view_cube, glm::vec3(0.5f, 0.5f, 0.5f)); // Scale cube down
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view_cube)); 
