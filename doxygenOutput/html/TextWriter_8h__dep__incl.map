@@ -1,5 +1,0 @@
-<map id="include/TextWriter.h" name="include/TextWriter.h">
-<area shape="rect" id="node1" title="This holds the Text Writer Definitions." alt="" coords="56,5,207,32"/>
-<area shape="rect" id="node2" href="$main_8cpp.html" title="The Main Program. Sets the meshes/trees and contains the GLUT windowing functions." alt="" coords="5,80,111,107"/>
-<area shape="rect" id="node3" href="$TextWriter_8cpp.html" title="Text Writer Class. Writes text to a screen using GLUT primitatives." alt="" coords="135,80,274,107"/>
-</map>

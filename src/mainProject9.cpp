@@ -65,10 +65,10 @@ int main() {
     glEnable(GL_DEPTH_TEST); // Set up OpenGL options
 
     // INSERT SHADERS HERE FOR PROJECT 10
-    Shader checkerboardShader("checkerboard.vs", "checkerboard.frag"); // Create shader for checkerboard
-    Shader cubeShader("cube.vs", "cube.frag"); // Create shader for cube object
-    Shader cylinderShader("cylinder.vs", "cylinder.frag"); // Create shader for cylinder object
-    Shader sphereShader("sphere.vs", "sphere.frag"); // Create shader for sphere object
+    Shader checkerboardShader("shaders/checkerboard.vs", "shaders/checkerboard.frag"); // Create shader for checkerboard
+    Shader cubeShader("shaders/cube.vs", "shaders/cube.frag"); // Create shader for cube object
+    Shader cylinderShader("shaders/cylinder.vs", "shaders/cylinder.frag"); // Create shader for cylinder object
+    Shader sphereShader("shaders/sphere.vs", "shaders/sphere.frag"); // Create shader for sphere object
 
     // Models for Cylinder and Sphere
     Model cylinderModel("cylinder.obj"); // Defines model for cylinder using obj

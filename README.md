@@ -1,9 +1,7 @@
-# ComputerGraphics - Forest Lifecycle Simulator
+# ComputerGraphics - Project 9 and 10 README
 For course work for a class at Grand Canyon University
 
 By Benjamin Carter and Josh Canode.
-
-[Watch Video Here](https://codingcando.com/fileShare/file?code=TDAX62YKEW)
 
 --- 
 
@@ -20,27 +18,21 @@ By Benjamin Carter and Josh Canode.
     - you can run `git checkout main` to make sure you are in the main branch. 
 2. Make sure the working directory is the root of the repository.
 3. Run `make`. 
-4. The program will be `Program` under the root of the repository. Run it with `./Program`
+4. The program will be `Project9` for Project9 and `Project10` for Project 10 under the root of the repository.
 
 
-### Documentation
-
-You can look at the `refman.pdf` or the `index.html` file under `doxygenOutput/html` for an interactive documentation page on the project.
-
-### File structure:
+### File structure for Project 9:
 
 File Structure:
 -	src/
 	- This is where the source files are
 -	include/
 	- This is where the header files are
--	Project8.docx/.pdf
+-	Project9.docx/.pdf
 	- The report
 -   Makefile
     - The makefile
--   Flowchart.drawio.png
+-   Project9_Flowchart.drawio.png
     - The flowchart
--   ForestStateGraph.drawio.png
-    - A map of the different forest states.
--   refman.pdf
-    - A computer generated documentation of the program
+
+

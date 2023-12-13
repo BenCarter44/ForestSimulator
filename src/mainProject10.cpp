@@ -125,8 +125,8 @@ int main() {
     glEnable(GL_DEPTH_TEST); // Set up OpenGL options
 
     // INSERT SHADERS HERE FOR PROJECT 10
-    Shader checkerboardShader("checkerboard.vs", "checkerboard.frag"); // Create shader for checkerboard
-    Shader cubeShader("cube.vs", "cube.frag"); // Create shader for cube object
+    Shader checkerboardShader("shaders/checkerboard.vs", "shaders/checkerboard.frag"); // Create shader for checkerboard
+    Shader cubeShader("shaders/cube.vs", "cube.frag"); // Create shader for cube object
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.frag"); // Create shader for cube object
     Shader imageShader("shaders/image.vs", "shaders/image.frag"); // Create shader for sphere object
 
