@@ -25,7 +25,7 @@ https://codingcando.com/fileShare/file?code=GKIUQ9U3ME
 4. The program will be `Project9` for Project9 and `Project10` for Project 10 under the root of the repository.
 
 
-### File structure for Project 9:
+### File structure for Project 10:
 
 File Structure:
 -	src/
@@ -38,12 +38,11 @@ File Structure:
 	- This is where the cylinder object is.
 -   Sphere.mtl/.obj
 	- This is where the sphere object is.
--	Project9.docx/.pdf
+-	Project10.docx/.pdf
 	- The report
 -   Makefile
     - The makefile
--   Project9_Flowchart.png
+-   Project10_Flowchart.png
     - The flowchart
--   Project9.mp4
-	- The short video
+
 
