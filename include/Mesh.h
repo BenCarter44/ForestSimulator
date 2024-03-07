@@ -1,129 +1,151 @@
-#pragma once
-// Std. Includes
-#include <string> // Include string
-#include <fstream> // Include fstream
-#include <sstream> // Include sstream
-#include <iostream> // Include iostream
-#include <vector> // Include vector
-using namespace std; // Use namespace std
-// GL Includes
-#include <GL/glew.h> // Contains all the necessery OpenGL includes
-#include <glm/glm.hpp> // Include glm
-#include <glm/gtc/matrix_transform.hpp> // Include matrix transform
+/**
+ * @file Mesh.h
+ * @author Benjamin Carter and Josh Canode
+ * @brief This holds the Mesh class definitions.
+ * @version 1.0
+ * @date 2023-11-18
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
+#ifndef MESH_H
+#define MESH_H
 
-// Define vertex structure
-struct Vertex {
-    // Position
-    glm::vec3 Position; // Vec3 position
-    // Normal
-    glm::vec3 Normal; // Vec3 normal
-    // TexCoords
-    glm::vec2 TexCoords; // Vec2 texture coordinates
-};
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-// Define texture structure
-struct Texture {
-    GLuint id; // GLuint for id
-    string type; // String for type
-    aiString path; // aiString for path
-};
-
-class Mesh {  // Provided in class
-public:
-    /*  Mesh Data  */
-    vector<Vertex> vertices; // vector of vertices
-    vector<GLuint> indices; // vector of indices
-    vector<Texture> textures; // vector of textures
-
-    /*  Functions  */
-    // Constructor
-    Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures) // Input constructor
-    {
-        this->vertices = vertices; // Set vertices equal to input
-        this->indices = indices; // Set indices equal to input
-        this->textures = textures; // Set textures equal to input
-
-        // Now that we have all the required data, set the vertex buffers and its attribute pointers.
-        this->setupMesh(); // Call class setupMesh() method
-    }
-
-    // Render the mesh
-    void Draw(Shader shader) 
-    {
-        // Bind appropriate textures
-        GLuint diffuseNr = 1; // Set diffuseNr
-        GLuint specularNr = 1; // Set specularNr
-        for(GLuint i = 0; i < this->textures.size(); i++) // Iterate over textures
-        {
-            glActiveTexture(GL_TEXTURE0 + i); // Active proper texture unit before binding
-            // Retrieve texture number (the N in diffuse_textureN)
-            stringstream ss; // initialize stringstream
-            string number; // Initalize number
-            string name = this->textures[i].type; // Set name to type
-            if(name == "texture_diffuse") // If diffuse
-                ss << diffuseNr++; // Transfer GLuint to stream
-            else if(name == "texture_specular") // If specular
-                ss << specularNr++; // Transfer GLuint to stream
-            number = ss.str(); // Set number equal to string of ss
-            // Now set the sampler to the correct texture unit
-            glUniform1i(glGetUniformLocation(shader.Program, (name + number).c_str()), i); // Set sampler to texture unit
-            // And finally bind the texture
-            glBindTexture(GL_TEXTURE_2D, this->textures[i].id); // Bind
-        }
-        
-        // Also set each mesh's shininess property to a default value (if you want you could extend this to another mesh property and possibly change this value)
-        glUniform1f(glGetUniformLocation(shader.Program, "material.shininess"), 16.0f);
-
-        // Draw mesh
-        glBindVertexArray(this->VAO); // Bind VAO
-        glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0); // Draw GL_TRIANGLES
-        glBindVertexArray(0); // Bind 0
-
-        // Always good practice to set everything back to defaults once configured.
-        for (GLuint i = 0; i < this->textures.size(); i++)
-        {
-            glActiveTexture(GL_TEXTURE0 + i); // Reset active texture
-            glBindTexture(GL_TEXTURE_2D, 0); // Bind GL_TEXTURE_2D, 0
-        }
-    }
-
+/**
+ * @brief The Mesh class creates "ground" terrain given starting x, y, and a function.
+ * 
+ */
+class Mesh
+{
+  
 private:
-    /*  Render data  */
-    GLuint VAO, VBO, EBO; // Initialize VAO, VBO, EBO
+    glm::vec3* meshPoints;
+    glm::vec3* cubePoints;
+    glm::vec3* sidePoints;
+    float div;
+    float start;
+    float end;
+    int totalPoints;
+    int totalCubePoints;
+    float floorY;
+    float (*yFunction)(float, float);
+    bool normalSetup;
 
-    /*  Functions    */
-    // Initializes all the buffer objects/arrays
-    void setupMesh()
+public:
+    /**
+     * @brief Empty constructor. Should not be used. Exists only for the "new" keyword.
+     * 
+     */
+    Mesh();
+
+    /**
+     * @brief Construct a new Mesh.
+     * 
+     * @param division - How many "squares" per side of the mesh?
+     * @param start - start at what x value (x and z both start here)
+     * @param end - end at what x value (x and z both end here)
+     * @param floor - the floor y value that the rectangles are drawn to
+     * @param yFunc - a function pointer that returns the y value given the x,z coordinate.
+     */
+    Mesh(float division, float start, float end, float floor, float (*yFunc)(float, float) );
+
+    /**
+     * @brief Destroy the Mesh object
+     * 
+     */
+    ~Mesh();
+
+    /**
+     * @brief Setup the mesh. This creates the mesh and performs the calculations. This MUST be called before further use.
+     * 
+     */
+    void setup();
+    
+    /**
+     * @brief Get an array of vec3 of the top square points (for drawing)
+     * 
+     * @return glm::vec3* 
+     */
+    glm::vec3* getTopPoints();
+    /**
+     * @brief Return the number of elements in the getTopPoints() array.
+     * 
+     * @return int 
+     */
+    int numberTopPoints();
+
+    /**
+     * @brief Get an array of vec3 of the center of the top of each cell.
+     * 
+     * @return glm::vec3* 
+     */
+    glm::vec3* getCubePoints();
+    /**
+     * @brief Return the number of elements in the getCubePoints() array.
+     * 
+     * @return int 
+     */
+    int numberCubePoints();
+
+    /**
+     * @brief Get an array of vec3 of all the side points in drawing order
+     * 
+     * @return glm::vec3* 
+     */
+    glm::vec3* getSidePoints();
+    /**
+     * @brief Return the number of points in the getSidePoints() array.
+     * 
+     * @return int 
+     */
+    int numberSidePoints();
+
+    /**
+     * @brief Get the width of a cell.
+     * 
+     * @return float 
+     */
+    float getSquareWidth();
+
+    /**
+     * @brief Basic linear mapping function.
+     * 
+     * @param x 
+     * @param in_min 
+     * @param in_max 
+     * @param out_min 
+     * @param out_max 
+     * @return float 
+     */
+    static float mapF(float x, float in_min, float in_max, float out_min, float out_max) 
     {
-        // Create buffers/arrays
-        glGenVertexArrays(1, &this->VAO); // Create VAO array
-        glGenBuffers(1, &this->VBO); // Create VBO buffer
-        glGenBuffers(1, &this->EBO); // Create EBO buffer
-
-        glBindVertexArray(this->VAO); // Bind vertex array
-        // Load data into vertex buffers
-        glBindBuffer(GL_ARRAY_BUFFER, this->VBO); // Bind buffer
-        // A great thing about structs is that their memory layout is sequential for all its items.
-        // The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
-        // again translates to 3/2 floats which translates to a byte array.
-        glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(Vertex), &this->vertices[0], GL_STATIC_DRAW);   // Set buffer data
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO); // Bind EBO buffer
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &this->indices[0], GL_STATIC_DRAW); // Set buffer data
-
-        // Set the vertex attribute pointers
-        // Vertex Positions
-        glEnableVertexAttribArray(0); // Enable vertex attrib
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0); // Set vertex attrib for position
-        // Vertex Normals
-        glEnableVertexAttribArray(1); // Enable vertex attrib
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal)); // Set vertex attrib for normal
-        // Vertex Texture Coords
-        glEnableVertexAttribArray(2); // Enable vertex attrib
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords)); // Set vertex attrib for texcoords
-
-        glBindVertexArray(0); // Bind 0
+      return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
+
+    /**
+     * @brief The maping function, but interpolates between two different colors.
+     * 
+     * @param change 
+     * @param x - 0 to 1. 0 is first color, 1 is second.
+     * @param r 
+     * @param g 
+     * @param b 
+     * @param r2 
+     * @param g2 
+     * @param b2 
+     */
+    static void mixColor(float change[3], float x, int r, int g, int b, int r2, int g2, int b2)
+    {
+        change[0] = mapF(x, 0.0f, 1.0f,r, r2);
+        change[1] = mapF(x, 0.0f, 1.0f,g, g2);
+        change[2] = mapF(x, 0.0f, 1.0f,b, b2);
+    }
+
 };
 
+#endif
