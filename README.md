@@ -3,7 +3,9 @@ For course work for a class at Grand Canyon University
 
 By Benjamin Carter and Josh Canode.
 
-[Watch Video Here](https://codingcando.com/fileShare/file?code=trees)
+![Forest Simulator Picture](screenshot.png)
+
+[Watch Video Of It Here In Action](https://codingcando.com/fileShare/file?code=trees)
 --- 
 
 ### Requirements:
@@ -15,7 +17,7 @@ By Benjamin Carter and Josh Canode.
 1. First Clone the git repository
     - this can be found at https://github.com/BenRobotics101/ComputerGraphics
     - or in linux can be cloned by running
-        `git clone https://github.com/BenRobotics101/ComputerGraphics.git`
+        `git clone https://github.com/BenCarter44/ComputerGraphics.git`
     - you can run `git checkout main` to make sure you are in the main branch. 
 2. Make sure the working directory is the root of the repository.
 3. Run `make`. 
