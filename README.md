@@ -1,5 +1,5 @@
-# ComputerGraphics - Forest Lifecycle Simulator
-For course work for a class at Grand Canyon University
+# Forest Lifecycle Simulator
+For a computer graphics course at Grand Canyon University
 
 By Benjamin Carter and Josh Canode.
 
