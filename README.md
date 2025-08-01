@@ -6,6 +6,7 @@ By Benjamin Carter and Josh Canode.
 ![Forest Simulator Picture](screenshot.png)
 
 [Watch Video Of It Here In Action](https://youtu.be/fiSUsZnzaPY)
+
 --- 
 
 ### Requirements:
@@ -43,3 +44,5 @@ File Structure:
     - The flowchart
 -   ForestStateGraph.drawio.png
     - A map of the different forest states.
+
+[View more information here](https://codingcando.com/blog/articles?a=38)
