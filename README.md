@@ -5,7 +5,7 @@ By Benjamin Carter and Josh Canode.
 
 ![Forest Simulator Picture](screenshot.png)
 
-[Watch Video Of It Here In Action](https://codingcando.com/fileShare/file?code=trees)
+[Watch Video Of It Here In Action](https://youtu.be/fiSUsZnzaPY)
 --- 
 
 ### Requirements:
